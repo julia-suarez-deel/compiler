@@ -1,4 +1,9 @@
 const CODE_URL = 'http://localhost:63342/compiler/VM/code.txt';
+const ISA = {
+    'instruction1':instruction1,
+    'instruction2':instruction2,
+    'instruction3':instruction3,
+};
 $(document).ready(function(){
     readCode();
 });
@@ -8,7 +13,7 @@ function readCode(){
         instructions.forEach(line => {
             try{
                 let instruction = splitArguments(line);
-                instruction.function = window[instruction.name];
+                instruction.function = ISA[instruction.name];
                 if(instruction.function.length === instruction.args.length){
                     instruction.function.apply(this, instruction.args);
                 }
