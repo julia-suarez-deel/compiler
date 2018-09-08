@@ -25,7 +25,6 @@ function readCode(){
             }
         });
      }, 'text');
-    console.log('end');
 }
 function splitInstructions(data){
     let clean_data = data.replace(/[\r\n]+/g,'');
@@ -37,10 +36,10 @@ function splitArguments(data) {
     let instruction={};
     instruction.name = data.split(" ")[0];
     instruction.args = data.split(" ");
-    delete instruction.args[0];
+    instruction.args.splice(0,1);
     return instruction;
 }
-function instruction1(self,a,b,c){
+function instruction1(a,b,c){
     console.log('instruction1');
 }
 function instruction2(a,b,c){
