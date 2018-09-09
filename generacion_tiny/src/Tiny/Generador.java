@@ -153,11 +153,11 @@ public class Generador {
                             break;
             case	por:	UtGen.emitirOp("MPI", "op: *");
                             break;
-            case	entre:	UtGen.emitirOp("DIV", "op: /");
+            case	entre:	UtGen.emitirOp("DVI", "op: /");
                             break;		
             case	menor:	UtGen.emitirOp("MENOR",  "op: <");
                             break;
-            case	igual:	UtGen.emitirOp("EQU", /*UtGen.AC, UtGen.AC1, UtGen.AC,*/ "op: ==");
+            case	igual:	UtGen.emitirOp("EQU", "op: ==");
                             break;	
             default:
                             UtGen.emitirComentario("BUG: tipo de operacion desconocida");
