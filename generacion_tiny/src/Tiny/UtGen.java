@@ -38,16 +38,7 @@ public class UtGen {
 		if(debug) System.out.println("*      "+c);
 	}
 
-	/* Este procedimiento emite sentencias RO (Solo Registro)
-	 * de la TM    opcode r,s,t 
-	 * r[r] = reg[s] op reg[t]
-	 * 
-	 * op = codigo de la operacion
-	 * r = registro destino
-	 * s = primero registro operando
-	 * t = segundo registro operando
-	 * c = comentario a emitir en modo debug
-	 */
+	
 	public static void emitirRO(String op, int r, int s, int t, String c){
 		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+s+","+t );
 		if(debug)
@@ -56,17 +47,48 @@ public class UtGen {
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;
 	}
-	
-	/* Este procedimiento emite sentencias RM (Registro a memoria)
-	 * de la TM		opcode r,d(s)  		a=d+reg[s]
-	 * 				reg[PC_REG]=a  o	reg[r] = x (dependiendo de instruccion de carga)
-	 * 
+        
+        /* Este procedimiento
+	 * op p
 	 * op = codigo de la operacion
-	 * r = registro destino
-	 * d = desplazamiento
-	 * s = registro con la direccion base
-	 * c = comentario a emitir en modo debug
-	 */	
+	 * p = constante
+         * c= comentario
+	 */
+	
+	public static void emitirConstante(String op, int p, String c){
+		System.out.print((instruccionActual++)+":       "+op+"       "+p); 
+		if(debug)
+			System.out.print("      "+c);
+		System.out.print("\n");
+	}
+        
+        /* Este procedimiento
+	 * op p
+	 * op = codigo de la operacion
+	 * p = variable de operacion
+         * c= comentario
+	 */
+        
+        public static void emitirOpId(String op, String p, String c){
+		System.out.print((instruccionActual++)+":       "+op+"       "+p);
+		if(debug)
+			System.out.print("      "+c);
+		System.out.print("\n");	
+	}
+        
+        /* Este procedimiento
+	 * op 
+	 * op = codigo de la operacion
+         * c= comentario
+	 */
+        
+         public static void emitirOp(String op, String c){
+		System.out.print((instruccionActual++)+":       "+op); 
+		if(debug)
+			System.out.print("      "+c);
+		System.out.print("\n");	
+	}
+         
 	public static void emitirRM(String op, int r, int d, int s, String c){
 		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+d+"("+s+")" );
 		if(debug)
@@ -121,7 +143,5 @@ public class UtGen {
 		System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
-	}
-	
-/*TODO: Cambiar emision por pantalla por stream*/	
+	}	
 }

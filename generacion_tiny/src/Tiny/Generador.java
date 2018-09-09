@@ -3,35 +3,6 @@ package Tiny;
 import ast.*;
 
 public class Generador {
-    /* Ilustracion de la disposicion de la memoria en
-     * este ambiente de ejecucion para el lenguaje Tiny
-     *
-     * |t1	|<- mp (Maxima posicion de memoria de la TM
-     * |t1	|<- desplazamientoTmp (tope actual)
-     * |free|
-     * |free|
-     * |...	|
-     * |x	|
-     * |y	|<- gp
-     * 
-     * */
-    
-    
-    
-    /* desplazamientoTmp es una variable inicializada en 0
-     * y empleada como el desplazamiento de la siguiente localidad
-     * temporal disponible desde la parte superior o tope de la memoria
-     * (la que apunta el registro MP).
-     * 
-     * - Se decrementa (desplazamientoTmp--) despues de cada almacenamiento y
-     * 
-     * - Se incrementa (desplazamientoTmp++) despues de cada eliminacion/carga en 
-     *   otra variable de un valor de la pila.
-     * 
-     * Pudiendose ver como el apuntador hacia el tope de la pila temporal
-     * y las llamadas a la funcion emitirRM corresponden a una inserccion 
-     * y extraccion de esta pila
-     */
     private static int desplazamientoTmp = 0;
     private static TablaSimbolos tablaSimbolos = null;
     
@@ -42,17 +13,17 @@ public class Generador {
     public static void generarCodigoObjeto(NodoBase raiz){
         System.out.println();
         System.out.println();
-        System.out.println("------ CODIGO OBJETO DEL LENGUAJE TINY GENERADO PARA LA TM ------");
+        System.out.println("------ CODIGO INTERMEDIO P DEL LENGUAJE TINY ------");
         System.out.println();
         System.out.println();
         generarPreludioEstandar();
         generar(raiz);
         /*Genero el codigo de finalizacion de ejecucion del codigo*/   
         UtGen.emitirComentario("Fin de la ejecucion.");
-        UtGen.emitirRO("HALT", 0, 0, 0, "");
+        UtGen.emitirOp("STN", "");
         System.out.println();
         System.out.println();
-        System.out.println("------ FIN DEL CODIGO OBJETO DEL LENGUAJE TINY GENERADO PARA LA TM ------");
+        System.out.println("------ FIN DEL CODIGO INTERMEDIO P DEL LENGUAJE TINY ------");
     }
     
     //Funcion principal de generacion de codigo
@@ -99,14 +70,14 @@ public class Generador {
         UtGen.emitirComentario("If: el salto hacia el final debe estar aqui");
         localidadActual = UtGen.emitirSalto(0);
         UtGen.cargarRespaldo(localidadSaltoElse);
-        UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "if: jmp hacia else");
+        //UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "if: jmp hacia else");
         UtGen.restaurarRespaldo();
         /*Genero la parte ELSE*/
         if(n.getParteElse()!=null){
             generar(n.getParteElse());
             localidadActual = UtGen.emitirSalto(0);
             UtGen.cargarRespaldo(localidadSaltoEnd);
-            UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
+        //    UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
             UtGen.restaurarRespaldo();
         }
         
@@ -125,18 +96,14 @@ public class Generador {
             generar(n.getPrueba());
             UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo");
         if(UtGen.debug)	UtGen.emitirComentario("<- repeat");
-    }		
+    }			
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
         int direccion;
-        if(UtGen.debug)	UtGen.emitirComentario("-> asignacion");		
-        /* Genero el codigo para la expresion a la derecha de la asignacion */
+        UtGen.emitirOpId("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador());
         generar(n.getExpresion());
-        /* Ahora almaceno el valor resultante */
-        direccion = tablaSimbolos.getDireccion(n.getIdentificador());
-        UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
-        if(UtGen.debug)	UtGen.emitirComentario("<- asignacion");
+        UtGen.emitirOp("STO", "asignacion: almaceno el valor para el id "+n.getIdentificador());
     }
     
     private static void generarLeer(NodoBase nodo){
@@ -145,8 +112,8 @@ public class Generador {
         if(UtGen.debug)	UtGen.emitirComentario("-> leer");
         UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
         direccion = tablaSimbolos.getDireccion(n.getIdentificador());
-        UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
-        if(UtGen.debug)	UtGen.emitirComentario("<- leer");
+     /*   UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
+        */if(UtGen.debug)	UtGen.emitirComentario("<- leer");
     }
     
     private static void generarEscribir(NodoBase nodo){
@@ -161,67 +128,48 @@ public class Generador {
     
     private static void generarValor(NodoBase nodo){
         NodoValor n = (NodoValor)nodo;
-        if(UtGen.debug)	UtGen.emitirComentario("-> constante");
-        UtGen.emitirRM("LDC", UtGen.AC, n.getValor(), 0, "cargar constante: "+n.getValor());
-        if(UtGen.debug)	UtGen.emitirComentario("<- constante");
+        UtGen.emitirConstante("LDC", n.getValor(), "cargar constante: "+n.getValor());
     }
     
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
-        int direccion;
-        if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
-        direccion = tablaSimbolos.getDireccion(n.getNombre());
-        UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de identificador: "+n.getNombre());
-        if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
+        UtGen.emitirOpId("LOD", n.getNombre() , "cargar valor de identificador: "+n.getNombre());
+       
     }
 
     private static void generarOperacion(NodoBase nodo){
         NodoOperacion n = (NodoOperacion) nodo;
-        if(UtGen.debug)	UtGen.emitirComentario("-> Operacion: " + n.getOperacion());
+       
         /* Genero la expresion izquierda de la operacion */
         generar(n.getOpIzquierdo());
-        /* Almaceno en la pseudo pila de valor temporales el valor de la operacion izquierda */
-        UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "op: push en la pila tmp el resultado expresion izquierda");
+     
         /* Genero la expresion derecha de la operacion */
         generar(n.getOpDerecho());
-        /* Ahora cargo/saco de la pila el valor izquierdo */
-        UtGen.emitirRM("LD", UtGen.AC1, ++desplazamientoTmp, UtGen.MP, "op: pop o cargo de la pila el valor izquierdo en AC1");
-        switch(n.getOperacion()){
-            case	mas:	UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: +");		
+   
+         switch(n.getOperacion()){
+            case	mas:	UtGen.emitirOp("ADI", "op: +");		
                             break;
-            case	menos:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: -");
+            case	menos:	UtGen.emitirOp("SBI",  "op: -");
                             break;
-            case	por:	UtGen.emitirRO("MUL", UtGen.AC, UtGen.AC1, UtGen.AC, "op: *");
+            case	por:	UtGen.emitirOp("MPI", "op: *");
                             break;
-            case	entre:	UtGen.emitirRO("DIV", UtGen.AC, UtGen.AC1, UtGen.AC, "op: /");
+            case	entre:	UtGen.emitirOp("DIV", "op: /");
                             break;		
-            case	menor:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: <");
-                            UtGen.emitirRM("JLT", UtGen.AC, 2, UtGen.PC, "voy dos instrucciones mas alla if verdadero (AC<0)");
-                            UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
-                            UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC, "Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
-                            UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC, "caso de verdadero (AC=1)");
+            case	menor:	UtGen.emitirOp("MENOR",  "op: <");
                             break;
-            case	igual:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: ==");
-                            UtGen.emitirRM("JEQ", UtGen.AC, 2, UtGen.PC, "voy dos instrucciones mas alla if verdadero (AC==0)");
-                            UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
-                            UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC, "Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
-                            UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC, "caso de verdadero (AC=1)");
+            case	igual:	UtGen.emitirOp("EQU", /*UtGen.AC, UtGen.AC1, UtGen.AC,*/ "op: ==");
                             break;	
             default:
                             UtGen.emitirComentario("BUG: tipo de operacion desconocida");
         }
-        if(UtGen.debug)	UtGen.emitirComentario("<- Operacion: " + n.getOperacion());
+        
     }
     
     //TODO: enviar preludio a archivo de salida, obtener antes su nombre
     private static void generarPreludioEstandar(){
-        UtGen.emitirComentario("Compilacion TINY para el codigo objeto TM");
+        UtGen.emitirComentario("Compilacion TINY para generar codigo P");
         UtGen.emitirComentario("Archivo: "+ "NOMBRE_ARREGLAR");
-        /*Genero inicializaciones del preludio estandar*/
-        /*Todos los registros en tiny comienzan en cero*/
-        UtGen.emitirComentario("Preludio estandar:");
-        UtGen.emitirRM("LD", UtGen.MP, 0, UtGen.AC, "cargar la maxima direccion desde la localidad 0");
-        UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.AC, "limpio el registro de la localidad 0");
+        UtGen.emitirComentario("Codigo P:");
     }
 
 }

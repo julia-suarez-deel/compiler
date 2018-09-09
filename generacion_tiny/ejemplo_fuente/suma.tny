@@ -1,8 +1,1 @@
-{ Sample program
-  in TINY language -
-  computes factorial
-}
-read x; { input an integer }
-read y;
-z:=x+y;
-write z
+z:=x+y*8+L;
