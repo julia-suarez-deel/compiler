@@ -108,21 +108,17 @@ public class Generador {
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
-        int direccion;
         if(UtGen.debug)	UtGen.emitirComentario("-> leer");
-        UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
-        direccion = tablaSimbolos.getDireccion(n.getIdentificador());
-     /*   UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
-        */if(UtGen.debug)	UtGen.emitirComentario("<- leer");
+        UtGen.emitirOpId("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador());
+        UtGen.emitirOp("RDI", "leer el valor para el id "+n.getIdentificador());
+        if(UtGen.debug)	UtGen.emitirComentario("<- leer");
     }
     
     private static void generarEscribir(NodoBase nodo){
         NodoEscribir n = (NodoEscribir)nodo;
         if(UtGen.debug)	UtGen.emitirComentario("-> escribir");
-        /* Genero el codigo de la expresion que va a ser escrita en pantalla */
         generar(n.getExpresion());
-        /* Ahora genero la salida */
-        UtGen.emitirRO("OUT", UtGen.AC, 0, 0, "escribir: genero la salida de la expresion");
+        UtGen.emitirOp("WRI", "escribir valor del tope");
         if(UtGen.debug)	UtGen.emitirComentario("<- escribir");
     }
     

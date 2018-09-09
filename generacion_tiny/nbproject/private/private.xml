@@ -3,21 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoIf.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoEscribir.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoLeer.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoRepeat.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/lexico.flex</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/Tiny/sym.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoAsignacion.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/tipoOp.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoIdentificador.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/sintactico.cup</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoBase.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoValor.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/Util.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/ast/NodoOperacion.java</file>
-            <file>file:/C:/Users/fmlia/Desktop/UNET%20Temporal/Compiladores/proyecto/compiler/generacion_tiny/src/Tiny/Generador.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoOperacion.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoEscribir.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/Generador.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/tipoOp.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoIf.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoRepeat.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoLeer.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoIdentificador.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/TablaSimbolos.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/Util.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoAsignacion.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoValor.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/UtGen.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/RegistroSimbolo.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/ast/NodoBase.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/sym.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/Scanner.java</file>
+            <file>file:/C:/xampp/htdocs/compiler/generacion_tiny/src/Tiny/parser.java</file>
         </group>
     </open-files>
 </project-private>

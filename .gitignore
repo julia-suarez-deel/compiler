@@ -1,3 +1,5 @@
 **/build/
 **/dist/
 /generacion_tiny/dist/
+/generacion_tiny/nbproject/private.properties
+/generacion_tiny/nbproject/private.xml
