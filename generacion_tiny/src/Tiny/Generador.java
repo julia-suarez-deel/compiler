@@ -1,10 +1,15 @@
 package Tiny;
 
 import ast.*;
+import java.util.Stack;
 
 public class Generador {
     private static int desplazamientoTmp = 0;
     private static TablaSimbolos tablaSimbolos = null;
+    /*Contador de labels*/
+    private static int LB = 0; 
+    private static Stack st_fjp = new Stack();
+    private static Stack st_ujp = new Stack();
     
     public static void setTablaSimbolos(TablaSimbolos tabla){
         tablaSimbolos = tabla;
@@ -55,32 +60,33 @@ public class Generador {
     }else
         System.out.println("���ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
-
+    
     private static void generarIf(NodoBase nodo){
         NodoIf n = (NodoIf)nodo;
-        int localidadSaltoElse,localidadSaltoEnd,localidadActual;
+        String lbElse, lbIf;
         if(UtGen.debug)	UtGen.emitirComentario("-> if");
-        /*Genero el codigo para la parte de prueba del IF*/
         generar(n.getPrueba());
-        localidadSaltoElse = UtGen.emitirSalto(1);
-        UtGen.emitirComentario("If: el salto hacia el else debe estar aqui");
         /*Genero la parte THEN*/
+        lbElse=generarLabel();
+        UtGen.emitirOpId("FJP", lbElse, "if false: jmp hacia else");
+        /*Inserto label en la pila fjp*/
+        st_fjp.push(lbElse);
         generar(n.getParteThen());
-        localidadSaltoEnd = UtGen.emitirSalto(1);
-        UtGen.emitirComentario("If: el salto hacia el final debe estar aqui");
-        localidadActual = UtGen.emitirSalto(0);
-        UtGen.cargarRespaldo(localidadSaltoElse);
-        //UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "if: jmp hacia else");
-        UtGen.restaurarRespaldo();
         /*Genero la parte ELSE*/
         if(n.getParteElse()!=null){
-            generar(n.getParteElse());
-            localidadActual = UtGen.emitirSalto(0);
-            UtGen.cargarRespaldo(localidadSaltoEnd);
-        //    UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
-            UtGen.restaurarRespaldo();
+            lbIf=generarLabel(); 
+            UtGen.emitirOpId("UJP", lbIf, "definicio label ujp");
+            /*Inserto label en la pila ujp*/
+            st_ujp.push(lbIf);
         }
-        
+        /*Saco valor del ultimo label que salta hacia el else*/
+        lbElse = (String)st_fjp.pop();
+        UtGen.emitirOpId("LAB", lbElse, "definicio label jmp");
+        if(n.getParteElse()!=null){
+            generar(n.getParteElse());
+            lbIf = (String)st_ujp.pop();
+            UtGen.emitirOpId("LAB", lbIf, "definicio label ujp");
+        }
         if(UtGen.debug)	UtGen.emitirComentario("<- if");
     }
     
@@ -168,4 +174,8 @@ public class Generador {
         UtGen.emitirComentario("Codigo P:");
     }
 
+    public static String generarLabel() {
+        LB++;
+        return "LB"+LB;
+    }
 }
