@@ -206,7 +206,12 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
 		ts.cargarTabla(root);
 		ts.ImprimirClaves();
 		Tiny.Generador.setTablaSimbolos(ts);
-		Tiny.Generador.generarCodigoObjeto(root);
+                if(args.length==0)
+                    Tiny.Generador.generarCodigoObjeto(root, null, null);
+                else if (args.length==1)
+                    Tiny.Generador.generarCodigoObjeto(root, args[0], null);
+                else
+                    Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
 	}
 
 

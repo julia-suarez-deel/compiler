@@ -1,5 +1,10 @@
 package Tiny;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /* La idea principal de esta clase (Utilidades de Generacion)es ayudar a emitir las 
  * sentencias en el asembler de la Tiny Machine (TM), haciendo mas sencilla la 
  * implementacion de un generador de codigo objeto para la misma.
@@ -33,19 +38,21 @@ public class UtGen {
 	/* Defino al registro[1] como el acumulador 2 */
 	public static int  AC1=1;
 	
-	
-	public static void emitirComentario(String c){
-		if(debug) System.out.println("*      "+c);
+	/* Emite comentario */
+	public static void emitirComentario(String c, BufferedWriter bw){
+		if(debug){
+                    UtGen.writeIns("*      "+c+"\n", bw);
+                }
 	}
 
-	
-	public static void emitirRO(String op, int r, int s, int t, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+s+","+t );
-		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
-		if(instruccionMasAlta < instruccionActual) 
-			instruccionMasAlta = instruccionActual;
+	/* Ya no se usa */
+	public static void emitirRO(String op, int r, int s, int t, String c, BufferedWriter bw){
+            UtGen.writeIns((instruccionActual++)+":       "+op+"       "+r+","+s+","+t, bw);
+            if(debug)
+                UtGen.writeIns("      "+c, bw);
+            UtGen.writeIns("\n", bw);
+            if(instruccionMasAlta < instruccionActual) 
+                    instruccionMasAlta = instruccionActual;
 	}
         
         /* Este procedimiento
@@ -55,11 +62,11 @@ public class UtGen {
          * c= comentario
 	 */
 	
-	public static void emitirConstante(String op, int p, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+p); 
+	public static void emitirInstruccion(String op, int p, String c, BufferedWriter bw){
+                UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
+                    UtGen.writeIns("        "+c, bw);
+		UtGen.writeIns("\n", bw);
 	}
         
         /* Este procedimiento
@@ -69,11 +76,11 @@ public class UtGen {
          * c= comentario
 	 */
         
-        public static void emitirOpId(String op, String p, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+p);
+        public static void emitirInstruccion(String op, String p, String c, BufferedWriter bw){
+                UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");	
+                    UtGen.writeIns("        "+c, bw);
+		UtGen.writeIns("\n", bw);
 	}
         
         /* Este procedimiento
@@ -82,18 +89,19 @@ public class UtGen {
          * c= comentario
 	 */
         
-         public static void emitirOp(String op, String c){
-		System.out.print((instruccionActual++)+":       "+op); 
-		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");	
+         public static void emitirInstruccion(String op, String c, BufferedWriter bw){
+            UtGen.writeIns(op, bw);
+            if(debug)
+                UtGen.writeIns("            "+c, bw);
+            UtGen.writeIns("\n", bw);	
 	}
-         
-	public static void emitirRM(String op, int r, int d, int s, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+d+"("+s+")" );
+        
+        /* Ya no se usa */
+	public static void emitirRM(String op, int r, int d, int s, String c, BufferedWriter bw){
+		UtGen.writeIns((instruccionActual++)+":       "+op+"       "+r+","+d+"("+s+")" , bw);
 		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
+			UtGen.writeIns("      "+c, bw);
+		UtGen.writeIns("\n", bw);
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
 	}
@@ -112,9 +120,9 @@ public class UtGen {
 	/* La funcion cargar respaldo, cambia la direccion de emision de codigo actual, 
 	 * a una localidad que haya sido obviada (saltada) cuando se emitio un salto.  
 	 */	
-	public static void cargarRespaldo( int direccion ){
+	public static void cargarRespaldo( int direccion, BufferedWriter bw){
 		if(instruccionActual > instruccionMasAlta)
-			emitirComentario("BUG encontrado en la funcion cargarRespaldo");
+			emitirComentario("BUG encontrado en la funcion cargarRespaldo", bw);
 		instruccionActual = direccion;
 	}
 	
@@ -135,13 +143,26 @@ public class UtGen {
 	 * a = la localidad absoluta en memoria
 	 * c = comentario a emitir en modo debug
 	 */
-	public static void emitirRM_Abs(String op, int r, int a, String c){
-		System.out.print((instruccionActual)+":       "+op+"       "+r+","+(a-(instruccionActual+1))+"("+PC+")" );
+	public static void emitirRM_Abs(String op, int r, int a, String c, BufferedWriter bw){
+		UtGen.writeIns((instruccionActual)+":       "+op+"       "+r+","+(a-(instruccionActual+1))+"("+PC+")", bw);
 		++instruccionActual;
 		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
+			UtGen.writeIns("      "+c, bw);
+		UtGen.writeIns("\n", bw);
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
-	}	
+	}
+        
+        public static void writeIns(String cadenaSalida, BufferedWriter bw){
+            if(bw != null){
+                try {
+                    bw.write(cadenaSalida);
+                } catch (IOException ex) {
+                    Logger.getLogger(UtGen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+                System.out.print(cadenaSalida);
+            }
+        }
 }
