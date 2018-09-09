@@ -27,7 +27,7 @@ public class Util {
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
 		    	imprimirNodo(raiz);
-		    else System.out.println("Tipo de nodo desconocido");;
+		    else System.out.println("Tipo de nodo desconocido");
 		    
 		    /* Hago el recorrido recursivo */
 		    if (raiz instanceof  NodoIf){
