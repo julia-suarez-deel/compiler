@@ -1,6 +1,10 @@
 package Tiny;
 
 import ast.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Stack;
 
 public class Generador {
@@ -89,20 +93,20 @@ public class Generador {
         generar(n.getPrueba());
         /*Genero la parte THEN*/
         lbElse=generarLabel();
-        UtGen.emitirOpId("FJP", lbElse, "if false: jmp hacia else");
+        UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
         /*Inserto label en la pila fjp*/
         st_fjp.push(lbElse);
         generar(n.getParteThen());
         /*Genero la parte ELSE*/
         if(n.getParteElse()!=null){
             lbIf=generarLabel(); 
-            UtGen.emitirOpId("UJP", lbIf, "definicio label ujp");
+            UtGen.emitirInstruccion("UJP", lbIf, "definicio label ujp", bw);
             /*Inserto label en la pila ujp*/
             st_ujp.push(lbIf);
         }
         /*Saco valor del ultimo label que salta hacia el else*/
         lbElse = (String)st_fjp.pop();
-        UtGen.emitirOpId("LAB", lbElse, "definicio label jmp");
+        UtGen.emitirInstruccion("LAB", lbElse, "definicio label jmp", bw);
         if(n.getParteElse()!=null){
             generar(n.getParteElse());
             lbIf = (String)st_ujp.pop();
