@@ -4,19 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
     <title>Virtual Machine</title>
 </head>
 <body>
-    <h1>VM</h1>
     <div id="main" class="container">
+        <br>
+        <h3>Virtual machine</h3>
+        <br>
         <div class="row">
+            <div class="col-md-6">
+                <table id="instructions-container" class="table">
+                    <thead>
+                        <tr class="bg-info text-light">
+                            <th>#</th>
+                            <th>Programa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
+                    </tbody>
+                </table>
+            </div>
+            <div id="toolbar-container" class="col-md-6">
+
+            </div>
         </div>
     </div>
     <script src="js/jquery.min.js"></script>
+    <script src="js/fontawesome.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/mustache.min.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/ISA.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 </html>
