@@ -42,6 +42,7 @@ public class UtGen {
 	public static void emitirComentario(String c, BufferedWriter bw){
 		if(debug){
                     UtGen.writeIns("*      "+c+"\n", bw);
+                    UtGen.writeIns("true", bw);
                 }
 	}
 
@@ -66,7 +67,7 @@ public class UtGen {
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
                     UtGen.writeIns("        "+c, bw);
-		UtGen.writeIns("\n", bw);
+		UtGen.writeIns("true", bw);
 	}
         
         /* Este procedimiento
@@ -80,7 +81,7 @@ public class UtGen {
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
                     UtGen.writeIns("        "+c, bw);
-		UtGen.writeIns("\n", bw);
+		UtGen.writeIns("true", bw);
 	}
         
         /* Este procedimiento
@@ -93,7 +94,7 @@ public class UtGen {
             UtGen.writeIns(op, bw);
             if(debug)
                 UtGen.writeIns("            "+c, bw);
-            UtGen.writeIns("\n", bw);	
+            UtGen.writeIns("true", bw);	
 	}
         
         /* Ya no se usa */
@@ -156,7 +157,11 @@ public class UtGen {
         public static void writeIns(String cadenaSalida, BufferedWriter bw){
             if(bw != null){
                 try {
-                    bw.write(cadenaSalida);
+                    if(cadenaSalida.equals("true"))
+                        bw.newLine();
+                    else
+                        bw.write(cadenaSalida);
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(UtGen.class.getName()).log(Level.SEVERE, null, ex);
                 }
