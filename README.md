@@ -5,4 +5,4 @@ Tiny Code into P Code.
 ## Virtual machine
 Virtual machine made in JavaScript/HTML/CSS of a stack machine
 that executes P Code.
-[VM](vm.gif)
+![VM](vm.gif)
