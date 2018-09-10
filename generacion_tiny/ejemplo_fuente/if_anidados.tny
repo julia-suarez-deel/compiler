@@ -1,0 +1,12 @@
+if z<x+3  then 
+  if z=0  then
+    z:=8;
+    if z=8 then
+      write x
+    else
+      read x
+    end
+  end
+else
+  z:=0
+end

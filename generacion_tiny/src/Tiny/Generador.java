@@ -86,11 +86,13 @@ public class Generador {
         System.out.println("���ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
     
-    private static void generarIf(NodoBase nodo){
+    private static void generarIfConPila(NodoBase nodo){
         NodoIf n = (NodoIf)nodo;
         String lbElse, lbIf;
         if(UtGen.debug)	UtGen.emitirComentario("-> if", bw);
         generar(n.getPrueba());
+        
+        
         /*Genero la parte THEN*/
         lbElse=generarLabel();
         UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
@@ -113,6 +115,35 @@ public class Generador {
             UtGen.emitirInstruccion("LAB", lbIf, "definicio label ujp", bw);
         }
         if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
+        
+        
+    }
+    
+    private static void generarIf(NodoBase nodo){
+        NodoIf n = (NodoIf)nodo;
+        String lbElse, lbFalse=null;
+        if(UtGen.debug)	UtGen.emitirComentario("-> if", bw);
+        
+        generar(n.getPrueba());
+        
+        lbElse = generarLabel();
+        UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
+        
+        generar(n.getParteThen());
+        
+        if(n.getParteElse()!=null){
+            lbFalse=generarLabel(); 
+            UtGen.emitirInstruccion("UJP", lbFalse, "definicion label ujp", bw);
+        }
+        
+        UtGen.emitirInstruccion("LAB", lbElse, "definicion label jmp", bw);
+        
+        if(lbFalse!=null){
+            generar(n.getParteElse());
+            UtGen.emitirInstruccion("LAB", lbFalse, "definicio label ujp", bw);
+        }
+        
+        if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
     }
     
     private static void generarRepeat(NodoBase nodo){
@@ -134,16 +165,17 @@ public class Generador {
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
-        int direccion;
-        UtGen.emitirInstruccion("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador(), bw);
+        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         generar(n.getExpresion());
         UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+n.getIdentificador(), bw);
     }
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
+        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
-        UtGen.emitirInstruccion("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador(), bw);
+        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getIdentificador(), bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
     }
@@ -163,8 +195,9 @@ public class Generador {
     
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
-        if(UtGen.debug)	UtGen.emitirComentario("true", bw);
-        UtGen.emitirInstruccion("LOD", n.getNombre() , "cargar valor de identificador: "+n.getNombre(), bw);
+        int direccion = tablaSimbolos.getDireccion(n.getNombre());
+        //if(UtGen.debug)	UtGen.emitirComentario("true", bw);
+        UtGen.emitirInstruccion("LOD", direccion , "cargar valor de identificador: "+n.getNombre(), bw);
        
     }
 
