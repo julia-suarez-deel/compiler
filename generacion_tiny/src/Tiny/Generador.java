@@ -86,11 +86,13 @@ public class Generador {
         System.out.println("���ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
     
-    private static void generarIf(NodoBase nodo){
+    private static void generarIfConPila(NodoBase nodo){
         NodoIf n = (NodoIf)nodo;
         String lbElse, lbIf;
         if(UtGen.debug)	UtGen.emitirComentario("-> if", bw);
         generar(n.getPrueba());
+        
+        
         /*Genero la parte THEN*/
         lbElse=generarLabel();
         UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
@@ -112,6 +114,35 @@ public class Generador {
             lbIf = (String)st_ujp.pop();
             UtGen.emitirInstruccion("LAB", lbIf, "definicio label ujp", bw);
         }
+        if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
+        
+        
+    }
+    
+    private static void generarIf(NodoBase nodo){
+        NodoIf n = (NodoIf)nodo;
+        String lbElse, lbFalse=null;
+        if(UtGen.debug)	UtGen.emitirComentario("-> if", bw);
+        
+        generar(n.getPrueba());
+        
+        lbElse = generarLabel();
+        UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
+        
+        generar(n.getParteThen());
+        
+        if(n.getParteElse()!=null){
+            lbFalse=generarLabel(); 
+            UtGen.emitirInstruccion("UJP", lbFalse, "definicion label ujp", bw);
+        }
+        
+        UtGen.emitirInstruccion("LAB", lbElse, "definicion label jmp", bw);
+        
+        if(lbFalse!=null){
+            generar(n.getParteElse());
+            UtGen.emitirInstruccion("LAB", lbFalse, "definicio label ujp", bw);
+        }
+        
         if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
     }
     
