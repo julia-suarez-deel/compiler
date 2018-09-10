@@ -163,7 +163,7 @@ public class Generador {
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
-        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getIdentificador()).getNombre());
         UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         generar(n.getExpresion());
         UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+n.getIdentificador(), bw);
@@ -171,7 +171,7 @@ public class Generador {
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
-        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getIdentificador()).getNombre());
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
         UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getIdentificador(), bw);
