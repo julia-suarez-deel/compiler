@@ -154,13 +154,13 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.
                                                         :}
 ;
 
-assign_stmt ::= id:variable {: if(debug) System.out.println("\t regla 6 parte del medio"); 
+assign_stmt ::= id:id {: if(debug) System.out.println("\t regla 6 parte del medio"); 
                             /*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
                             String nombre = variable.getName();*/
                             :}
             ASSIGN exp:ex   {: if(debug) System.out.println("\t regla 6 parte final");
                                 if(variable!=null)
-                                    RESULT = new NodoAsignacion(variable.toString(),ex);
+                                    RESULT = new NodoAsignacion(id,ex);
                                 else{
                                     RESULT = null;
                                     System.out.println("Ocurrio error en cup # 0001");
@@ -229,14 +229,8 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                             System.out.println("Ocurrio error en cup # 0005");
                         }
                     :}
-        | id:variable   {: if(debug) System.out.println("\t regla 12c"); 
-                            if(variable!=null){
-                                System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
-                                RESULT= new NodoIdentificador(variable.toString());		
-                            }else{
-                                RESULT = null;
-                                System.out.println("Ocurrio error en cup # 0005");
-                            }
+        | id:id   {: if(debug) System.out.println("\t regla 12c"); 
+                            RESULT = id;
                         :}
         | error {: if(debug) System.out.println("\t regla 12d"); 
                     System.out.println("Ocurrio error en cup # 0003");
@@ -244,10 +238,10 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                 :}
 ;
 
-id ::= ID LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a"); 
-                                    RESULT = ex;
-                                :}
-        | ID:variable {: if(debug) System.out.println("\t regla 13a"); 
+id ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a"); 
+                                RESULT = new NodoVector(id,ex);
+                            :}
+        | ID:variable {: if(debug) System.out.println("\t regla 13b"); 
                             if(variable!=null){
                                 System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
                                 RESULT= new NodoIdentificador(variable.toString());		
