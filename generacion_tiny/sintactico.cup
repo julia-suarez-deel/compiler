@@ -238,8 +238,13 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                 :}
 ;
 
-id ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a"); 
-                                RESULT = new NodoVector(id,ex);
+id ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a");
+                                if (id != null && ex != null)
+                                    RESULT = new NodoVector(id,ex);
+                                else{
+                                    RESULT = null;
+                                    System.out.println("Ocurrio error en cup # 0005");
+                                }
                             :}
         | ID:variable {: if(debug) System.out.println("\t regla 13b"); 
                             if(variable!=null){
