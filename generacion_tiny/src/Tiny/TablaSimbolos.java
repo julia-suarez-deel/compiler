@@ -22,6 +22,7 @@ public class TablaSimbolos {
 	}
 
 	public void cargarTabla(NodoBase raiz){
+            
             while (raiz != null) {
                 if (raiz instanceof NodoIdentificador){
                     InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
