@@ -40,8 +40,10 @@ public class TablaSimbolos {
                     cargarTabla(((NodoRepeat)raiz).getCuerpo());
                     cargarTabla(((NodoRepeat)raiz).getPrueba());
                 }
-                else if (raiz instanceof  NodoAsignacion)
+                else if (raiz instanceof  NodoAsignacion){
+                    InsertarSimbolo(((NodoAsignacion)raiz).getIdentificador(),-1);
                     cargarTabla(((NodoAsignacion)raiz).getExpresion());
+                }
                 else if (raiz instanceof  NodoEscribir)
                     cargarTabla(((NodoEscribir)raiz).getExpresion());
                 else if (raiz instanceof NodoOperacion){
@@ -71,10 +73,9 @@ public class TablaSimbolos {
 	
 	public void ImprimirClaves(){
 		System.out.println("*** Tabla de Simbolos ***");
-		for( Iterator <String>it = tabla.keySet().iterator(); it.hasNext();) { 
-            String s = (String)it.next();
-	    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
-		}
+                for (String s : tabla.keySet()) {
+                    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
+                }
 	}
 
 	public int getDireccion(String Clave){

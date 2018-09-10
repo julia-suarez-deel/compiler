@@ -42,7 +42,7 @@ public class UtGen {
 	public static void emitirComentario(String c, BufferedWriter bw){
 		if(debug){
                     UtGen.writeIns("*      "+c+"\n", bw);
-                    UtGen.writeIns("true", bw);
+					UtGen.writeIns("true", bw);
                 }
 	}
 
@@ -51,7 +51,7 @@ public class UtGen {
             UtGen.writeIns((instruccionActual++)+":       "+op+"       "+r+","+s+","+t, bw);
             if(debug)
                 UtGen.writeIns("      "+c, bw);
-            UtGen.writeIns("\n", bw);
+			UtGen.writeIns("\n", bw);
             if(instruccionMasAlta < instruccionActual) 
                     instruccionMasAlta = instruccionActual;
 	}

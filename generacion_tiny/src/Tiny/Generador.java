@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 public class Generador {
-    private static int desplazamientoTmp = 0;
     private static TablaSimbolos tablaSimbolos = null;
-    private static String archivo;
     private static BufferedWriter bw = null;
     /*Contador de labels*/
     private static int LB = 0; 
@@ -165,7 +163,6 @@ public class Generador {
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
-        int direccion;
         UtGen.emitirInstruccion("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         generar(n.getExpresion());
         UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+n.getIdentificador(), bw);
