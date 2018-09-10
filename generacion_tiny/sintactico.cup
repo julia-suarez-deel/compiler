@@ -62,7 +62,7 @@ terminal UNTIL;
 terminal READ;
 terminal WRITE;
 terminal String ID;
-terminal String NUM;
+terminal int NUM;
 terminal ASSIGN;
 terminal EQ;
 terminal LT;
@@ -222,12 +222,7 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                                 :}
         | NUM:valor {: if(debug) System.out.println("\t regla 12b"); 
                         System.out.println("Devolví un nodo número entero");
-                        if(valor!=null){
-                            RESULT= new NodoValor(valor.toString());
-                        }else{
-                            RESULT = null;
-                            System.out.println("Ocurrio error en cup # 0005");
-                        }
+                        RESULT= new NodoValor(valor);
                     :}
         | iden:id   {: if(debug) System.out.println("\t regla 12c"); 
                             RESULT = id;
@@ -240,7 +235,7 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
 
 iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a");
                                 if (id != null && ex != null)
-                                    RESULT = new NodoVector(id,ex);
+                                    RESULT = new NodoVector(new NodoIdentificador(id.toString()),ex);
                                 else{
                                     RESULT = null;
                                     System.out.println("Ocurrio error en cup # 0005");

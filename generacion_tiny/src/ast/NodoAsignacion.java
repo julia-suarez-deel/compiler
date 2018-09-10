@@ -16,7 +16,7 @@ public class NodoAsignacion extends NodoBase {
 		this.expresion = expresion;
 	}
 
-	public NodoAsignacion(NodoVector nodoVector,NodoBase expresion){
+	public NodoAsignacion(NodoBase nodoVector,NodoBase expresion){
 		super();
 		this.identificador = nodoVector;
 		this.expresion = expresion;
