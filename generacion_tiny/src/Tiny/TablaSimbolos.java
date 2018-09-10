@@ -74,10 +74,9 @@ public class TablaSimbolos {
 	
 	public void ImprimirClaves(){
 		System.out.println("*** Tabla de Simbolos ***");
-		for( Iterator <String>it = tabla.keySet().iterator(); it.hasNext();) { 
-            String s = (String)it.next();
-	    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
-		}
+                for (String s : tabla.keySet()) {
+                    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
+                }
 	}
 
 	public int getDireccion(String Clave){

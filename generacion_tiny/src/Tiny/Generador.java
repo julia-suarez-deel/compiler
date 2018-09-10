@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 public class Generador {
-    private static int desplazamientoTmp = 0;
     private static TablaSimbolos tablaSimbolos = null;
-    private static String archivo;
     private static BufferedWriter bw = null;
     /*Contador de labels*/
     private static int LB = 0; 
