@@ -10,6 +10,7 @@ import ast.NodoIdentificador;
 import ast.NodoIf;
 import ast.NodoOperacion;
 import ast.NodoRepeat;
+import ast.NodoVector;
 
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
@@ -27,14 +28,18 @@ public class TablaSimbolos {
                 if (raiz instanceof NodoIdentificador){
                     InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
                     //TODO: Añadir el numero de linea y localidad de memoria correcta
-                }
+				}
 
-                /* Hago el recorrido recursivo */
+				/* Hago el recorrido recursivo */
+				if(raiz instanceof NodoVector){
+					cargarTabla(((NodoVector)raiz).getIdentificador());
+					cargarTabla(((NodoVector)raiz).getExpresion());
+				}
                 if (raiz instanceof  NodoIf){
                     cargarTabla(((NodoIf)raiz).getPrueba());
                     cargarTabla(((NodoIf)raiz).getParteThen());
                     if(((NodoIf)raiz).getParteElse()!=null){
-                            cargarTabla(((NodoIf)raiz).getParteElse());
+                        cargarTabla(((NodoIf)raiz).getParteElse());
                     }
                 }
                 else if (raiz instanceof  NodoRepeat){
