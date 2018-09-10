@@ -62,7 +62,7 @@ terminal UNTIL;
 terminal READ;
 terminal WRITE;
 terminal String ID;
-terminal int NUM;
+terminal String NUM;
 terminal ASSIGN;
 terminal EQ;
 terminal LT;
@@ -222,7 +222,7 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                                 :}
         | NUM:valor {: if(debug) System.out.println("\t regla 12b"); 
                         System.out.println("Devolví un nodo número entero");
-                        RESULT= new NodoValor(valor);
+                        RESULT= new NodoValor(Integer.parseInt(valor));
                     :}
         | iden:id   {: if(debug) System.out.println("\t regla 12c"); 
                             RESULT = id;
