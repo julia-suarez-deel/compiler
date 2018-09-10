@@ -1,8 +1,8 @@
-if(x<8)
+x:=0;
+read x;
+if(x=1)
 then 
-	z:=1;
-end
-if(z>1)
-then	
-	x:1;
+	write x
+else
+	x:=1
 end

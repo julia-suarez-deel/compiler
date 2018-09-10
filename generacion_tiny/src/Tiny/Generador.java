@@ -131,16 +131,17 @@ public class Generador {
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
-        int direccion;
-        UtGen.emitirInstruccion("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador(), bw);
+        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         generar(n.getExpresion());
         UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+n.getIdentificador(), bw);
     }
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
+        int direccion = tablaSimbolos.getDireccion(n.getIdentificador());
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
-        UtGen.emitirInstruccion("LDA", n.getIdentificador() , "cargar direccion de identificador: "+n.getIdentificador(), bw);
+        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
         UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getIdentificador(), bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
     }
@@ -160,8 +161,9 @@ public class Generador {
     
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
-        if(UtGen.debug)	UtGen.emitirComentario("true", bw);
-        UtGen.emitirInstruccion("LOD", n.getNombre() , "cargar valor de identificador: "+n.getNombre(), bw);
+        int direccion = tablaSimbolos.getDireccion(n.getNombre());
+        //if(UtGen.debug)	UtGen.emitirComentario("true", bw);
+        UtGen.emitirInstruccion("LOD", direccion , "cargar valor de identificador: "+n.getNombre(), bw);
        
     }
 

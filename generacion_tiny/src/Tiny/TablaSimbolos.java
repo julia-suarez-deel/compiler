@@ -22,6 +22,7 @@ public class TablaSimbolos {
 	}
 
 	public void cargarTabla(NodoBase raiz){
+            
             while (raiz != null) {
                 if (raiz instanceof NodoIdentificador){
                     InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
@@ -40,8 +41,10 @@ public class TablaSimbolos {
                     cargarTabla(((NodoRepeat)raiz).getCuerpo());
                     cargarTabla(((NodoRepeat)raiz).getPrueba());
                 }
-                else if (raiz instanceof  NodoAsignacion)
+                else if (raiz instanceof  NodoAsignacion){
+                    InsertarSimbolo(((NodoAsignacion)raiz).getIdentificador(),-1);
                     cargarTabla(((NodoAsignacion)raiz).getExpresion());
+                }
                 else if (raiz instanceof  NodoEscribir)
                     cargarTabla(((NodoEscribir)raiz).getExpresion());
                 else if (raiz instanceof NodoOperacion){
