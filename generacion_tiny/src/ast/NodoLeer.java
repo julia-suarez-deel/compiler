@@ -8,6 +8,11 @@ public class NodoLeer extends NodoBase {
 		this.identificador = new NodoIdentificador(identificador);
 	}
 
+	public NodoLeer(NodoVector identificador){
+		super();
+		this.identificador = identificador;
+	}
+
 	public NodoLeer() {
 		super();
 		identificador=null;
