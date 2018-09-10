@@ -31,11 +31,10 @@ public class TablaSimbolos {
 				}
 
 				/* Hago el recorrido recursivo */
-				if(raiz instanceof NodoVector){
+				else if(raiz instanceof NodoVector){
 					cargarTabla(((NodoVector)raiz).getIdentificador());
 					cargarTabla(((NodoVector)raiz).getExpresion());
-				}
-                if (raiz instanceof  NodoIf){
+				}else if (raiz instanceof  NodoIf){
                     cargarTabla(((NodoIf)raiz).getPrueba());
                     cargarTabla(((NodoIf)raiz).getParteThen());
                     if(((NodoIf)raiz).getParteElse()!=null){
