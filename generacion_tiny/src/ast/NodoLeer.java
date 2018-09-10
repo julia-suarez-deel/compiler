@@ -1,29 +1,24 @@
 package ast;
 
 public class NodoLeer extends NodoBase {
-	private NodoBase identificador;
+	private NodoBase variable;
 
-	public NodoLeer(String identificador) {
+	public NodoLeer(NodoBase variable){
 		super();
-		this.identificador = new NodoIdentificador(identificador);
-	}
-
-	public NodoLeer(NodoBase identificador){
-		super();
-		this.identificador = identificador;
+		this.variable = variable;
 	}
 
 	public NodoLeer() {
 		super();
-		identificador=null;
+		variable=null;
 	}
 
-	public NodoBase getIdentificador() {
-		return identificador;
+	public NodoBase getVariable() {
+		return variable;
 	}
 
-	public void setExpresion(NodoBase identificador) {
-		this.identificador = identificador;
+	public void setVariable(NodoBase variable) {
+		this.variable = variable;
 	}
 
 }

@@ -42,7 +42,7 @@ public class TablaSimbolos {
                     cargarTabla(((NodoRepeat)raiz).getPrueba());
                 }
                 else if (raiz instanceof  NodoAsignacion){
-                    cargarTabla(((NodoAsignacion)raiz).getIdentificador());
+                    cargarTabla(((NodoAsignacion)raiz).getVariable());
                     cargarTabla(((NodoAsignacion)raiz).getExpresion());
                 }
                 else if (raiz instanceof  NodoEscribir)
