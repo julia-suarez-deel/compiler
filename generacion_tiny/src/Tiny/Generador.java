@@ -160,6 +160,7 @@ public class Generador {
     
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
+        if(UtGen.debug)	UtGen.emitirComentario("true", bw);
         UtGen.emitirInstruccion("LOD", n.getNombre() , "cargar valor de identificador: "+n.getNombre(), bw);
        
     }
