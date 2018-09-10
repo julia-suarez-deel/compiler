@@ -117,15 +117,18 @@ public class Generador {
     
     private static void generarRepeat(NodoBase nodo){
         NodoRepeat n = (NodoRepeat)nodo;
-        int localidadSaltoInicio;
-        if(UtGen.debug)	UtGen.emitirComentario("-> repeat", bw);
-            localidadSaltoInicio = UtGen.emitirSalto(0);
-            UtGen.emitirComentario("repeat: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui", bw);
-            /* Genero el cuerpo del repeat */
-            generar(n.getCuerpo());
-            /* Genero el codigo de la prueba del repeat */
-            generar(n.getPrueba());
-            UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo", bw);
+        String localidadSaltoInicio;
+        if(UtGen.debug)	UtGen.emitirComentario("-> Repeat", bw);
+        
+        localidadSaltoInicio = generarLabel();
+        /* Genero el label */
+        UtGen.emitirInstruccion("LAB", localidadSaltoInicio, "Definicion label para repeat", bw);
+        /* Genero el cuerpo del repeat */
+        generar(n.getCuerpo());
+        /* Genero el codigo de la prueba del repeat */
+        generar(n.getPrueba());
+        UtGen.emitirInstruccion("FJP", localidadSaltoInicio, "repeat: Salto hacia el inicio del cuerpo", bw);
+            
         if(UtGen.debug)	UtGen.emitirComentario("<- repeat", bw);
     }			
     
