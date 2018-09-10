@@ -89,7 +89,7 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
-non terminal NodoBase id;
+non terminal NodoBase iden;
 
 /* Precedencia de operadores NO USAR FALLA  
 precedence left PLUS;
@@ -154,12 +154,12 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.
                                                         :}
 ;
 
-assign_stmt ::= id:id {: if(debug) System.out.println("\t regla 6 parte del medio"); 
+assign_stmt ::= iden:id {: if(debug) System.out.println("\t regla 6 parte del medio"); 
                             /*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
                             String nombre = variable.getName();*/
-                            :}
+                        :}
             ASSIGN exp:ex   {: if(debug) System.out.println("\t regla 6 parte final");
-                                if(variable!=null)
+                                if(id!=null)
                                     RESULT = new NodoAsignacion(id,ex);
                                 else{
                                     RESULT = null;
@@ -168,10 +168,10 @@ assign_stmt ::= id:id {: if(debug) System.out.println("\t regla 6 parte del medi
                             :}
 ;
 
-read_stmt ::= READ id:variable  {: if(debug) System.out.println("\t regla 7"); 
+read_stmt ::= READ iden:id  {: if(debug) System.out.println("\t regla 7"); 
                                     System.out.println("Leyendo Variable");
-                                    if(variable!=null)
-                                        RESULT = new NodoLeer(variable.toString());
+                                    if(id!=null)
+                                        RESULT = new NodoLeer(id);
                                     else{
                                         RESULT = null;
                                         System.out.println("Ocurrio error en cup # 0002");
@@ -229,7 +229,7 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                             System.out.println("Ocurrio error en cup # 0005");
                         }
                     :}
-        | id:id   {: if(debug) System.out.println("\t regla 12c"); 
+        | iden:id   {: if(debug) System.out.println("\t regla 12c"); 
                             RESULT = id;
                         :}
         | error {: if(debug) System.out.println("\t regla 12d"); 
@@ -238,7 +238,7 @@ factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a");
                 :}
 ;
 
-id ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a");
+iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a");
                                 if (id != null && ex != null)
                                     RESULT = new NodoVector(id,ex);
                                 else{
@@ -255,3 +255,4 @@ id ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t reg
                                 System.out.println("Ocurrio error en cup # 0005");
                             }
                         :}
+;
