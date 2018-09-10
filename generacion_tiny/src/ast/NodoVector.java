@@ -16,6 +16,12 @@ public class NodoVector extends NodoBase {
 		this.expresion = expresion;
 	}
 
+	public NodoVector(NodoBase identificador, NodoBase expresion) {
+		super();
+		this.identificador = identificador;
+		this.expresion = expresion;
+	}
+
 	public NodoBase getIdentificador() {
 		return identificador;
 	}

@@ -8,7 +8,7 @@ public class NodoLeer extends NodoBase {
 		this.identificador = new NodoIdentificador(identificador);
 	}
 
-	public NodoLeer(NodoVector identificador){
+	public NodoLeer(NodoBase identificador){
 		super();
 		this.identificador = identificador;
 	}
@@ -18,7 +18,7 @@ public class NodoLeer extends NodoBase {
 		identificador=null;
 	}
 
-	public String getIdentificador() {
+	public NodoBase getIdentificador() {
 		return identificador;
 	}
 
