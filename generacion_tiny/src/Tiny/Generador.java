@@ -171,10 +171,14 @@ public class Generador {
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
-        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getIdentificador()).getNombre());
+        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getVariable()).getNombre());
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
-        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getIdentificador(), bw);
-        UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getIdentificador(), bw);
+        if(n.getVariable() instanceof NodoIdentificador){
+            UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getVariable().getNombre(), bw);
+            UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getVariable().getNombre(), bw);
+        }else{
+            generar(n.getVariable());
+        }
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
     }
     
