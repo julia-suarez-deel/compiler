@@ -78,8 +78,6 @@ public class Generador {
             generarVector(nodo);
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
-        }else if (nodo instanceof NodoFuncion){
-            generarFuncion(nodo);
         }else if (nodo instanceof NodoOperacion){
             generarOperacion(nodo, false);
         }else{
@@ -175,11 +173,7 @@ public class Generador {
             NodoIdentificador variable = (NodoIdentificador)n.getVariable();
             int direccion = tablaSimbolos.getDireccion(variable.getNombre());
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+variable.getNombre(), bw);
-            if(n.getExpresion() instanceof NodoFuncion){
-                generar((NodoFuncion)n.getExpresion());                
-            }else{
-                generar(n.getExpresion());
-            }
+            generar(n.getExpresion());
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+variable.getNombre(), bw);
         }
         else if(n.getVariable()  instanceof  NodoVector){
@@ -233,23 +227,6 @@ public class Generador {
         if(UtGen.debug)	UtGen.emitirComentario("<- escribir", bw);
     }
 
-    private static void generarFuncion(NodoBase nodo){
-        NodoFuncion n = (NodoFuncion)nodo;
-        if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
-        if(n.getArgumentos() != null){
-            UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
-            generar(n.getArgumentos());
-            UtGen.emitirInstruccion("CUP ", ((NodoIdentificador)n.getIdentificador()).getNombre(), " inicio de lista de argumentos", bw);
-        }
-        //generar(n.getExpresion());
-        if(UtGen.debug)	UtGen.emitirComentario("<- escribir", bw);
-    }
-    
-    private static void generarListaArgs(NodoBase nodo){
-        NodoListaArgs n = (NodoListaArgs)nodo;
-        generar(n.getVariable());
-    }
-
     private static void generarValor(NodoBase nodo){
         NodoValor n = (NodoValor)nodo;
         UtGen.emitirInstruccion("LDC", n.getValor(), "cargar constante: "+n.getValor(), bw);
@@ -282,13 +259,29 @@ public class Generador {
     private static void generarFuncion(NodoBase nodo){
         NodoFuncion n= (NodoFuncion)nodo;
         String nombre;
-        if (n.getRetorno()!=null) {
+        if (n.getRetorno()==null){
+            nombre = ((NodoIdentificador)n.getIdentificador()).getNombre();
+            if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
+            if(n.getArgumentos() != null){
+                UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
+                generar(n.getArgumentos());
+                UtGen.emitirInstruccion("CUP ", nombre, " inicio de lista de argumentos", bw);
+            }else{
+                UtGen.emitirInstruccion("CUP ", nombre, " llamada a funcion: "+nombre, bw);
+            }
+            if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
+        }else if (n.getRetorno()!=null) {
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
             generar(n.getCuerpo());
             UtGen.emitirComentario("RET", bw);
         }
     
+    }
+
+    private static void generarListaArgs(NodoBase nodo){
+        NodoListaArgs n = (NodoListaArgs)nodo;
+        generar(n.getVariable());
     }
 
     private static void generarOperacion(NodoBase nodo, boolean vector){

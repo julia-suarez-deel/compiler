@@ -3,7 +3,7 @@
   computes factorial
 }
 read x; { input an integer }
-g := hola ( 3 , 5 );
+g := hola ( x , y );
 if 0 < x then { don't compute if x <= 0 }
   fact := 1;
   repeat
