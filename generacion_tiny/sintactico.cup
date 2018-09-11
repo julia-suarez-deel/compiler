@@ -98,6 +98,7 @@ non terminal NodoBase iden;
 non terminal NodoBase function_stmt;
 non terminal NodoBase arg_list;
 non terminal NodoBase call_function;
+non terminal NodoBase rule;
 
 /* Precedencia de operadores NO USAR FALLA  
 precedence left PLUS;
@@ -123,9 +124,9 @@ stmt_seq ::= stmt_seq:ini SEMI stmt:sent    {: if(debug) System.out.println("\t 
                                                     RESULT=sent;
                                                 }
                                             :}
-    | stmt:sent {: if(debug) System.out.println("\t regla 2b"); 
-                    RESULT=sent;
-                :}
+            | stmt:sent {: if(debug) System.out.println("\t regla 2b"); 
+                            RESULT=sent;
+                        :}
 ;
 
 s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {: if(debug) System.out.println("\t regla 2a"); 
@@ -140,54 +141,54 @@ s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {: if(debug) System.out.println(
                                                         RESULT=sent;
                                                     }
                                                 :}
-    | s_stmt:sent {: if(debug) System.out.println("\t regla 2b"); 
-                    RESULT=sent;
-                :}
+            | s_stmt:sent   {: if(debug) System.out.println("\t regla 2b"); 
+                                RESULT=sent;
+                            :}
 ;
 
 stmt ::= if_stmt:sif    {: if(debug) System.out.println("\t regla 3a"); 
                             RESULT=sif;
                         :}
-            | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
-                                    RESULT=srep;
-                                :}
-            | assign_stmt:sasi  {: if(debug) System.out.println("\t regla 3c"); 
-                                    RESULT=sasi;
-                                :}
-            | read_stmt:slec    {: if(debug) System.out.println("\t regla 3d"); 
-                                    RESULT=slec;
-                                :}
-            | write_stmt:sesc   {: if(debug) System.out.println("\t regla 3e"); 
-                                    RESULT=sesc;
-                                :}
-            | function_stmt:fnt {: if(debug) System.out.println("\t regla 3e"); 
-                                    RESULT=fnt;
-                                :}
-            | error {: if(debug) System.out.println("\t regla 3f"); 
-                        System.out.println("Ocurrio error en cup # 0004");
-                        RESULT=null;
-                    :}
+        | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
+                                RESULT=srep;
+                            :}
+        | assign_stmt:sasi  {: if(debug) System.out.println("\t regla 3c"); 
+                                RESULT=sasi;
+                            :}
+        | read_stmt:slec    {: if(debug) System.out.println("\t regla 3d"); 
+                                RESULT=slec;
+                            :}
+        | write_stmt:sesc   {: if(debug) System.out.println("\t regla 3e"); 
+                                RESULT=sesc;
+                            :}
+        | function_stmt:fnt {: if(debug) System.out.println("\t regla 3e"); 
+                                RESULT=fnt;
+                            :}
+        | error {: if(debug) System.out.println("\t regla 3f"); 
+                    System.out.println("Ocurrio error en cup # 0004");
+                    RESULT=null;
+                :}
 ;
 
-s_stmt ::= if_stmt:sif    {: if(debug) System.out.println("\t regla 3a"); 
+s_stmt ::= if_stmt:sif  {: if(debug) System.out.println("\t regla 3a"); 
                             RESULT=sif;
                         :}
-            | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
-                                    RESULT=srep;
-                                :}
-            | assign_stmt:sasi  {: if(debug) System.out.println("\t regla 3c"); 
-                                    RESULT=sasi;
-                                :}
-            | read_stmt:slec    {: if(debug) System.out.println("\t regla 3d"); 
-                                    RESULT=slec;
-                                :}
-            | write_stmt:sesc   {: if(debug) System.out.println("\t regla 3e"); 
-                                    RESULT=sesc;
-                                :}
-            | error {: if(debug) System.out.println("\t regla 3f"); 
-                        System.out.println("Ocurrio error en cup # 0004");
-                        RESULT=null;
-                    :}
+        | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
+                                RESULT=srep;
+                            :}
+        | assign_stmt:sasi  {: if(debug) System.out.println("\t regla 3c"); 
+                                RESULT=sasi;
+                            :}
+        | read_stmt:slec    {: if(debug) System.out.println("\t regla 3d"); 
+                                RESULT=slec;
+                            :}
+        | write_stmt:sesc   {: if(debug) System.out.println("\t regla 3e"); 
+                                RESULT=sesc;
+                            :}
+        | error {: if(debug) System.out.println("\t regla 3f"); 
+                    System.out.println("Ocurrio error en cup # 0004");
+                    RESULT=null;
+                :}
 ;
 
 
@@ -204,26 +205,18 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.
                                                         :}
 ;
 
-assign_stmt ::= iden:id {: if(debug) System.out.println("\t regla 6a"); 
-                            /*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
-                            String nombre = variable.getName();*/
-                        :}
-            ASSIGN exp:ex   {: if(debug) System.out.println("\t regla 6b");
-                                if(id!=null)
-                                    RESULT = new NodoAsignacion(id,ex);
-                                else{
-                                    RESULT = null;
-                                    System.out.println("Ocurrio error en cup # 0001");
-                                }
-                            :}
-            | iden:variable ASSIGN call_function:call   {: if(debug) System.out.println("\t regla 6c");
-                                                            if(variable!=null)
-                                                                RESULT = new NodoAsignacion(variable,call);
-                                                            else{
-                                                                RESULT = null;
-                                                                System.out.println("Ocurrio error en cup # 0001");
-                                                            }
-                                                        :}
+assign_stmt ::= iden:id ASSIGN rule:r   {: if(debug) System.out.println("\t regla 6b");
+                                            if(id!=null)
+                                                RESULT = new NodoAsignacion(id,r);
+                                            else{
+                                                RESULT = null;
+                                                System.out.println("Ocurrio error en cup # 0001");
+                                            }
+                                        :}
+;
+
+rule ::= exp:ex {: RESULT = ex; :}
+        | call_function:c {: RESULT = c; :}
 ;
 
 call_function ::= ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
@@ -264,12 +257,12 @@ exp ::= simple_exp:exI LT simple_exp:exD    {: if(debug) System.out.println("\t 
 simple_exp ::= simple_exp:exI PLUS term:exD {: if(debug) System.out.println("\t regla 10a"); 
                                                 RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
                                             :}
-        | simple_exp:exI MINUS term:exD {: if(debug) System.out.println("\t regla 10b"); 
-                                            RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
-                                        :}
-        | term:ex   {: if(debug) System.out.println("\t regla 10c"); 
-                        RESULT=ex;
-                    :}
+            | simple_exp:exI MINUS term:exD {: if(debug) System.out.println("\t regla 10b"); 
+                                                RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
+                                            :}
+            | term:ex   {: if(debug) System.out.println("\t regla 10c"); 
+                            RESULT=ex;
+                        :}
 ;
 
 term ::= term:exI TIMES factor:exD  {: if(debug) System.out.println("\t regla 11a"); 
