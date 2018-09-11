@@ -97,8 +97,8 @@ non terminal NodoBase factor;
 non terminal NodoBase iden;
 non terminal NodoBase function_stmt;
 non terminal NodoBase arg_list;
-non terminal NodoBase call_function;
-non terminal NodoBase rule;
+non terminal NodoBase param_list;
+
 
 /* Precedencia de operadores NO USAR FALLA  
 precedence left PLUS;
@@ -306,7 +306,7 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
                         :}
 ;
 
-function_stmt ::= FUNCTION ID:id LPAREN arg_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14a");
+function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14a");
                                                                                                         RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar,st,variable);
                                                                                                     :}
                 | FUNCTION ID:id LPAREN RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14b");
@@ -314,7 +314,7 @@ function_stmt ::= FUNCTION ID:id LPAREN arg_list:ar RPAREN s_stmt_seq:st RETURN 
                                                                                         :}
 ;
 
-arg_list ::= arg_list:ar COMMA iden:variable {: if(debug) System.out.println("\t regla 15a"); 
+param_list ::= param_list:ar COMMA iden:variable {: if(debug) System.out.println("\t regla 15a"); 
                                                 NodoBase hijoActual = ar;
                                                 if(hijoActual !=null){
                                                     while(hijoActual.TieneHermano()){
@@ -327,6 +327,23 @@ arg_list ::= arg_list:ar COMMA iden:variable {: if(debug) System.out.println("\t
                                                 }
                                             :} 
             | iden:variable {: if(debug) System.out.println("\t regla 15b"); 
+                                RESULT=variable;
+                            :}
+;
+
+arg_list ::= arg_list:ar COMMA simple_exp:variable {: if(debug) System.out.println("\t regla 16a"); 
+                                                NodoBase hijoActual = ar;
+                                                if(hijoActual !=null){
+                                                    while(hijoActual.TieneHermano()){
+                                                        hijoActual = hijoActual.getHermanoDerecha();
+                                                    }
+                                                    hijoActual.setHermanoDerecha(variable);
+                                                    RESULT=ar;
+                                                }else{
+                                                    RESULT=variable;
+                                                }
+                                            :} 
+            | simple_exp:variable {: if(debug) System.out.println("\t regla 16b"); 
                                 RESULT=variable;
                             :}
 ;
