@@ -1,2 +1,7 @@
-x:=hola(1+5,l*2,m)
+function hola(a,b,c)
+  x:=a+9;
+  x:=b+x*c
+  return x
+end;
+x:=hola()
 
