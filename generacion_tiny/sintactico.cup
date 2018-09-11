@@ -26,8 +26,8 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         System.out.println();
         ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
-        ts.cargarTabla(root);
-        ts.ImprimirClaves();
+        ts.cargarTabla(root, 0);
+        ts.ImprimirTabla();
         Tiny.Generador.setTablaSimbolos(ts);
         if(args.length==0)
             Tiny.Generador.generarCodigoObjeto(root, null, null);
@@ -43,7 +43,8 @@ action code {:
     private boolean debug=true;
     private NodoBase ast=null;
     private int lineanum=0;
-    
+    private int contBloque = 0;
+
     //Debe ser llamada solo despues de un parse(), en caso contrario retornara null siempre;
     public NodoBase getASTroot(){
         return ast;
@@ -312,10 +313,10 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
 ;
 
 function_stmt ::= FUNCTION ID:id LPAREN arg_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 18a");
-                                                                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar,st,variable);
+                                                                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar,st,variable,++contBloque);
                                                                                                     :}
                 | FUNCTION ID:id LPAREN RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 18b");
-                                                                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),st,variable);
+                                                                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),null,st,variable,++contBloque);
                                                                                         :}
 ;
 
