@@ -289,7 +289,12 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
                                     System.out.println("Ocurrio error en cup # 0005");
                                 }
                             :}
-        | call_function:c {: RESULT = c; :}
+        |ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
+                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
+                                                    :}
+        | ID:id LPAREN RPAREN   {:  if(debug) System.out.println("\t regla 6d anidada");
+                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
+                                        :}
         | ID:variable {: if(debug) System.out.println("\t regla 13b"); 
                             if(variable!=null){
                                 System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
@@ -299,14 +304,6 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
                                 System.out.println("Ocurrio error en cup # 0005");
                             }
                         :}
-;
-
-call_function ::= ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
-                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
-                                                    :}
-                | ID:id LPAREN RPAREN   {:  if(debug) System.out.println("\t regla 6d anidada");
-                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
-                                        :}
 ;
 
 function_stmt ::= FUNCTION ID:id LPAREN arg_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14a");
