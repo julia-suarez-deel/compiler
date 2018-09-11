@@ -2,17 +2,8 @@ package Tiny;
 
 import java.util.*;
 
-import ast.NodoArgumento;
-import ast.NodoAsignacion;
-import ast.NodoBase;
-import ast.NodoEscribir;
-import ast.NodoLeer;
-import ast.NodoIdentificador;
-import ast.NodoIf;
-import ast.NodoOperacion;
-import ast.NodoRepeat;
-import ast.NodoVector;
-import ast.NodoFuncion;
+
+import ast.*;
 
 public class TablaSimbolos {
 

@@ -69,14 +69,16 @@ public class Generador {
             generarLeer(nodo);
         }else if (nodo instanceof  NodoEscribir){
             generarEscribir(nodo);
+        }else if (nodo instanceof NodoFuncion){
+            generarFuncion(nodo);
+        }else if (nodo instanceof NodoListaArgs){
+            generarListaArgs(nodo);
         }else if (nodo instanceof NodoValor){
             generarValor(nodo);
         }else if (nodo instanceof NodoVector){
             generarVector(nodo);
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
-        }else if (nodo instanceof NodoFuncion){
-            generarFuncion(nodo);
         }else if (nodo instanceof NodoOperacion){
             generarOperacion(nodo, false);
         }else{
@@ -225,7 +227,7 @@ public class Generador {
         UtGen.emitirInstruccion("WRI", "escribir valor del tope", bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- escribir", bw);
     }
-    
+
     private static void generarValor(NodoBase nodo){
         NodoValor n = (NodoValor)nodo;
         UtGen.emitirInstruccion("LDC", n.getValor(), "cargar constante: "+n.getValor(), bw);
@@ -259,7 +261,12 @@ public class Generador {
         NodoFuncion n= (NodoFuncion)nodo;
         String nombre;
         int bloqueAnterior = bloqueActual;
-        if (n.getRetorno()!=null) {
+        if (n.getRetorno()==null){
+            nombre = ((NodoIdentificador)n.getIdentificador()).getNombre();
+            if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
+            generarLamada(nombre,n.getArgumentos());
+            if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
+        }else if (n.getRetorno()!=null) {
             bloqueActual = n.getNroBloque();
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
@@ -267,6 +274,20 @@ public class Generador {
             UtGen.emitirComentario("RET", bw);
         }
         bloqueActual = bloqueAnterior;
+    }
+
+    private static void generarLamada(String nombre,NodoBase argumentos){
+        if(argumentos != null){
+            UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
+            generar(argumentos);
+        }
+        UtGen.emitirInstruccion("CUP ", nombre, " llamada a funcion: "+nombre, bw);
+        
+    }
+
+    private static void generarListaArgs(NodoBase nodo){
+        NodoListaArgs n = (NodoListaArgs)nodo;
+        generar(n.getVariable());
     }
 
     private static void generarOperacion(NodoBase nodo, boolean vector){
