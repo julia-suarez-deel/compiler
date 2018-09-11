@@ -70,6 +70,8 @@ public class Generador {
             generarEscribir(nodo);
         }else if (nodo instanceof NodoValor){
             generarValor(nodo);
+        }else if (nodo instanceof NodoVector){
+            generarVector(nodo);
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
         }else if (nodo instanceof NodoOperacion){
@@ -163,10 +165,23 @@ public class Generador {
     
     private static void generarAsignacion(NodoBase nodo){
         NodoAsignacion n = (NodoAsignacion)nodo;
-        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getVariable()).getNombre());
-        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getVariable(), bw);
-        generar(n.getExpresion());
-        UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+n.getVariable(), bw);
+        if (n.getVariable() instanceof NodoIdentificador){
+            NodoIdentificador variable = (NodoIdentificador)n.getVariable();
+            int direccion = tablaSimbolos.getDireccion(variable.getNombre());
+            UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+variable.getNombre(), bw);
+            generar(n.getExpresion());
+            UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+variable.getNombre(), bw);
+        }
+        else if(n.getVariable()  instanceof  NodoVector){
+            NodoVector variable = (NodoVector)n.getVariable();
+            NodoIdentificador identificador_vector = (NodoIdentificador)variable.getIdentificador();
+            int direccion = tablaSimbolos.getDireccion(identificador_vector.getNombre());
+            UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
+            generar(variable.getExpresion());
+            UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
+            generar(n.getExpresion());
+            UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+identificador_vector.getNombre(), bw);
+        }
     }
     
     private static void generarLeer(NodoBase nodo){
@@ -190,7 +205,17 @@ public class Generador {
         NodoValor n = (NodoValor)nodo;
         UtGen.emitirInstruccion("LDC", n.getValor(), "cargar constante: "+n.getValor(), bw);
     }
-    
+
+    private static void generarVector(NodoBase nodo){
+        NodoVector n = (NodoVector) nodo;
+        NodoIdentificador ni = (NodoIdentificador) n.getIdentificador();
+        int direccion = tablaSimbolos.getDireccion(ni.getNombre());
+        UtGen.emitirInstruccion("LDA",direccion, "cargar direccion de la variable: ", bw);
+        generar(n.getExpresion());
+        UtGen.emitirInstruccion("IXA elem_size("+direccion+")", "cargar la direccion de la posicion del vector: ", bw);
+        UtGen.emitirInstruccion("IND 0", "cargar el valor de la direccion anterior", bw);
+    }
+
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
         int direccion = tablaSimbolos.getDireccion(n.getNombre());
