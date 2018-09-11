@@ -3,15 +3,7 @@ package Tiny;
 import java.util.*;
 
 
-import ast.NodoAsignacion;
-import ast.NodoBase;
-import ast.NodoEscribir;
-import ast.NodoLeer;
-import ast.NodoIdentificador;
-import ast.NodoIf;
-import ast.NodoOperacion;
-import ast.NodoRepeat;
-import ast.NodoVector;
+import ast.*;
 
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
@@ -57,7 +49,12 @@ public class TablaSimbolos {
                 else if (raiz instanceof NodoOperacion){
                     cargarTabla(((NodoOperacion)raiz).getOpIzquierdo());
                     cargarTabla(((NodoOperacion)raiz).getOpDerecho());
-                }
+                }else if (raiz instanceof NodoFuncion){
+					cargarTabla(((NodoFuncion)raiz).getIdentificador());
+					cargarTabla(((NodoFuncion)raiz).getArgumentos());
+				}else if (raiz instanceof NodoListaArgs){
+					cargarTabla(((NodoListaArgs)raiz).getVariable());
+				}
                 raiz = raiz.getHermanoDerecha();
             }
 	}

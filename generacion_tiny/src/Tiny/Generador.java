@@ -68,6 +68,10 @@ public class Generador {
             generarLeer(nodo);
         }else if (nodo instanceof  NodoEscribir){
             generarEscribir(nodo);
+        }else if (nodo instanceof NodoFuncion){
+            generarFuncion(nodo);
+        }else if (nodo instanceof NodoListaArgs){
+            generarListaArgs(nodo);
         }else if (nodo instanceof NodoValor){
             generarValor(nodo);
         }else if (nodo instanceof NodoVector){
@@ -169,7 +173,11 @@ public class Generador {
             NodoIdentificador variable = (NodoIdentificador)n.getVariable();
             int direccion = tablaSimbolos.getDireccion(variable.getNombre());
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+variable.getNombre(), bw);
-            generar(n.getExpresion());
+            if(n.getExpresion() instanceof NodoFuncion){
+                generar((NodoFuncion)n.getExpresion());                
+            }else{
+                generar(n.getExpresion());
+            }
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+variable.getNombre(), bw);
         }
         else if(n.getVariable()  instanceof  NodoVector){
@@ -222,7 +230,24 @@ public class Generador {
         UtGen.emitirInstruccion("WRI", "escribir valor del tope", bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- escribir", bw);
     }
+
+    private static void generarFuncion(NodoBase nodo){
+        NodoFuncion n = (NodoFuncion)nodo;
+        if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
+        if(n.getArgumentos() != null){
+            UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
+            generar(n.getArgumentos());
+            UtGen.emitirInstruccion("CUP ", ((NodoIdentificador)n.getIdentificador()).getNombre(), " inicio de lista de argumentos", bw);
+        }
+        //generar(n.getExpresion());
+        if(UtGen.debug)	UtGen.emitirComentario("<- escribir", bw);
+    }
     
+    private static void generarListaArgs(NodoBase nodo){
+        NodoListaArgs n = (NodoListaArgs)nodo;
+        generar(n.getVariable());
+    }
+
     private static void generarValor(NodoBase nodo){
         NodoValor n = (NodoValor)nodo;
         UtGen.emitirInstruccion("LDC", n.getValor(), "cargar constante: "+n.getValor(), bw);

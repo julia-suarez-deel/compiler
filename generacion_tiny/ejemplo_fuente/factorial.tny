@@ -3,8 +3,7 @@
   computes factorial
 }
 read x; { input an integer }
-t := 9;
-read y[j[9]+l[t]];
+g := hola ( 3 , 5 );
 if 0 < x then { don't compute if x <= 0 }
   fact := 1;
   repeat
