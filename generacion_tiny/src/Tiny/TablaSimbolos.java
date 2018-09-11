@@ -2,7 +2,7 @@ package Tiny;
 
 import java.util.*;
 
-
+import ast.NodoArgumento;
 import ast.NodoAsignacion;
 import ast.NodoBase;
 import ast.NodoEscribir;
@@ -63,12 +63,14 @@ public class TablaSimbolos {
                 }else if (raiz instanceof NodoFuncion){
                     if(((NodoFuncion) raiz).getCuerpo() != null){
                         cargarTabla(((NodoFuncion) raiz).getIdentificador(), bloque);
-                        //aqui va la carga de argumentos
+                        cargarTabla(((NodoFuncion) raiz).getArgumentos(), ((NodoFuncion) raiz).getNroBloque());
                         cargarTabla(((NodoFuncion) raiz).getCuerpo(), ((NodoFuncion) raiz).getNroBloque());
                         //cargarTabla(((NodoFuncion) raiz).getRetorno(), bloque + 1);
                     }else{
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), bloque);
                     }
+                }else if(raiz instanceof NodoArgumento){
+                    cargarTabla(((NodoArgumento) raiz).getIdentificador(), bloque);
                 }
                 raiz = raiz.getHermanoDerecha();
             }
@@ -115,7 +117,7 @@ public class TablaSimbolos {
         System.out.println("*** Tabla de Simbolos ***");
         for(int i = 0; i<secciones.size(); i++){
             for (String s : secciones.get(i).keySet()) {
-                System.out.println("Bloque: " + i + " variable "+ s + " con direccion: " + BuscarSimbolo(s,i).getDireccionMemoria());
+                System.out.println("Bloque: " + i + " Nombre: "+ s + " Con direccion: " + BuscarSimbolo(s,i).getDireccionMemoria());
             }
         }
                 
