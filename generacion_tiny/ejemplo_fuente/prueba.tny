@@ -1,2 +1,7 @@
-x:=5/0
+function hola(x,y)
+  x:=x+1;
+  write x
+  return x
+end;
+a:=hola(1,6)
 

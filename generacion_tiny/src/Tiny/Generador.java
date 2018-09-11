@@ -255,6 +255,14 @@ public class Generador {
     }
     
     private static void generarFuncion(NodoBase nodo){
+        NodoFuncion n= (NodoFuncion)nodo;
+        String nombre;
+        if (n.getRetorno()!=null) {
+            nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
+            UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
+            generar(n.getCuerpo());
+            UtGen.emitirComentario("RET", bw);
+        }
     
     }
 
