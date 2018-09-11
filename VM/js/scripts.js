@@ -1,6 +1,6 @@
 // Variables
-const CODE_URL = 'http://localhost:63342/compiler/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost:63342/compiler/VM/templates.html';
+const CODE_URL = 'http://localhost/compiler/VM/code.txt';
+const TEMPLATES_URL = 'http://localhost/compiler/VM/templates.html';
 const ISA = {
     'instruction1':instruction1,
     'instruction2':instruction2,
