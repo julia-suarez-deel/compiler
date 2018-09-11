@@ -2,30 +2,23 @@ package Tiny;
 
 public class RegistroSimbolo {
 	private String identificador;
-	private int NumLinea;
 	private int DireccionMemoria;
 	
-	public RegistroSimbolo(String identificador, int numLinea,
-			int direccionMemoria) {
+	public RegistroSimbolo(String identificador, int direccionMemoria) {
 		super();
 		this.identificador = identificador;
-		NumLinea = numLinea;
-		DireccionMemoria = direccionMemoria;
+		this.DireccionMemoria = direccionMemoria;
 	}
 
 	public String getIdentificador() {
-		return identificador;
-	}
-
-	public int getNumLinea() {
-		return NumLinea;
+		return this.identificador;
 	}
 
 	public int getDireccionMemoria() {
-		return DireccionMemoria;
+		return this.DireccionMemoria;
 	}
 
 	public void setDireccionMemoria(int direccionMemoria) {
-		DireccionMemoria = direccionMemoria;
+		this.DireccionMemoria = direccionMemoria;
 	}
 }
