@@ -192,10 +192,21 @@ public class Generador {
     
     private static void generarLeer(NodoBase nodo){
         NodoLeer n = (NodoLeer)nodo;
-        int direccion = tablaSimbolos.getDireccion(((NodoIdentificador)n.getVariable()).getNombre());
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
-        UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+n.getVariable(), bw);
-        UtGen.emitirInstruccion("RDI", "leer el valor para el id "+n.getVariable(), bw);
+        if(n.getVariable() instanceof NodoIdentificador){
+            NodoIdentificador id = (NodoIdentificador)n.getVariable();
+            int direccion = tablaSimbolos.getDireccion(id.getNombre());
+            UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+id.getNombre(), bw);
+            UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
+        }else if(n.getVariable() instanceof NodoVector){
+            NodoVector vector = (NodoVector)n.getVariable();
+            NodoIdentificador id = (NodoIdentificador)vector.getIdentificador();
+            int direccion = tablaSimbolos.getDireccion(id.getNombre());
+            UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de la variable: "+id.getNombre(), bw);
+            generar(vector.getExpresion());
+            UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
+            UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
+        }
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
     }
     
@@ -216,7 +227,7 @@ public class Generador {
         NodoVector n = (NodoVector) nodo;
         NodoIdentificador ni = (NodoIdentificador) n.getIdentificador();
         int direccion = tablaSimbolos.getDireccion(ni.getNombre());
-        UtGen.emitirInstruccion("LDA",direccion, "cargar direccion de la variable: ", bw);
+        UtGen.emitirInstruccion("LDA",direccion, "cargar direccion de la variable: "+ni.getNombre(), bw);
         
         if (n.getExpresion() instanceof NodoOperacion){
             generarOperacion(n.getExpresion(), true);
@@ -224,7 +235,7 @@ public class Generador {
             generar(n.getExpresion());
         }
         
-        UtGen.emitirInstruccion("IXA elem_size("+direccion+")", "cargar la direccion de la posicion del vector: ", bw);
+        UtGen.emitirInstruccion("IXA elem_size("+direccion+")", "cargar la direccion de la posicion del vector: "+ni.getNombre(), bw);
         UtGen.emitirInstruccion("IND 0", "cargar el valor de la direccion anterior", bw);
     }
 

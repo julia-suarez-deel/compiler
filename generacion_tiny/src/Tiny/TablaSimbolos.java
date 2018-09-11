@@ -6,6 +6,7 @@ import java.util.*;
 import ast.NodoAsignacion;
 import ast.NodoBase;
 import ast.NodoEscribir;
+import ast.NodoLeer;
 import ast.NodoIdentificador;
 import ast.NodoIf;
 import ast.NodoOperacion;
@@ -51,6 +52,8 @@ public class TablaSimbolos {
                 }
                 else if (raiz instanceof  NodoEscribir)
                     cargarTabla(((NodoEscribir)raiz).getExpresion());
+                else if (raiz instanceof  NodoLeer)
+                    cargarTabla(((NodoLeer)raiz).getVariable());
                 else if (raiz instanceof NodoOperacion){
                     cargarTabla(((NodoOperacion)raiz).getOpIzquierdo());
                     cargarTabla(((NodoOperacion)raiz).getOpDerecho());
