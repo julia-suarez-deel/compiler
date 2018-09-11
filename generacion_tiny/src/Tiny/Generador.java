@@ -274,8 +274,6 @@ public class Generador {
                             break;
             case	igual:	UtGen.emitirInstruccion("EQU", "Igual a: ==", bw);
                             break;
-            /*case	menor:	UtGen.emitirInstruccion("MENOR", "Menor que: <", bw);
-                            break;*/
             default:
                             UtGen.emitirComentario("BUG: tipo de operacion desconocida", bw);
         }
