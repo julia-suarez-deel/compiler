@@ -42,7 +42,7 @@ public class UtGen {
 	public static void emitirComentario(String c, BufferedWriter bw){
 		if(debug){
                     UtGen.writeIns("*      "+c+"\n", bw);
-					UtGen.writeIns("true", bw);
+		    UtGen.writeIns("true", bw);
                 }
 	}
 
