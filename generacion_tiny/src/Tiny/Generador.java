@@ -75,7 +75,7 @@ public class Generador {
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
         }else if (nodo instanceof NodoOperacion){
-            generarOperacion(nodo);
+            generarOperacion(nodo, false);
         }else{
             System.out.println("BUG: Tipo de nodo a generar desconocido");
         }
@@ -177,7 +177,13 @@ public class Generador {
             NodoIdentificador identificador_vector = (NodoIdentificador)variable.getIdentificador();
             int direccion = tablaSimbolos.getDireccion(identificador_vector.getNombre());
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
-            generar(variable.getExpresion());
+            
+            if (variable.getExpresion() instanceof NodoOperacion){
+                generarOperacion(variable.getExpresion(), true);
+            }else{
+                generar(variable.getExpresion());
+            }
+            
             UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
             generar(n.getExpresion());
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+identificador_vector.getNombre(), bw);
@@ -211,7 +217,13 @@ public class Generador {
         NodoIdentificador ni = (NodoIdentificador) n.getIdentificador();
         int direccion = tablaSimbolos.getDireccion(ni.getNombre());
         UtGen.emitirInstruccion("LDA",direccion, "cargar direccion de la variable: ", bw);
-        generar(n.getExpresion());
+        
+        if (n.getExpresion() instanceof NodoOperacion){
+            generarOperacion(n.getExpresion(), true);
+        }else{
+            generar(n.getExpresion());
+        }
+        
         UtGen.emitirInstruccion("IXA elem_size("+direccion+")", "cargar la direccion de la posicion del vector: ", bw);
         UtGen.emitirInstruccion("IND 0", "cargar el valor de la direccion anterior", bw);
     }
@@ -224,14 +236,25 @@ public class Generador {
        
     }
 
-    private static void generarOperacion(NodoBase nodo){
+    private static void generarOperacion(NodoBase nodo, boolean vector){
         NodoOperacion n = (NodoOperacion) nodo;
         
-        if (n.getOperacion() == tipoOp.menor){
+        if (n.getOperacion() == tipoOp.menor && vector==false){
             generar(n.getOpDerecho());
             generar(n.getOpIzquierdo());
             UtGen.emitirInstruccion("GRT", "A mayor que B: B<A", bw);
             return;
+        }
+        
+        if ((n.getOperacion() == tipoOp.menor || n.getOperacion() == tipoOp.igual) && vector==true){
+            if(UtGen.debug) UtGen.emitirComentario("Error fatal! vector con argumento < o =", bw);
+            System.out.print("Error fatal! vector con argumento < o =");
+            try {
+                bw.close();
+            } catch (IOException ex) {
+                System.out.println("---------");
+            }
+            System.exit(0); 
         }
         
         /* Genero la expresion izquierda de la operacion */
