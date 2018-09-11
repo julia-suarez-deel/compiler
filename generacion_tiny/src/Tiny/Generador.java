@@ -74,6 +74,8 @@ public class Generador {
             generarVector(nodo);
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
+        }else if (nodo instanceof NodoFuncion){
+            generarFuncion(nodo);
         }else if (nodo instanceof NodoOperacion){
             generarOperacion(nodo, false);
         }else{
@@ -246,6 +248,10 @@ public class Generador {
         UtGen.emitirInstruccion("LOD", direccion , "cargar valor de identificador: "+n.getNombre(), bw);
        
     }
+    
+    private static void generarFuncion(NodoBase nodo){
+    
+    }
 
     private static void generarOperacion(NodoBase nodo, boolean vector){
         NodoOperacion n = (NodoOperacion) nodo;
@@ -259,7 +265,7 @@ public class Generador {
         
         if ((n.getOperacion() == tipoOp.menor || n.getOperacion() == tipoOp.igual) && vector==true){
             if(UtGen.debug) UtGen.emitirComentario("Error fatal! vector con argumento < o =", bw);
-            System.out.print("Error fatal! vector con argumento < o =");
+            System.out.print("Error fatal! vector con argumento del vector < o =");
             try {
                 bw.close();
             } catch (IOException ex) {
