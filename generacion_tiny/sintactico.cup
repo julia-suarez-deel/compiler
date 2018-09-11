@@ -192,15 +192,15 @@ s_stmt ::= if_stmt:sif  {: if(debug) System.out.println("\t regla 3a");
 ;
 
 
-if_stmt ::= IF exp:ex THEN stmt_seq:pthen END   {: if(debug) System.out.println("\t regla 4a"); 
+if_stmt ::= IF exp:ex THEN s_stmt_seq:pthen END   {: if(debug) System.out.println("\t regla 4a"); 
                                                     RESULT = new NodoIf(ex,pthen);
                                                 :}
-        | IF exp:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END {: if(debug) System.out.println("\t regla 4b"); 
+        | IF exp:ex THEN s_stmt_seq:pthen ELSE s_stmt_seq:pelse END {: if(debug) System.out.println("\t regla 4b"); 
                                                                     RESULT = new NodoIf(ex,pthen,pelse);		
                                                                 :}
 ;
 
-repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.println("\t regla 5"); 
+repeat_stmt ::= REPEAT s_stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.println("\t regla 5"); 
                                                             RESULT = new NodoRepeat(cuerpo,prueba);
                                                         :}
 ;
