@@ -14,6 +14,7 @@ public class Generador {
     private static int LB = 0; 
     private static Stack st_fjp = new Stack();
     private static Stack st_ujp = new Stack();
+    private static int bloqueActual = 0;
     
     public static void setTablaSimbolos(TablaSimbolos tabla){
         tablaSimbolos = tabla;
@@ -169,7 +170,7 @@ public class Generador {
         NodoAsignacion n = (NodoAsignacion)nodo;
         if (n.getVariable() instanceof NodoIdentificador){
             NodoIdentificador variable = (NodoIdentificador)n.getVariable();
-            int direccion = tablaSimbolos.getDireccion(variable.getNombre(),0);
+            int direccion = tablaSimbolos.getDireccion(variable.getNombre(),bloqueActual);
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+variable.getNombre(), bw);
             generar(n.getExpresion());
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+variable.getNombre(), bw);
@@ -177,7 +178,7 @@ public class Generador {
         else if(n.getVariable()  instanceof  NodoVector){
             NodoVector variable = (NodoVector)n.getVariable();
             NodoIdentificador identificador_vector = (NodoIdentificador)variable.getIdentificador();
-            int direccion = tablaSimbolos.getDireccion(identificador_vector.getNombre(),0);
+            int direccion = tablaSimbolos.getDireccion(identificador_vector.getNombre(),bloqueActual);
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
             
             if (variable.getExpresion() instanceof NodoOperacion){
@@ -197,13 +198,13 @@ public class Generador {
         if(UtGen.debug)	UtGen.emitirComentario("-> leer", bw);
         if(n.getVariable() instanceof NodoIdentificador){
             NodoIdentificador id = (NodoIdentificador)n.getVariable();
-            int direccion = tablaSimbolos.getDireccion(id.getNombre(),0);
+            int direccion = tablaSimbolos.getDireccion(id.getNombre(),bloqueActual);
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de identificador: "+id.getNombre(), bw);
             UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
         }else if(n.getVariable() instanceof NodoVector){
             NodoVector vector = (NodoVector)n.getVariable();
             NodoIdentificador id = (NodoIdentificador)vector.getIdentificador();
-            int direccion = tablaSimbolos.getDireccion(id.getNombre(),0);
+            int direccion = tablaSimbolos.getDireccion(id.getNombre(),bloqueActual);
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de la variable: "+id.getNombre(), bw);
             
             if (vector.getExpresion() instanceof NodoOperacion){
@@ -233,7 +234,7 @@ public class Generador {
     private static void generarVector(NodoBase nodo){
         NodoVector n = (NodoVector) nodo;
         NodoIdentificador ni = (NodoIdentificador) n.getIdentificador();
-        int direccion = tablaSimbolos.getDireccion(ni.getNombre(),0);
+        int direccion = tablaSimbolos.getDireccion(ni.getNombre(),bloqueActual);
         UtGen.emitirInstruccion("LDA",direccion, "cargar direccion de la variable: "+ni.getNombre(), bw);
         
         if (n.getExpresion() instanceof NodoOperacion){
@@ -248,7 +249,7 @@ public class Generador {
 
     private static void generarIdentificador(NodoBase nodo){
         NodoIdentificador n = (NodoIdentificador)nodo;
-        int direccion = tablaSimbolos.getDireccion(n.getNombre(),0);
+        int direccion = tablaSimbolos.getDireccion(n.getNombre(),bloqueActual);
         //if(UtGen.debug)	UtGen.emitirComentario("true", bw);
         UtGen.emitirInstruccion("LOD", direccion , "cargar valor de identificador: "+n.getNombre(), bw);
        
@@ -257,13 +258,15 @@ public class Generador {
     private static void generarFuncion(NodoBase nodo){
         NodoFuncion n= (NodoFuncion)nodo;
         String nombre;
+        int bloqueAnterior = bloqueActual;
         if (n.getRetorno()!=null) {
+            bloqueActual = n.getNroBloque();
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
             generar(n.getCuerpo());
             UtGen.emitirComentario("RET", bw);
         }
-    
+        bloqueActual = bloqueAnterior;
     }
 
     private static void generarOperacion(NodoBase nodo, boolean vector){
