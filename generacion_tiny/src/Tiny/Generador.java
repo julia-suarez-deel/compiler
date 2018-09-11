@@ -203,7 +203,12 @@ public class Generador {
             NodoIdentificador id = (NodoIdentificador)vector.getIdentificador();
             int direccion = tablaSimbolos.getDireccion(id.getNombre());
             UtGen.emitirInstruccion("LDA", direccion , "cargar direccion de la variable: "+id.getNombre(), bw);
-            generar(vector.getExpresion());
+            
+            if (vector.getExpresion() instanceof NodoOperacion){
+                generarOperacion(vector.getExpresion(), true);
+            }else{
+                generar(vector.getExpresion());
+            }
             UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
             UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
         }
