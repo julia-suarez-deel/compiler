@@ -192,20 +192,20 @@ s_stmt ::= if_stmt:sif  {: if(debug) System.out.println("\t regla 3a");
 ;
 
 
-if_stmt ::= IF exp:ex THEN s_stmt_seq:pthen END   {: if(debug) System.out.println("\t regla 4a"); 
-                                                    RESULT = new NodoIf(ex,pthen);
-                                                :}
-        | IF exp:ex THEN s_stmt_seq:pthen ELSE s_stmt_seq:pelse END {: if(debug) System.out.println("\t regla 4b"); 
-                                                                    RESULT = new NodoIf(ex,pthen,pelse);		
-                                                                :}
+if_stmt ::= IF exp:ex THEN s_stmt_seq:pthen END     {: if(debug) System.out.println("\t regla 4a"); 
+                                                        RESULT = new NodoIf(ex,pthen);
+                                                    :}
+        | IF exp:ex THEN s_stmt_seq:pthen ELSE s_stmt_seq:pelse END {:  if(debug) System.out.println("\t regla 4b"); 
+                                                                        RESULT = new NodoIf(ex,pthen,pelse);		
+                                                                    :}
 ;
 
-repeat_stmt ::= REPEAT s_stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.println("\t regla 5"); 
-                                                            RESULT = new NodoRepeat(cuerpo,prueba);
-                                                        :}
+repeat_stmt ::= REPEAT s_stmt_seq:cuerpo UNTIL exp:prueba   {:  if(debug) System.out.println("\t regla 5"); 
+                                                                RESULT = new NodoRepeat(cuerpo,prueba);
+                                                            :}
 ;
 
-assign_stmt ::= iden:id ASSIGN exp:r   {: if(debug) System.out.println("\t regla 6b");
+assign_stmt ::= iden:id ASSIGN exp:r    {: if(debug) System.out.println("\t regla 6b");
                                             if(id!=null)
                                                 RESULT = new NodoAsignacion(id,r);
                                             else{
@@ -215,16 +215,15 @@ assign_stmt ::= iden:id ASSIGN exp:r   {: if(debug) System.out.println("\t regla
                                         :}
 ;
         
-
 read_stmt ::= READ iden:id  {: if(debug) System.out.println("\t regla 7"); 
-                                    System.out.println("Leyendo Variable");
-                                    if(id!=null)
-                                        RESULT = new NodoLeer(id);
-                                    else{
-                                        RESULT = null;
-                                        System.out.println("Ocurrio error en cup # 0002");
-                                    }
-                                :}
+                                System.out.println("Leyendo Variable");
+                                if(id!=null)
+                                    RESULT = new NodoLeer(id);
+                                else{
+                                    RESULT = null;
+                                    System.out.println("Ocurrio error en cup # 0002");
+                                }
+                            :}
 ;
 
 write_stmt ::= WRITE exp:ex {: if(debug) System.out.println("\t regla 8"); 
@@ -243,24 +242,24 @@ exp ::= simple_exp:exI LT simple_exp:exD    {: if(debug) System.out.println("\t 
                         :}
 ;
 
-simple_exp ::= simple_exp:exI PLUS term:exD {: if(debug) System.out.println("\t regla 10a"); 
+simple_exp ::= simple_exp:exI PLUS term:exD {:  if(debug) System.out.println("\t regla 10a"); 
                                                 RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
                                             :}
-            | simple_exp:exI MINUS term:exD {: if(debug) System.out.println("\t regla 10b"); 
+            | simple_exp:exI MINUS term:exD {:  if(debug) System.out.println("\t regla 10b"); 
                                                 RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
                                             :}
-            | term:ex   {: if(debug) System.out.println("\t regla 10c"); 
+            | term:ex   {:  if(debug) System.out.println("\t regla 10c"); 
                             RESULT=ex;
                         :}
 ;
 
-term ::= term:exI TIMES factor:exD  {: if(debug) System.out.println("\t regla 11a"); 
+term ::= term:exI TIMES factor:exD  {:  if(debug) System.out.println("\t regla 11a"); 
                                         RESULT = new NodoOperacion(exI,tipoOp.por,exD);
                                     :}
-        | term:exI OVER factor:exD  {: if(debug) System.out.println("\t regla 11b"); 
+        | term:exI OVER factor:exD  {:  if(debug) System.out.println("\t regla 11b"); 
                                         RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
                                     :}
-        | factor:ex {: if(debug) System.out.println("\t regla 11c"); 
+        | factor:ex {:  if(debug) System.out.println("\t regla 11c"); 
                         RESULT=ex;
                     :}
 ;
@@ -268,34 +267,34 @@ term ::= term:exI TIMES factor:exD  {: if(debug) System.out.println("\t regla 11
 factor ::= LPAREN exp:ex RPAREN {: if(debug) System.out.println("\t regla 12a"); 
                                     RESULT = ex;
                                 :}
-        | NUM:valor {: if(debug) System.out.println("\t regla 12b"); 
+        | NUM:valor {:  if(debug) System.out.println("\t regla 12b"); 
                         System.out.println("Devolví un nodo número entero");
                         RESULT= new NodoValor(Integer.parseInt(valor));
                     :}
-        | iden:id   {: if(debug) System.out.println("\t regla 12c"); 
-                            RESULT = id;
-                        :}
-        | error {: if(debug) System.out.println("\t regla 12d"); 
+        | iden:id   {:  if(debug) System.out.println("\t regla 12c"); 
+                        RESULT = id;
+                    :}
+        | error {:  if(debug) System.out.println("\t regla 12d"); 
                     System.out.println("Ocurrio error en cup # 0003");
                     RESULT=null;
                 :}
 ;
 
-iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t regla 13a");
-                                if (id != null && ex != null)
-                                    RESULT = new NodoVector(new NodoIdentificador(id.toString()),ex);
-                                else{
-                                    RESULT = null;
-                                    System.out.println("Ocurrio error en cup # 0005");
-                                }
-                            :}
-        |ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
-                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
-                                                    :}
+iden ::= ID:id LBRACK simple_exp:ex RBRACK  {: if(debug) System.out.println("\t regla 13a");
+                                                if (id != null && ex != null)
+                                                    RESULT = new NodoVector(new NodoIdentificador(id.toString()),ex);
+                                                else{
+                                                    RESULT = null;
+                                                    System.out.println("Ocurrio error en cup # 0005");
+                                                }
+                                            :}
+        | ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
+                                                RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
+                                            :}
         | ID:id LPAREN RPAREN   {:  if(debug) System.out.println("\t regla 6d anidada");
-                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
-                                        :}
-        | ID:variable {: if(debug) System.out.println("\t regla 13b"); 
+                                    RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
+                                :}
+        | ID:variable   {:  if(debug) System.out.println("\t regla 13b"); 
                             if(variable!=null){
                                 System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
                                 RESULT= new NodoIdentificador(variable.toString());		
@@ -306,7 +305,7 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
                         :}
 ;
 
-function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14a");
+function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END {:  if(debug) System.out.println("\t regla 14a");
                                                                                                         RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar,st,variable);
                                                                                                     :}
                 | FUNCTION ID:id LPAREN RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14b");
@@ -314,36 +313,36 @@ function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETUR
                                                                                         :}
 ;
 
-param_list ::= param_list:ar COMMA iden:variable {: if(debug) System.out.println("\t regla 15a"); 
-                                                NodoBase hijoActual = ar;
-                                                if(hijoActual !=null){
-                                                    while(hijoActual.TieneHermano()){
-                                                        hijoActual = hijoActual.getHermanoDerecha();
-                                                    }
-                                                    hijoActual.setHermanoDerecha(variable);
-                                                    RESULT=ar;
-                                                }else{
-                                                    RESULT=variable;
-                                                }
-                                            :} 
-            | iden:variable {: if(debug) System.out.println("\t regla 15b"); 
+param_list ::= param_list:ar COMMA iden:variable    {:  if(debug) System.out.println("\t regla 15a"); 
+                                                        NodoBase hijoActual = ar;
+                                                        if(hijoActual !=null){
+                                                            while(hijoActual.TieneHermano()){
+                                                                hijoActual = hijoActual.getHermanoDerecha();
+                                                            }
+                                                            hijoActual.setHermanoDerecha(variable);
+                                                            RESULT=ar;
+                                                        }else{
+                                                            RESULT=variable;
+                                                        }
+                                                    :} 
+            | iden:variable {:  if(debug) System.out.println("\t regla 15b"); 
                                 RESULT=variable;
                             :}
 ;
 
-arg_list ::= arg_list:ar COMMA simple_exp:variable {: if(debug) System.out.println("\t regla 16a"); 
-                                                NodoBase hijoActual = ar;
-                                                if(hijoActual !=null){
-                                                    while(hijoActual.TieneHermano()){
-                                                        hijoActual = hijoActual.getHermanoDerecha();
-                                                    }
-                                                    hijoActual.setHermanoDerecha(variable);
-                                                    RESULT=ar;
-                                                }else{
-                                                    RESULT=variable;
-                                                }
-                                            :} 
-            | simple_exp:variable {: if(debug) System.out.println("\t regla 16b"); 
-                                RESULT=variable;
-                            :}
+arg_list ::= arg_list:ar COMMA simple_exp:variable  {: if(debug) System.out.println("\t regla 16a"); 
+                                                        NodoBase hijoActual = ar;
+                                                        if(hijoActual !=null){
+                                                            while(hijoActual.TieneHermano()){
+                                                                hijoActual = hijoActual.getHermanoDerecha();
+                                                            }
+                                                            hijoActual.setHermanoDerecha(variable);
+                                                            RESULT=ar;
+                                                        }else{
+                                                            RESULT=variable;
+                                                        }
+                                                    :} 
+            | simple_exp:variable   {: if(debug) System.out.println("\t regla 16b"); 
+                                        RESULT=variable;
+                                    :}
 ;
