@@ -75,11 +75,16 @@ terminal RPAREN;
 terminal LBRACK;
 terminal RBRACK;
 terminal SEMI;
+terminal FUNCTION;
+terminal RETURN;
+terminal COMMA;
 
 /* Simbolos No Terminales */
 non terminal program;
 non terminal NodoBase stmt_seq;
 non terminal NodoBase stmt;
+non terminal NodoBase s_stmt_seq;
+non terminal NodoBase s_stmt;
 non terminal NodoBase if_stmt;
 non terminal NodoBase repeat_stmt;
 non terminal NodoBase assign_stmt;
@@ -90,6 +95,9 @@ non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
 non terminal NodoBase iden;
+non terminal NodoBase function_stmt;
+non terminal NodoBase arg_list;
+non terminal NodoBase call_function;
 
 /* Precedencia de operadores NO USAR FALLA  
 precedence left PLUS;
@@ -120,7 +128,48 @@ stmt_seq ::= stmt_seq:ini SEMI stmt:sent    {: if(debug) System.out.println("\t 
                 :}
 ;
 
+s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {: if(debug) System.out.println("\t regla 2a"); 
+                                                    NodoBase hijoActual = ini;
+                                                    if(hijoActual !=null){
+                                                        while(hijoActual.TieneHermano()){
+                                                            hijoActual = hijoActual.getHermanoDerecha();
+                                                        }
+                                                        hijoActual.setHermanoDerecha(sent);
+                                                        RESULT=ini;
+                                                    }else{
+                                                        RESULT=sent;
+                                                    }
+                                                :}
+    | s_stmt:sent {: if(debug) System.out.println("\t regla 2b"); 
+                    RESULT=sent;
+                :}
+;
+
 stmt ::= if_stmt:sif    {: if(debug) System.out.println("\t regla 3a"); 
+                            RESULT=sif;
+                        :}
+            | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
+                                    RESULT=srep;
+                                :}
+            | assign_stmt:sasi  {: if(debug) System.out.println("\t regla 3c"); 
+                                    RESULT=sasi;
+                                :}
+            | read_stmt:slec    {: if(debug) System.out.println("\t regla 3d"); 
+                                    RESULT=slec;
+                                :}
+            | write_stmt:sesc   {: if(debug) System.out.println("\t regla 3e"); 
+                                    RESULT=sesc;
+                                :}
+            | function_stmt:fnt {: if(debug) System.out.println("\t regla 3e"); 
+                                    RESULT=fnt;
+                                :}
+            | error {: if(debug) System.out.println("\t regla 3f"); 
+                        System.out.println("Ocurrio error en cup # 0004");
+                        RESULT=null;
+                    :}
+;
+
+s_stmt ::= if_stmt:sif    {: if(debug) System.out.println("\t regla 3a"); 
                             RESULT=sif;
                         :}
             | repeat_stmt:srep  {: if(debug) System.out.println("\t regla 3b"); 
@@ -141,6 +190,7 @@ stmt ::= if_stmt:sif    {: if(debug) System.out.println("\t regla 3a");
                     :}
 ;
 
+
 if_stmt ::= IF exp:ex THEN stmt_seq:pthen END   {: if(debug) System.out.println("\t regla 4a"); 
                                                     RESULT = new NodoIf(ex,pthen);
                                                 :}
@@ -154,11 +204,11 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba {: if(debug) System.out.
                                                         :}
 ;
 
-assign_stmt ::= iden:id {: if(debug) System.out.println("\t regla 6 parte del medio"); 
+assign_stmt ::= iden:id {: if(debug) System.out.println("\t regla 6a"); 
                             /*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
                             String nombre = variable.getName();*/
                         :}
-            ASSIGN exp:ex   {: if(debug) System.out.println("\t regla 6 parte final");
+            ASSIGN exp:ex   {: if(debug) System.out.println("\t regla 6b");
                                 if(id!=null)
                                     RESULT = new NodoAsignacion(id,ex);
                                 else{
@@ -166,6 +216,22 @@ assign_stmt ::= iden:id {: if(debug) System.out.println("\t regla 6 parte del me
                                     System.out.println("Ocurrio error en cup # 0001");
                                 }
                             :}
+            | iden:variable ASSIGN call_function:call   {: if(debug) System.out.println("\t regla 6c");
+                                                            if(variable!=null)
+                                                                RESULT = new NodoAsignacion(variable,call);
+                                                            else{
+                                                                RESULT = null;
+                                                                System.out.println("Ocurrio error en cup # 0001");
+                                                            }
+                                                        :}
+;
+
+call_function ::= ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 6c anidada");
+                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
+                                                    :}
+                | ID:id LPAREN RPAREN   {:  if(debug) System.out.println("\t regla 6d anidada");
+                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
+                                        :}
 ;
 
 read_stmt ::= READ iden:id  {: if(debug) System.out.println("\t regla 7"); 
@@ -250,4 +316,29 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK {: if(debug) System.out.println("\t r
                                 System.out.println("Ocurrio error en cup # 0005");
                             }
                         :}
+;
+
+function_stmt ::= FUNCTION ID:id LPAREN arg_list:ar RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14a");
+                                                                                                        RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar,st,variable);
+                                                                                                    :}
+                | FUNCTION ID:id LPAREN RPAREN s_stmt_seq:st RETURN iden:variable END   {:  if(debug) System.out.println("\t regla 14b");
+                                                                                            RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),st,variable);
+                                                                                        :}
+;
+
+arg_list ::= arg_list:ar COMMA iden:variable {: if(debug) System.out.println("\t regla 15a"); 
+                                                NodoBase hijoActual = ar;
+                                                if(hijoActual !=null){
+                                                    while(hijoActual.TieneHermano()){
+                                                        hijoActual = hijoActual.getHermanoDerecha();
+                                                    }
+                                                    hijoActual.setHermanoDerecha(variable);
+                                                    RESULT=ar;
+                                                }else{
+                                                    RESULT=variable;
+                                                }
+                                            :} 
+            | iden:variable {: if(debug) System.out.println("\t regla 15b"); 
+                                RESULT=variable;
+                            :}
 ;

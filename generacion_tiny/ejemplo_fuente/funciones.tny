@@ -1,8 +1,1 @@
-x:=0;
-read x;
-if(x=1)
-then 
-	write x
-else
-	x:=1
-end
+write A[0]

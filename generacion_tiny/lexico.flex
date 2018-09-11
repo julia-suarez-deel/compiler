@@ -62,6 +62,12 @@ espacio		= [ \t]+
 "write"         {	if(debug) System.out.println("token WRITE");
 			return sf.newSymbol("WRITE",sym.WRITE);
 			}
+"function" 		{	if(debug) System.out.println("token FUNCTION");
+			return sf.newSymbol("FUNCTION",sym.FUNCTION);
+			}
+"return" 		{	if(debug) System.out.println("token RETURN");
+			return sf.newSymbol("RETURN",sym.RETURN);
+			}
 ":="            {	if(debug) System.out.println("token ASSIGN");
 			return sf.newSymbol("ASSIGN",sym.ASSIGN);
 			}
@@ -94,6 +100,9 @@ espacio		= [ \t]+
 			}
 "]"             {	if(debug) System.out.println("token RBRACK");
 			return sf.newSymbol("RBRACK",sym.RBRACK);
+			}
+","				{	if(debug) System.out.println("token COMMA");
+			return sf.newSymbol("COMMA",sym.COMMA);
 			}
 ";"             {	if(debug) System.out.println("token SEMI");
 			return sf.newSymbol("SEMI",sym.SEMI);
