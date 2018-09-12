@@ -258,6 +258,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
     public static void main(String args[]) throws Exception {
         SymbolFactory sf = new DefaultSymbolFactory();
         parser parser_obj;
+        Boolean flag = false;
         if (args.length==0) 
             parser_obj=new parser(new Scanner(System.in,sf),sf);
         else 
@@ -270,15 +271,22 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         System.out.println();
         ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
-        ts.cargarTabla(root, 0);
-        ts.ImprimirTabla();
-        Tiny.Generador.setTablaSimbolos(ts);
-        if(args.length==0)
-            Tiny.Generador.generarCodigoObjeto(root, null, null);
-        else if (args.length==1)
-            Tiny.Generador.generarCodigoObjeto(root, args[0], null);
-        else
-            Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
+        try{
+          ts.cargarTabla(root, 0);
+        }catch(IdNotFoundException e){
+          System.out.println(e.getMessage());
+          flag = true;
+        }
+        if(!flag){
+          ts.ImprimirTabla();
+          Tiny.Generador.setTablaSimbolos(ts);
+          if(args.length==0)
+              Tiny.Generador.generarCodigoObjeto(root, null, null);
+          else if (args.length==1)
+              Tiny.Generador.generarCodigoObjeto(root, args[0], null);
+          else
+              Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
+        }
     }
 
 
