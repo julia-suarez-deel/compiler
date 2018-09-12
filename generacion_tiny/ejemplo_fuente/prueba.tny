@@ -1,16 +1,16 @@
-function hola(a,b,c)
-  x:=a+9;
-  x:=b+x*c
-  return x
-end;
-function imprimir(a)
-  x:=a
-  return x
-end;
-if z=8 then
-  z:=imprimir(5+2)
+if z<x+3  then 
+  if z=0  then
+    z:=8;
+    if z=8 then
+      write x
+    else
+      repeat
+        fact := fact * x;
+        x := x - 1
+      until x = 0
+    end
+  end
 else
-  z:=chao(5+2)
+  z:=0
 end
-
 

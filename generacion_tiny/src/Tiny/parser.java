@@ -279,6 +279,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
             Tiny.Generador.generarCodigoObjeto(root, args[0], null);
         else
             Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
+       
     }
 
 
