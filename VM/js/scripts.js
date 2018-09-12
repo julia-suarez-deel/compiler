@@ -53,6 +53,10 @@ class Toolbar {
     }
     setupEvents(){
         $('#start_or_next.btn').on('click', function () {
+            let length = $( ".alert-danger" ).length;
+            if(length > 0)
+                $(".alert-danger").remove();
+            
             if(PC+1<=instructions.length){
                 is_executing = true;
                 toolbar.updateState();

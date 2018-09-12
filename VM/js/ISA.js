@@ -69,7 +69,17 @@ function DVI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    stack.push(new StackLine(value2/value1));
+    if(value1 != 0)
+        stack.push(new StackLine(value2/value1));
+    else{
+        haltProgram();
+        $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+ 
+                                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                                    "<span aria-hidden='true'>&times;</span></button>"+
+                                    "<strong>Error de ejecución</strong>"+
+                                    "</div>");
+        
+    }
 }
 function LAB(address){
 
