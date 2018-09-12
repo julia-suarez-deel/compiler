@@ -17,52 +17,67 @@ public class TablaSimbolos {
         this.secciones = new ArrayList<HashMap<String, RegistroSimbolo>>();
     }
 
-    public void cargarTabla(NodoBase raiz, int bloque){
-            
+    public void cargarTabla(NodoBase raiz, int bloque) throws IdNotFoundException{
             while (raiz != null) {
                 if (raiz instanceof NodoIdentificador){
-                    InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),bloque);
-                    // TODO: Añadir el numero de linea y localidad de memoria correcta
+                    //Si el identificador no ha sido declarado. Se lanza un error.
+                    if(BuscarSimbolo(((NodoIdentificador)raiz).getNombre(),bloque) == null){
+                        throw new IdNotFoundException("El identificador '"+((NodoIdentificador)raiz).getNombre()+"' no ha sido declarado.");
+                    }
                 }
 
                 /* Hago el recorrido recursivo */
                 else if(raiz instanceof NodoVector){
-                    //cargarTabla(((NodoVector)raiz).getIdentificador(), bloque);
+                    cargarTabla(((NodoVector)raiz).getIdentificador(), bloque);
                     cargarTabla(((NodoVector)raiz).getExpresion(), bloque);
-                }else if (raiz instanceof  NodoIf){
+                }
+                
+                else if (raiz instanceof  NodoIf){
                     cargarTabla(((NodoIf)raiz).getPrueba(), bloque);
                     cargarTabla(((NodoIf)raiz).getParteThen(), bloque);
-                    if(((NodoIf)raiz).getParteElse()!=null){
-                        cargarTabla(((NodoIf)raiz).getParteElse(), bloque);
-                    }
+                    cargarTabla(((NodoIf)raiz).getParteElse(), bloque);
                 }
+                
                 else if (raiz instanceof  NodoRepeat){
                     cargarTabla(((NodoRepeat)raiz).getCuerpo(), bloque);
                     cargarTabla(((NodoRepeat)raiz).getPrueba(), bloque);
                 }
+                
                 else if (raiz instanceof  NodoAsignacion){
-                    cargarTabla(((NodoAsignacion)raiz).getVariable(), bloque);
+                    if (((NodoAsignacion) raiz).getVariable() instanceof NodoIdentificador) {
+                        InsertarSimbolo(((NodoIdentificador) ((NodoAsignacion) raiz).getVariable()).getNombre(),bloque);
+                    }else{
+                        cargarTabla(((NodoAsignacion) raiz).getVariable(), bloque);
+                    }
                     cargarTabla(((NodoAsignacion)raiz).getExpresion(), bloque);
                 }
+                
                 else if (raiz instanceof  NodoEscribir)
                     cargarTabla(((NodoEscribir)raiz).getExpresion(), bloque);
-                else if (raiz instanceof  NodoLeer)
+                
+                    else if (raiz instanceof  NodoLeer)
                     cargarTabla(((NodoLeer)raiz).getVariable(), bloque);
-                else if (raiz instanceof NodoOperacion){
+                
+                    else if (raiz instanceof NodoOperacion){
                     cargarTabla(((NodoOperacion)raiz).getOpIzquierdo(), bloque);
                     cargarTabla(((NodoOperacion)raiz).getOpDerecho(), bloque);
-                }else if (raiz instanceof NodoFuncion){
+                }
+                
+                else if (raiz instanceof NodoFuncion){
                     if(((NodoFuncion) raiz).getCuerpo() != null){
-                        cargarTabla(((NodoFuncion) raiz).getIdentificador(), bloque);
+                        InsertarSimbolo(((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre(), bloque);
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), ((NodoFuncion) raiz).getNroBloque());
                         cargarTabla(((NodoFuncion) raiz).getCuerpo(), ((NodoFuncion) raiz).getNroBloque());
                         //cargarTabla(((NodoFuncion) raiz).getRetorno(), bloque + 1);
                     }else{
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), bloque);
                     }
-                }else if(raiz instanceof NodoArgumento){
-                    cargarTabla(((NodoArgumento) raiz).getIdentificador(), bloque);
                 }
+                
+                else if(raiz instanceof NodoArgumento){
+                    InsertarSimbolo(((NodoIdentificador) ((NodoArgumento) raiz).getIdentificador()).getNombre(), bloque);
+                }
+                
                 raiz = raiz.getHermanoDerecha();
             }
     }
@@ -100,8 +115,7 @@ public class TablaSimbolos {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
-        RegistroSimbolo simbolo=(RegistroSimbolo)seccion.get(identificador);
-        return simbolo;
+        return seccion.get(identificador);
     }
     
     public void ImprimirTabla(){
