@@ -274,7 +274,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         try{
           ts.cargarTabla(root, 0);
         }catch(IdNotFoundException e){
-          System.out.println(e.getMessage());
+          System.err.println("\n\nSe ha encontrado un error en la compilacion:\n\t" + e.getMessage());
           flag = true;
         }
         if(!flag){

@@ -22,7 +22,7 @@ public class TablaSimbolos {
                 if (raiz instanceof NodoIdentificador){
                     //Si el identificador no ha sido declarado. Se inserta pero se lanza un error para indicar que no estaba declarado.
                     if(InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),bloque)){
-                        throw new IdNotFoundException("El identificador "+((NodoIdentificador)raiz).getNombre()+" no ha sido declarado.");
+                        throw new IdNotFoundException("El identificador '"+((NodoIdentificador)raiz).getNombre()+"' no ha sido declarado.");
                     }
                 }
 
