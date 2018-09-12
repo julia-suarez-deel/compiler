@@ -71,7 +71,7 @@ public class Generador {
             generarEscribir(nodo);
         }else if (nodo instanceof NodoFuncion){
             generarFuncion(nodo);
-        }else if (nodo instanceof NodoListaArgs){
+        }else if (nodo instanceof NodoArgumento){
             generarListaArgs(nodo);
         }else if (nodo instanceof NodoValor){
             generarValor(nodo);
@@ -286,8 +286,8 @@ public class Generador {
     }
 
     private static void generarListaArgs(NodoBase nodo){
-        NodoListaArgs n = (NodoListaArgs)nodo;
-        generar(n.getVariable());
+        NodoArgumento n = (NodoArgumento)nodo;
+        generar(n.getIdentificador());
     }
 
     private static void generarOperacion(NodoBase nodo, boolean vector){

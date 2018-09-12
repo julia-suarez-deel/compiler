@@ -312,20 +312,26 @@ function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETUR
                                                                                         :}
 ;
 
-param_list ::= param_list:ar COMMA iden:variable    {: if(debug) System.out.println("\t regla 17a"); 
+param_list ::= param_list:ar COMMA ID:variable    {: if(debug) System.out.println("\t regla 17a"); 
                                                         NodoBase hijoActual = ar;
                                                         if(hijoActual !=null){
                                                             while(hijoActual.TieneHermano()){
                                                                 hijoActual = hijoActual.getHermanoDerecha();
                                                             }
-                                                            hijoActual.setHermanoDerecha(variable);
+                                                            hijoActual.setHermanoDerecha(new NodoArgumento(new NodoIdentificador(variable.toString())));
                                                             RESULT=ar;
                                                         }else{
-                                                            RESULT=variable;
+                                                            RESULT=new NodoArgumento(new NodoIdentificador(variable.toString()));
                                                         }
                                                     :} 
-            | iden:variable {: if(debug) System.out.println("\t regla 17b"); 
-                                RESULT=variable;
+            | ID:variable {: if(debug) System.out.println("\t regla 17b"); 
+                                if(variable!=null){
+                                    System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
+                                    RESULT= new NodoArgumento(new NodoIdentificador(variable.toString()));		
+                                }else{
+                                    RESULT = null;
+                                    System.out.println("Ocurrio error en cup # 0005");
+                                }
                             :}
 ;
 
