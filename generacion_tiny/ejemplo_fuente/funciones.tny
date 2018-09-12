@@ -1,1 +1,18 @@
-write A[0]
+x:=0;
+z:=x+1;
+function suma(z,x)
+	val:=suma(x,z);
+	if(val=0)
+	then
+		write val
+	end
+	return val
+end;
+if(x<0)
+then
+	y:=suma(x,z);
+	if(x=1)
+	then 
+		x:=2;
+	end
+end

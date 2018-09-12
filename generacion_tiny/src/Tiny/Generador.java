@@ -1,13 +1,21 @@
 package Tiny;
 
 import ast.*;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
 
 public class Generador {
     private static TablaSimbolos tablaSimbolos = null;
@@ -370,7 +378,60 @@ public class Generador {
     }
     
     private static void poscompilacion(String archivoSalida){
-        //nuevo archivo
+        Matcher m;
+        int instruccion;
+        String patron = "LB[0-9]+";
+        Pattern p = Pattern.compile(patron);
+        File fichero = new File(archivoSalida);
+        Scanner s = null;
+        BufferedWriter out = null;
+        File fileOut = new File("salida/poscompilacion.pcod");
+        fileOut.getParentFile().mkdirs();
+        try {
+            out = new BufferedWriter(new FileWriter(fileOut));
+        } catch (IOException ex) {
+            System.out.println("ADVERTENCIA!!: El archivo poscompilacion no pudo ser creado.");
+        }
+        try {
+            s = new Scanner(fichero);
+            while (s.hasNextLine()) {
+                String linea = s.nextLine();
+                m = p.matcher(linea);
+                String[] palabra = linea.split(" ");
+                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP")){
+                    instruccion = direccionEtiqueta(palabra[1]);
+                    linea = m.replaceAll(String.valueOf(instruccion));
+                }
+                escribir(linea, out);
+                escribir("true", out);
+            }
+        } catch (Exception ex) {
+                System.out.println("El archivo " +archivoSalida+ "no pudo ser leído");
+        } finally {
+            try {
+                if (s != null)
+                    s.close();
+                out.close();
+            } catch (Exception ex2) {
+                    System.out.println("Mensaje 2: " + ex2.getMessage());
+            }
+        }
+    }
+    
+     
+    
+    private static void escribir(String cadenaSalida, BufferedWriter out){
+         if(out != null) {                
+            try {
+                if(cadenaSalida.equals("true"))
+                    out.newLine();
+                else
+                    out.write(cadenaSalida);
+
+            } catch (IOException ex) {
+                Logger.getLogger(UtGen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
     }
     
     public static void getEtiquetas(){
