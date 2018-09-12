@@ -91,7 +91,8 @@ public class UtGen {
                 }
             }
             else{
-                System.out.println(cadenaSalida);
+                if(!cadenaSalida.equals("true"))
+                    System.out.println(cadenaSalida);
             }
         }
 }

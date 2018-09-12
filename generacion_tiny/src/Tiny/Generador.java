@@ -51,7 +51,11 @@ public class Generador {
             System.out.println();
             System.out.println();
         }
+        if(UtGen.debug)	UtGen.emitirComentario("-> Inicio de código", bw);
         generar(raiz);
+        if(UtGen.debug)	UtGen.emitirInstruccion("STP", "finaliza el código", bw);
+        if(UtGen.debug)	UtGen.emitirComentario("<- Fin de código", bw);
+        
         if(archivoSalida == null){
             System.out.println();
             System.out.println();

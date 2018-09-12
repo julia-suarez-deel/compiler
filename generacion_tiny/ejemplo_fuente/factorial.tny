@@ -3,7 +3,6 @@
   computes factorial
 }
 x := 1;
-g := hola(x,6);
 if 0 < x then { don't compute if x <= 0 }
   fact := 1;
   repeat
