@@ -196,6 +196,9 @@ s_stmt ::= if_stmt:sif  {:  if(debug) System.out.println("\t regla 5a");
         | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 5e");
                                 RESULT=sesc;
                             :}
+        | decl_vect:deve{:  if(debug) System.out.println("\t regla 4h");
+                            RESULT=deve;
+                        :}
         | error {:  if(debug) System.out.println("\t regla 5f");
                     System.out.println("Ocurrio error en cup # 0004");
                     RESULT=null;

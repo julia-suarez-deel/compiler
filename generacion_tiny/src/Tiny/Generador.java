@@ -300,6 +300,11 @@ public class Generador {
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
             generar(n.getCuerpo());
+            if(n.getRetorno() instanceof NodoIdentificador){
+                generarIdentificador(n.getRetorno());
+            }else if(n.getRetorno() instanceof NodoVector){
+                generarVector(n.getRetorno());
+            }
             UtGen.emitirInstruccion("RET", "Retorno valor del tope de la pila",bw);
         }
         bloqueActual = bloqueAnterior;

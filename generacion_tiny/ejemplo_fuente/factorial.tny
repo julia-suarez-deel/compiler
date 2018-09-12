@@ -3,6 +3,13 @@
   computes factorial
 }
 x := 1;
+function hola(x,y)
+  vector h 2;
+  y := x+y;
+  h[2] := 1
+  return h[2]
+end;
+g := hola(x,6);
 if 0 < x then { don't compute if x <= 0 }
   fact := 1;
   repeat
