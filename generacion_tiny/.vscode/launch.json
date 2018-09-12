@@ -12,7 +12,7 @@
             "console": "internalConsole",
             "stopOnEntry": false,
             "mainClass": "Tiny.parser",
-            "args": "generacion_tiny/salida/test.tiny generacion_tiny/salida/test.pcod"
+            "args": "ejemplo_fuente/factorial.tny salida/factorial.pcod"
         }
     ]
 }
