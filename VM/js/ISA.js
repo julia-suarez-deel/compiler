@@ -37,15 +37,15 @@ function IND(delta){
 }
 
 function UJP(address){
-    console.log(address-2);
-    PC=address-2;
+    console.log(address-1);
+    PC=address-1;
 }
 
 function FJP(address){
     let value = parseInt(stack.pop().value);   
     if (value==0) {
-        console.log(address-2);
-        PC=address-2;
+        console.log(address-1);
+        PC=address-1;
     }   
 }
 

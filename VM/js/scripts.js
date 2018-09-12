@@ -61,6 +61,7 @@ class Toolbar {
             if(PC+1<=instructions.length){
                 is_executing = true;
                 toolbar.updateState();
+                console.log("---------- "+PC);
                 instructions[PC].execute();
             }
             else{
