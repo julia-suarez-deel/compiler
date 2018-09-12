@@ -13,10 +13,11 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
 ***********/
     public static void main(String args[]) throws Exception {
         SymbolFactory sf = new DefaultSymbolFactory();
+        Boolean flag = false;
         parser parser_obj;
         if (args.length==0) 
             parser_obj=new parser(new Scanner(System.in,sf),sf);
-        else 
+        else
             parser_obj=new parser(new Scanner(new java.io.FileInputStream(args[0]),sf),sf);
 
         parser_obj.parse();
@@ -26,15 +27,22 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         System.out.println();
         ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
-        ts.cargarTabla(root, 0);
-        ts.ImprimirTabla();
-        Tiny.Generador.setTablaSimbolos(ts);
-        if(args.length==0)
-            Tiny.Generador.generarCodigoObjeto(root, null, null);
-        else if (args.length==1)
-            Tiny.Generador.generarCodigoObjeto(root, args[0], null);
-        else
-            Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
+        try{
+          ts.cargarTabla(root, 0);
+        }catch(IdNotFoundException e){
+          System.err.println("\n\nSe ha encontrado un error en la compilacion:\n\t" + e.getMessage());
+          flag = true;
+        }
+        if(!flag){
+          ts.ImprimirTabla();
+          Tiny.Generador.setTablaSimbolos(ts);
+          if(args.length==0)
+              Tiny.Generador.generarCodigoObjeto(root, null, null);
+          else if (args.length==1)
+              Tiny.Generador.generarCodigoObjeto(root, args[0], null);
+          else
+              Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
+        }
     }
 
 :}
@@ -77,6 +85,7 @@ terminal SEMI;
 terminal FUNCTION;
 terminal RETURN;
 terminal COMMA;
+terminal VECTOR;
 
 /* Simbolos No Terminales */
 non terminal program;
@@ -97,21 +106,21 @@ non terminal NodoBase iden;
 non terminal NodoBase function_stmt;
 non terminal NodoBase arg_list;
 non terminal NodoBase param_list;
+non terminal NodoBase decl_vect;
 
-
-/* Precedencia de operadores NO USAR FALLA  
+/* Precedencia de operadores NO USAR FALLA
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
 */
 
 /* REGLAS GRAMATICALES */
-program ::= stmt_seq:s  {:  if(debug) System.out.println("\t regla 1"); 
+program ::= stmt_seq:s  {:  if(debug) System.out.println("\t regla 1");
                             ast = s;
                         :}
 ;
 
-stmt_seq ::= stmt_seq:ini SEMI stmt:sent    {:  if(debug) System.out.println("\t regla 2a"); 
+stmt_seq ::= stmt_seq:ini SEMI stmt:sent    {:  if(debug) System.out.println("\t regla 2a");
                                                 NodoBase hijoActual = ini;
                                                 if(hijoActual !=null){
                                                     while(hijoActual.TieneHermano()){
@@ -123,12 +132,12 @@ stmt_seq ::= stmt_seq:ini SEMI stmt:sent    {:  if(debug) System.out.println("\t
                                                     RESULT=sent;
                                                 }
                                             :}
-            | stmt:sent {:  if(debug) System.out.println("\t regla 2b"); 
+            | stmt:sent {:  if(debug) System.out.println("\t regla 2b");
                             RESULT=sent;
                         :}
 ;
 
-s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {:  if(debug) System.out.println("\t regla 3a"); 
+s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {:  if(debug) System.out.println("\t regla 3a");
                                                     NodoBase hijoActual = ini;
                                                     if(hijoActual !=null){
                                                         while(hijoActual.TieneHermano()){
@@ -140,66 +149,69 @@ s_stmt_seq ::= s_stmt_seq:ini SEMI s_stmt:sent  {:  if(debug) System.out.println
                                                         RESULT=sent;
                                                     }
                                                 :}
-            | s_stmt:sent   {:  if(debug) System.out.println("\t regla 3b"); 
+            | s_stmt:sent   {:  if(debug) System.out.println("\t regla 3b");
                                 RESULT=sent;
                             :}
 ;
 
-stmt ::= if_stmt:sif    {:  if(debug) System.out.println("\t regla 4a"); 
+stmt ::= if_stmt:sif    {:  if(debug) System.out.println("\t regla 4a");
                             RESULT=sif;
                         :}
-        | repeat_stmt:srep  {:  if(debug) System.out.println("\t regla 4b"); 
+        | repeat_stmt:srep  {:  if(debug) System.out.println("\t regla 4b");
                                 RESULT=srep;
                             :}
-        | assign_stmt:sasi  {:  if(debug) System.out.println("\t regla 4c"); 
+        | assign_stmt:sasi  {:  if(debug) System.out.println("\t regla 4c");
                                 RESULT=sasi;
                             :}
-        | read_stmt:slec    {:  if(debug) System.out.println("\t regla 4d"); 
+        | read_stmt:slec    {:  if(debug) System.out.println("\t regla 4d");
                                 RESULT=slec;
                             :}
-        | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 4e"); 
+        | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 4e");
                                 RESULT=sesc;
                             :}
-        | function_stmt:fnt {:  if(debug) System.out.println("\t regla 4f"); 
+        | function_stmt:fnt {:  if(debug) System.out.println("\t regla 4f");
                                 RESULT=fnt;
                             :}
-        | error {:  if(debug) System.out.println("\t regla 4g"); 
+        | decl_vect:deve{:  if(debug) System.out.println("\t regla 4h");
+                            RESULT=deve;
+                        :}
+        | error {:  if(debug) System.out.println("\t regla 4g");
                     System.out.println("Ocurrio error en cup # 0004");
                     RESULT=null;
                 :}
 ;
 
-s_stmt ::= if_stmt:sif  {:  if(debug) System.out.println("\t regla 5a"); 
+s_stmt ::= if_stmt:sif  {:  if(debug) System.out.println("\t regla 5a");
                             RESULT=sif;
                         :}
-        | repeat_stmt:srep  {:  if(debug) System.out.println("\t regla 5b"); 
+        | repeat_stmt:srep  {:  if(debug) System.out.println("\t regla 5b");
                                 RESULT=srep;
                             :}
-        | assign_stmt:sasi  {:  if(debug) System.out.println("\t regla 5c"); 
+        | assign_stmt:sasi  {:  if(debug) System.out.println("\t regla 5c");
                                 RESULT=sasi;
                             :}
-        | read_stmt:slec    {:  if(debug) System.out.println("\t regla 5d"); 
+        | read_stmt:slec    {:  if(debug) System.out.println("\t regla 5d");
                                 RESULT=slec;
                             :}
-        | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 5e"); 
+        | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 5e");
                                 RESULT=sesc;
                             :}
-        | error {:  if(debug) System.out.println("\t regla 5f"); 
+        | error {:  if(debug) System.out.println("\t regla 5f");
                     System.out.println("Ocurrio error en cup # 0004");
                     RESULT=null;
                 :}
 ;
 
 
-if_stmt ::= IF exp:ex THEN s_stmt_seq:pthen END {:  if(debug) System.out.println("\t regla 6a"); 
+if_stmt ::= IF exp:ex THEN s_stmt_seq:pthen END {:  if(debug) System.out.println("\t regla 6a");
                                                     RESULT = new NodoIf(ex,pthen);
                                                 :}
-        | IF exp:ex THEN s_stmt_seq:pthen ELSE s_stmt_seq:pelse END {:  if(debug) System.out.println("\t regla 6b"); 
-                                                                        RESULT = new NodoIf(ex,pthen,pelse);		
+        | IF exp:ex THEN s_stmt_seq:pthen ELSE s_stmt_seq:pelse END {:  if(debug) System.out.println("\t regla 6b");
+                                                                        RESULT = new NodoIf(ex,pthen,pelse);
                                                                     :}
 ;
 
-repeat_stmt ::= REPEAT s_stmt_seq:cuerpo UNTIL exp:prueba   {:  if(debug) System.out.println("\t regla 7"); 
+repeat_stmt ::= REPEAT s_stmt_seq:cuerpo UNTIL exp:prueba   {:  if(debug) System.out.println("\t regla 7");
                                                                 RESULT = new NodoRepeat(cuerpo,prueba);
                                                             :}
 ;
@@ -214,7 +226,7 @@ assign_stmt ::= iden:id ASSIGN exp:r    {:  if(debug) System.out.println("\t reg
                                         :}
 ;
 
-read_stmt ::= READ iden:id  {:  if(debug) System.out.println("\t regla 9"); 
+read_stmt ::= READ iden:id  {:  if(debug) System.out.println("\t regla 9");
                                 System.out.println("Leyendo Variable");
                                 if(id!=null)
                                     RESULT = new NodoLeer(id);
@@ -225,55 +237,55 @@ read_stmt ::= READ iden:id  {:  if(debug) System.out.println("\t regla 9");
                             :}
 ;
 
-write_stmt ::= WRITE exp:ex {:  if(debug) System.out.println("\t regla 10"); 
+write_stmt ::= WRITE exp:ex {:  if(debug) System.out.println("\t regla 10");
                                 RESULT= new NodoEscribir(ex);
                             :}
 ;
 
-exp ::= simple_exp:exI LT simple_exp:exD    {:  if(debug) System.out.println("\t regla 11a"); 
+exp ::= simple_exp:exI LT simple_exp:exD    {:  if(debug) System.out.println("\t regla 11a");
                                                 RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
-                                            :} 
-        | simple_exp:exI EQ simple_exp:exD  {:  if(debug) System.out.println("\t regla 11b"); 
+                                            :}
+        | simple_exp:exI EQ simple_exp:exD  {:  if(debug) System.out.println("\t regla 11b");
                                                 RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
                                             :}
-        | simple_exp:ex {:  if(debug) System.out.println("\t regla 11c"); 
+        | simple_exp:ex {:  if(debug) System.out.println("\t regla 11c");
                             RESULT = ex;
                         :}
 ;
 
-simple_exp ::= simple_exp:exI PLUS term:exD {:  if(debug) System.out.println("\t regla 12a"); 
+simple_exp ::= simple_exp:exI PLUS term:exD {:  if(debug) System.out.println("\t regla 12a");
                                                 RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
                                             :}
-            | simple_exp:exI MINUS term:exD {:  if(debug) System.out.println("\t regla 12b"); 
+            | simple_exp:exI MINUS term:exD {:  if(debug) System.out.println("\t regla 12b");
                                                 RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
                                             :}
-            | term:ex   {:  if(debug) System.out.println("\t regla 12c"); 
+            | term:ex   {:  if(debug) System.out.println("\t regla 12c");
                             RESULT=ex;
                         :}
 ;
 
-term ::= term:exI TIMES factor:exD  {:  if(debug) System.out.println("\t regla 13a"); 
+term ::= term:exI TIMES factor:exD  {:  if(debug) System.out.println("\t regla 13a");
                                         RESULT = new NodoOperacion(exI,tipoOp.por,exD);
                                     :}
-        | term:exI OVER factor:exD  {:  if(debug) System.out.println("\t regla 13b"); 
+        | term:exI OVER factor:exD  {:  if(debug) System.out.println("\t regla 13b");
                                         RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
                                     :}
-        | factor:ex {:  if(debug) System.out.println("\t regla 13c"); 
+        | factor:ex {:  if(debug) System.out.println("\t regla 13c");
                         RESULT=ex;
                     :}
 ;
 
-factor ::= LPAREN exp:ex RPAREN {:  if(debug) System.out.println("\t regla 14a"); 
+factor ::= LPAREN exp:ex RPAREN {:  if(debug) System.out.println("\t regla 14a");
                                     RESULT = ex;
                                 :}
-        | NUM:valor {:  if(debug) System.out.println("\t regla 14b"); 
+        | NUM:valor {:  if(debug) System.out.println("\t regla 14b");
                         System.out.println("Devolví un nodo número entero");
                         RESULT= new NodoValor(Integer.parseInt(valor));
                     :}
-        | iden:id   {: if(debug) System.out.println("\t regla 14c"); 
+        | iden:id   {: if(debug) System.out.println("\t regla 14c");
                             RESULT = id;
                         :}
-        | error {: if(debug) System.out.println("\t regla 14d"); 
+        | error {: if(debug) System.out.println("\t regla 14d");
                     System.out.println("Ocurrio error en cup # 0003");
                     RESULT=null;
                 :}
@@ -288,15 +300,15 @@ iden ::= ID:id LBRACK simple_exp:ex RBRACK  {:  if(debug) System.out.println("\t
                                                 }
                                             :}
         | ID:id LPAREN arg_list:ar RPAREN   {:  if(debug) System.out.println("\t regla 15b anidada");
-                                                RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar); 
+                                                RESULT = new NodoFuncion(new NodoIdentificador(id.toString()),ar);
                                             :}
         | ID:id LPAREN RPAREN   {:  if(debug) System.out.println("\t regla 15c anidada");
-                                    RESULT = new NodoFuncion(new NodoIdentificador(id.toString())); 
+                                    RESULT = new NodoFuncion(new NodoIdentificador(id.toString()));
                                 :}
-        | ID:variable {:    if(debug) System.out.println("\t regla 15d"); 
+        | ID:variable {:    if(debug) System.out.println("\t regla 15d");
                             if(variable!=null){
                                 System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
-                                RESULT= new NodoIdentificador(variable.toString());		
+                                RESULT= new NodoIdentificador(variable.toString());
                             }else{
                                 RESULT = null;
                                 System.out.println("Ocurrio error en cup # 0005");
@@ -312,7 +324,7 @@ function_stmt ::= FUNCTION ID:id LPAREN param_list:ar RPAREN s_stmt_seq:st RETUR
                                                                                         :}
 ;
 
-param_list ::= param_list:ar COMMA ID:variable    {: if(debug) System.out.println("\t regla 17a"); 
+param_list ::= param_list:ar COMMA ID:variable    {: if(debug) System.out.println("\t regla 17a");
                                                         NodoBase hijoActual = ar;
                                                         if(hijoActual !=null){
                                                             while(hijoActual.TieneHermano()){
@@ -323,11 +335,11 @@ param_list ::= param_list:ar COMMA ID:variable    {: if(debug) System.out.printl
                                                         }else{
                                                             RESULT=new NodoArgumento(new NodoIdentificador(variable.toString()));
                                                         }
-                                                    :} 
-            | ID:variable {: if(debug) System.out.println("\t regla 17b"); 
+                                                    :}
+            | ID:variable {: if(debug) System.out.println("\t regla 17b");
                                 if(variable!=null){
                                     System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
-                                    RESULT= new NodoArgumento(new NodoIdentificador(variable.toString()));		
+                                    RESULT= new NodoArgumento(new NodoIdentificador(variable.toString()));
                                 }else{
                                     RESULT = null;
                                     System.out.println("Ocurrio error en cup # 0005");
@@ -335,7 +347,7 @@ param_list ::= param_list:ar COMMA ID:variable    {: if(debug) System.out.printl
                             :}
 ;
 
-arg_list ::= arg_list:ar COMMA simple_exp:variable  {: if(debug) System.out.println("\t regla 18a"); 
+arg_list ::= arg_list:ar COMMA simple_exp:variable  {: if(debug) System.out.println("\t regla 18a");
                                                         NodoBase hijoActual = ar;
                                                         if(hijoActual !=null){
                                                             while(hijoActual.TieneHermano()){
@@ -346,8 +358,20 @@ arg_list ::= arg_list:ar COMMA simple_exp:variable  {: if(debug) System.out.prin
                                                         }else{
                                                             RESULT=variable;
                                                         }
-                                                    :} 
-            | simple_exp:variable   {: if(debug) System.out.println("\t regla 18b"); 
+                                                    :}
+            | simple_exp:variable   {: if(debug) System.out.println("\t regla 18b");
                                         RESULT=variable;
+                                    :}
+;
+decl_vect ::= VECTOR ID:id NUM:num  {:  if(debug) System.out.println("\t regla 15a");
+                                        if (id != null && num != null){
+                                         NodoVector vector = new NodoVector(new NodoIdentificador(id.toString()),new NodoValor(Integer.parseInt(num)));
+                                        vector.setDeclaracion(true);
+                                        System.out.println("Devuelve un nodo vector");
+                                        RESULT = vector;
+                                        }else{
+                                            RESULT = null;
+                                            System.out.println("Ocurrio error en cup # 00017");
+                                        }
                                     :}
 ;

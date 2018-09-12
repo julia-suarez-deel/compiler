@@ -90,6 +90,7 @@ public class Generador {
         }else if (nodo instanceof NodoValor){
             generarValor(nodo);
         }else if (nodo instanceof NodoVector){
+            if(!((NodoVector)nodo).isDeclaracion())
             generarVector(nodo);
         }else if (nodo instanceof NodoIdentificador){
             generarIdentificador(nodo);
@@ -215,7 +216,7 @@ public class Generador {
                 generar(variable.getExpresion());
             }
             
-            UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
+            UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")" , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
             generar(n.getExpresion());
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+identificador_vector.getNombre(), bw);
         }
@@ -240,7 +241,7 @@ public class Generador {
             }else{
                 generar(vector.getExpresion());
             }
-            UtGen.emitirInstruccion("IXA elem_size("+direccion+")", direccion , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
+            UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")" , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
             UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
         }
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
@@ -271,8 +272,8 @@ public class Generador {
             generar(n.getExpresion());
         }
         
-        UtGen.emitirInstruccion("IXA elem_size("+direccion+")", "cargar la direccion de la posicion del vector: "+ni.getNombre(), bw);
-        UtGen.emitirInstruccion("IND 0", "cargar el valor de la direccion anterior", bw);
+        UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")", "cargar la direccion de la posicion del vector: "+ni.getNombre(), bw);
+        UtGen.emitirInstruccion("IND", 0,"cargar el valor de la direccion anterior", bw);
     }
 
     private static void generarIdentificador(NodoBase nodo){
@@ -289,9 +290,7 @@ public class Generador {
         int bloqueAnterior = bloqueActual;
         if (n.getRetorno()==null){
             nombre = ((NodoIdentificador)n.getIdentificador()).getNombre();
-            if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
             generarLamada(nombre,n.getArgumentos());
-            if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
         }else if (n.getRetorno()!=null) {
             bloqueActual = n.getNroBloque();
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
@@ -303,12 +302,13 @@ public class Generador {
     }
 
     private static void generarLamada(String nombre,NodoBase argumentos){
+        if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
         if(argumentos != null){
             UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
             generar(argumentos);
         }
         UtGen.emitirInstruccion("CUP ", nombre, " llamada a funcion: "+nombre, bw);
-        
+        if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
     }
 
     private static void generarListaArgs(NodoBase nodo){

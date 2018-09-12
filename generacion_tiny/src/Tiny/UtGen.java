@@ -21,7 +21,7 @@ public class UtGen {
 	/* Emite comentario */
 	public static void emitirComentario(String c, BufferedWriter bw){
 		if(debug){
-                    UtGen.writeIns(";      "+c+"\n", bw);
+                    UtGen.writeIns(";                          "+c+"\n", bw);
 		    UtGen.writeIns("true", bw);
                 }
 	}
