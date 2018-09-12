@@ -70,6 +70,10 @@ public class TablaSimbolos {
                         cargarTabla(((NodoFuncion) raiz).getCuerpo(), ((NodoFuncion) raiz).getNroBloque());
                         //cargarTabla(((NodoFuncion) raiz).getRetorno(), bloque + 1);
                     }else{
+                        //Si el identificador no ha sido declarado. Se lanza un error.
+                        if(BuscarSimbolo(((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre(),bloque) == null){
+                            throw new IdNotFoundException("La funcion '"+((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre()+"' no ha sido declarado.");
+                        }
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), bloque);
                     }
                 }
@@ -115,7 +119,8 @@ public class TablaSimbolos {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
-        return seccion.get(identificador);
+        RegistroSimbolo simbolo = (RegistroSimbolo)seccion.get(identificador);
+        return simbolo;
     }
     
     public void ImprimirTabla(){
