@@ -37,7 +37,7 @@ public class UtGen {
 	
 	public static void emitirInstruccion(String op, int p, String c, BufferedWriter bw){
                 numeroLinea++;
-                UtGen.writeIns(op+"    "+p, bw);
+                UtGen.writeIns(op+" "+p, bw);
 		if(debug)
                     UtGen.writeIns("        ;"+c, bw);
 		UtGen.writeIns("true", bw);
@@ -52,7 +52,7 @@ public class UtGen {
         
         public static void emitirInstruccion(String op, String p, String c, BufferedWriter bw){
                 numeroLinea++;
-                UtGen.writeIns(op+"    "+p, bw);
+                UtGen.writeIns(op+" "+p, bw);
 		if(debug)
                     UtGen.writeIns("        ;"+c, bw);
 		UtGen.writeIns("true", bw);

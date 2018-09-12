@@ -4,7 +4,7 @@ import java.util.*;
 
 
 import ast.*;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
+//import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
 public class TablaSimbolos {
 
@@ -86,7 +86,7 @@ public class TablaSimbolos {
                     }else{
                         //Si el identificador no ha sido declarado. Se lanza un error.
                         if(BuscarSimbolo(((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre(),bloque) == null){
-                            throw new IdNotFoundException("La funcion '"+((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre()+"' no ha sido declarado.");
+                            throw new IdNotFoundException("La funcion '"+((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre()+"' no ha sido declarada.");
                         }
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), bloque);
                     }
