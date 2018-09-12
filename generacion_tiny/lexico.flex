@@ -68,6 +68,9 @@ espacio		= [ \t]+
 "return" 		{	if(debug) System.out.println("token RETURN");
 			return sf.newSymbol("RETURN",sym.RETURN);
 			}
+"vector" 		{	if(debug) System.out.println("token VECTOR");
+			return sf.newSymbol("VECTOR",sym.VECTOR);
+			}
 ":="            {	if(debug) System.out.println("token ASSIGN");
 			return sf.newSymbol("ASSIGN",sym.ASSIGN);
 			}

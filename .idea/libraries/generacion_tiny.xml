@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="generacion_tiny">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/generacion_tiny/java-cup-11a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/generacion_tiny/JFlex.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
