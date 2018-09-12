@@ -1,57 +1,24 @@
-;                          -> Inicio de código
-
-LDA 0        ;cargar direccion de identificador: x
-LDC 1        ;cargar constante: 1
-STO            ;asignacion: almaceno el valor para el id x
-;                          -> if
-
-LOD 0        ;cargar valor de identificador: x
-LDC 0        ;cargar constante: 0
-GRT            ;A mayor que B: B<A
-FJP 41        ;if false: jmp hacia else
-LDA 1        ;cargar direccion de identificador: fact
-LDC 1        ;cargar constante: 1
-STO            ;asignacion: almaceno el valor para el id fact
-;                          -> Repeat
-
-LAB 11        ;Definicion label para repeat
-LDA 1        ;cargar direccion de identificador: fact
-LOD 1        ;cargar valor de identificador: fact
-LOD 0        ;cargar valor de identificador: x
-MPI            ;Operación multiplicación: *
-STO            ;asignacion: almaceno el valor para el id fact
-LDA 0        ;cargar direccion de identificador: x
-LOD 0        ;cargar valor de identificador: x
-LDC 1        ;cargar constante: 1
-SBI            ;Operación resta: -
-STO            ;asignacion: almaceno el valor para el id x
-;                          -> Repeat
-
-LAB 22        ;Definicion label para repeat
-LDA 1        ;cargar direccion de identificador: fact
-LOD 1        ;cargar valor de identificador: fact
-LOD 0        ;cargar valor de identificador: x
-MPI            ;Operación multiplicación: *
-STO            ;asignacion: almaceno el valor para el id fact
-LDA 0        ;cargar direccion de identificador: x
-LOD 0        ;cargar valor de identificador: x
-LDC 1        ;cargar constante: 1
-SBI            ;Operación resta: -
-STO            ;asignacion: almaceno el valor para el id x
-LOD 0        ;cargar valor de identificador: x
-LDC 0        ;cargar constante: 0
-EQU            ;Igual a: ==
-FJP 22        ;repeat: Salto hacia el inicio del cuerpo
-;                          <- repeat
-
-LOD 0        ;cargar valor de identificador: x
-LDC 0        ;cargar constante: 0
-EQU            ;Igual a: ==
-FJP 11        ;repeat: Salto hacia el inicio del cuerpo
-;                          <- repeat
-
-LAB 41        ;definicion label jmp
-;                          <- if
-
-STP            ;finaliza el código
-;                          <- Fin de código
+LDA 0
+LDC 2
+IXA 1
+LDC 43
+STO
+LDA 1
+LDC 2
+IXA 1
+LDC 5
+STO
+LDA 0
+LDA 0
+LDC 2
+IXA 1
+IND 0
+LDA 1
+LDC 2
+IXA 1
+IND 0
+ADI
+LDC 5
+DVI
+STO
+STP

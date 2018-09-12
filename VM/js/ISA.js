@@ -22,15 +22,14 @@ function STN(){
     stack.push(new StackLine(value));
 }
 function IXA(factor){
-    // TODO: Change the compiler so the factor would be a number and not elem_size
-    factor = 1;
-    let address = stack.pop().value;
-    let delta = stack.pop().value;
-    stack.push(new StackLine(address+delta*factor));
+    let delta = parseInt(stack.pop().value);
+    let address = parseInt(stack.pop().value);
+    stack.push(new StackLine(address + factor * delta));
 }
 
 function IND(delta){
-    let address = stack.pop().value;
+    let address = parseInt(stack.pop().value);
+    delta = parseInt(delta);
     SP--;
     let data_value = data[address + delta].value;
     stack.push(new StackLine(data_value));
@@ -97,8 +96,10 @@ function DVI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    if(value1 != 0)
-        stack.push(new StackLine(value2/value1));
+    if(value1 != 0){
+        let result = parseInt(value2/value1);
+        stack.push(new StackLine(result));
+    }
     else{
         haltProgram();
         $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+ 
