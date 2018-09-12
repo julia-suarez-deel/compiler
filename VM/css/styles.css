@@ -1,9 +1,4 @@
 .console {
-    /*background: rgb(38, 35, 35);
-    color: rgba(255, 255, 255, 0.863);
-    font-weight: lighter;*/
-    /*color: rgb(255, 255, 255);
-    background: #107888;*/
     color: rgba(0, 0, 0, 0.837);
     background: #ccc;
     border: 1px solid #b7b7b7;
@@ -17,10 +12,6 @@
 .console-head {
     padding-top: 10px;
     font-size: 18px;
-    /*background: rgb(38, 35, 35);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.863);*/
-    /*border-bottom: 1px solid rgb(255, 255, 255);
-    background: #107888;*/
     border-bottom: 1px solid rgba(0, 0, 0, 0.685);
     background: #ccc;
     position: sticky;
