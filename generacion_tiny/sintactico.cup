@@ -2,6 +2,8 @@ package Tiny;
 
 import java_cup.runtime.*;
 import ast.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 //import otros.*;
 
 parser code {:
@@ -11,40 +13,43 @@ SymbolFactory es una nueva caracteristica que ha sido a�adida a las version 11
 , esto debido a que dicha clase no provee mucha informaci�n de contexto que podria ser util para el analisis semantico o ayudar en la construccion del AST
 Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols-in-cup/
 ***********/
-    public static void main(String args[]) throws Exception {
+public static void main(String args[]) throws Exception {
         SymbolFactory sf = new DefaultSymbolFactory();
-        Boolean flag = false;
-        parser parser_obj;
-        if (args.length==0) 
-            parser_obj=new parser(new Scanner(System.in,sf),sf);
-        else
-            parser_obj=new parser(new Scanner(new java.io.FileInputStream(args[0]),sf),sf);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String fileIn, fileOut;
 
+        parser parser_obj = null;
+        if (args.length<1){
+            System.out.println("*** Advertencia: Archivo fuente no especificado.");
+            System.out.print("Por favor, especifique un archivo a compilar: ");
+            fileIn = br.readLine();
+            fileOut = fileIn.substring(0, fileIn.lastIndexOf(".")) + ".pcod";
+        }else{
+            fileIn = args[0];
+            if(args.length<2){
+              fileOut = fileIn.substring(0, fileIn.lastIndexOf(".")) + ".pcod";
+            }else{
+              fileOut = args[1];
+            }
+        }
+        parser_obj=new parser(new Scanner(new java.io.FileInputStream(fileIn),sf),sf);
         parser_obj.parse();
         NodoBase root=parser_obj.action_obj.getASTroot();
         System.out.println();
         System.out.println("IMPRESION DEL AST GENERADO");
         System.out.println();
-        ast.Util.imprimirAST(root);
+        //ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
         try{
           ts.cargarTabla(root, 0);
         }catch(IdNotFoundException e){
           System.err.println("\n\nSe ha encontrado un error en la compilacion:\n\t" + e.getMessage());
-          flag = true;
+          System.exit(0);
         }
-        if(!flag){
-          ts.ImprimirTabla();
-          Tiny.Generador.setTablaSimbolos(ts);
-          if(args.length==0)
-              Tiny.Generador.generarCodigoObjeto(root, null, null);
-          else if (args.length==1)
-              Tiny.Generador.generarCodigoObjeto(root, args[0], null);
-          else
-              Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
-        }
+        ts.ImprimirTabla();
+        Tiny.Generador.setTablaSimbolos(ts);
+        Tiny.Generador.generarCodigoObjeto(root, fileIn, fileOut);
     }
-
 :}
 
 action code {:
@@ -196,6 +201,9 @@ s_stmt ::= if_stmt:sif  {:  if(debug) System.out.println("\t regla 5a");
         | write_stmt:sesc   {:  if(debug) System.out.println("\t regla 5e");
                                 RESULT=sesc;
                             :}
+        | decl_vect:deve{:  if(debug) System.out.println("\t regla 4h");
+                            RESULT=deve;
+                        :}
         | error {:  if(debug) System.out.println("\t regla 5f");
                     System.out.println("Ocurrio error en cup # 0004");
                     RESULT=null;

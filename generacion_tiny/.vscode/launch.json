@@ -9,10 +9,10 @@
             "name": "Debug (Launch)",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
+            "console": "externalTerminal",
             "stopOnEntry": false,
             "mainClass": "Tiny.parser",
-            "args": "generacion_tiny/salida/test.tiny generacion_tiny/salida/test.pcod"
+            "args": "ejemplos_temporales/test.tny"
         }
     ]
 }
