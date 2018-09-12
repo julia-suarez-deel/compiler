@@ -15,10 +15,10 @@ public class Util {
 		    	System.out.println("Repeat");
 		    
 		    else if (raiz instanceof  NodoAsignacion)
-		    	System.out.println("Asignacion a: "+((NodoAsignacion)raiz).getVariable());
+		    	System.out.println("Asignacion a: "+((NodoIdentificador)((NodoAsignacion)raiz).getVariable()).getNombre());
 
 		    else if (raiz instanceof  NodoLeer)  
-		    	System.out.println("Lectura: "+((NodoLeer)raiz).getVariable());
+		    	System.out.println("Lectura: "+((NodoIdentificador)((NodoLeer)raiz).getVariable()).getNombre());
 
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
@@ -62,6 +62,32 @@ public class Util {
 		    	printSpaces();
 		    	System.out.println("**Expr Derecha Operacion**");		    	
 		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
+		    }else if (raiz instanceof NodoFuncion){
+				if(((NodoFuncion)raiz).getCuerpo() != null){
+		    		System.out.println("Funcion");
+		    		printSpaces();
+					System.out.println("Nombre de funcion: "+((NodoIdentificador)((NodoFuncion)raiz).getIdentificador()).getNombre());
+					if(((NodoFuncion)raiz).getArgumentos() != null){
+		    			printSpaces();
+		    			System.out.println("**Lista de Argumentos**");
+		    			imprimirAST(((NodoFuncion)raiz).getArgumentos());
+					}
+		    		printSpaces();
+		    		System.out.println("**Cuerpo de la Funcion**");		    	
+		    		imprimirAST(((NodoFuncion)raiz).getCuerpo());
+		    		printSpaces();
+		    		System.out.println("**Retorno de la Funcion**");		    	
+		    		imprimirAST(((NodoFuncion)raiz).getRetorno());
+				}else{
+					System.out.println("Llamada de Funcion");
+		    		printSpaces();
+					System.out.println("Nombre de funcion: "+((NodoIdentificador)((NodoFuncion)raiz).getIdentificador()).getNombre());
+					if(((NodoFuncion)raiz).getArgumentos() != null){
+		    			printSpaces();
+		    			System.out.println("**Lista de Argumentos**");
+		    			imprimirAST(((NodoFuncion)raiz).getArgumentos());
+					}
+				}
 		    }
 		    raiz = raiz.getHermanoDerecha();
 		  }

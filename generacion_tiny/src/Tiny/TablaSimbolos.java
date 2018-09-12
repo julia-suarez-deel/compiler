@@ -61,12 +61,12 @@ public class TablaSimbolos {
                 }
                 
                 else if (raiz instanceof  NodoAsignacion){
+                    cargarTabla(((NodoAsignacion)raiz).getExpresion(), bloque);
                     if (((NodoAsignacion) raiz).getVariable() instanceof NodoIdentificador) {
-                        InsertarSimbolo(((NodoIdentificador) ((NodoAsignacion) raiz).getVariable()).getNombre(),bloque);
-                    }else{
+                        InsertarSimbolo(((NodoIdentificador) ((NodoAsignacion) raiz).getVariable()).getNombre(), bloque);
+                    } else {
                         cargarTabla(((NodoAsignacion) raiz).getVariable(), bloque);
                     }
-                    cargarTabla(((NodoAsignacion)raiz).getExpresion(), bloque);
                 }
                 
                 else if (raiz instanceof  NodoEscribir)
@@ -85,8 +85,12 @@ public class TablaSimbolos {
                         InsertarSimbolo(((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre(), bloque);
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), ((NodoFuncion) raiz).getNroBloque());
                         cargarTabla(((NodoFuncion) raiz).getCuerpo(), ((NodoFuncion) raiz).getNroBloque());
-                        //cargarTabla(((NodoFuncion) raiz).getRetorno(), bloque + 1);
+                        cargarTabla(((NodoFuncion) raiz).getRetorno(), ((NodoFuncion) raiz).getNroBloque());
                     }else{
+                        //Si el identificador no ha sido declarado. Se lanza un error.
+                        if(BuscarSimbolo(((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre(),bloque) == null){
+                            throw new IdNotFoundException("La funcion '"+((NodoIdentificador)((NodoFuncion) raiz).getIdentificador()).getNombre()+"' no ha sido declarado.");
+                        }
                         cargarTabla(((NodoFuncion) raiz).getArgumentos(), bloque);
                     }
                 }
@@ -94,7 +98,7 @@ public class TablaSimbolos {
                 else if(raiz instanceof NodoArgumento){
                     InsertarSimbolo(((NodoIdentificador) ((NodoArgumento) raiz).getIdentificador()).getNombre(), bloque);
                 }
-                
+
                 raiz = raiz.getHermanoDerecha();
             }
     }
@@ -132,7 +136,8 @@ public class TablaSimbolos {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
-        return seccion.get(identificador);
+        RegistroSimbolo simbolo = (RegistroSimbolo)seccion.get(identificador);
+        return simbolo;
     }
     
     public void ImprimirTabla(){

@@ -281,9 +281,7 @@ public class Generador {
         int bloqueAnterior = bloqueActual;
         if (n.getRetorno()==null){
             nombre = ((NodoIdentificador)n.getIdentificador()).getNombre();
-            if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
             generarLamada(nombre,n.getArgumentos());
-            if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
         }else if (n.getRetorno()!=null) {
             bloqueActual = n.getNroBloque();
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
@@ -295,12 +293,13 @@ public class Generador {
     }
 
     private static void generarLamada(String nombre,NodoBase argumentos){
+        if(UtGen.debug)	UtGen.emitirComentario("-> llamada a funcion", bw);
         if(argumentos != null){
             UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
             generar(argumentos);
         }
         UtGen.emitirInstruccion("CUP ", nombre, " llamada a funcion: "+nombre, bw);
-        
+        if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
     }
 
     private static void generarListaArgs(NodoBase nodo){
