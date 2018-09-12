@@ -1,6 +1,4 @@
 // Variables
-const CODE_URL = 'http://localhost:63342/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost:63342/VM/templates.html';
 const ISA = {
     'LDA':LDA,
     'LOD':LOD,

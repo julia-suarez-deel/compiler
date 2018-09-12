@@ -6,3 +6,4 @@ generacion_tiny/salida/*
 generacion_tiny/nbproject/private/
 **/bin
 out/
+env.js
