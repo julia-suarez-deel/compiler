@@ -6,14 +6,13 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug (Launch)-parser<generacion_tiny>",
+            "name": "Debug (Launch)",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "stopOnEntry": false,
             "mainClass": "Tiny.parser",
-            "args": "generacion_tiny/salida/test.tiny generacion_tiny/salida/test.pcod",
-            "projectName": "generacion_tiny"
+            "args": "generacion_tiny/salida/test.tiny generacion_tiny/salida/test.pcod"
         }
     ]
 }
