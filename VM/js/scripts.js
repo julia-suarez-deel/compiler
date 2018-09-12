@@ -1,16 +1,35 @@
 // Variables
-const CODE_URL = 'http://localhost/compiler/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost/compiler/VM/templates.html';
+const CODE_URL = 'http://localhost:63342/VM/code.txt';
+const TEMPLATES_URL = 'http://localhost:63342/VM/templates.html';
 const ISA = {
-    'instruction1':instruction1,
-    'instruction2':instruction2,
-    'instruction3':instruction3,
+    'LDA':LDA,
+    'LOD':LOD,
+    'LDC':LDC,
+    'STO':STO,
+    'STN':STN,
+    'IXA':IXA,
+    'IND':IND,
+    'UCJ':UCJ,
+    'EQU':EQU,
+    'GEQ':GEQ,
+    'STP':STP,
+    'ADI':ADI,
+    'SBI':SBI,
+    'MPI':MPI,
+    'DVI':DVI,
+    'LAB':LAB,
 };
+const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
+const STACK_CONTAINER_SELECTOR = '#stack-container tbody';
+const DATA_CONTAINER_SELECTOR = '#data-container tbody';
 let is_executing = false;
 let PC = 0;
+let SP = 0;
 let $templates = null;
 let instructions = [];
+let stack = [];
+let data = Array(DATA_SIZE).fill({});
 let toolbar = null;
 // Helper classes
 class Toolbar {
@@ -53,7 +72,7 @@ class Toolbar {
         });
         $('#redo.btn').on('click', function () {
             if(is_executing){
-                PC = 0;
+                haltProgram();
                 instructions[PC].execute();
             }
         })
@@ -79,7 +98,10 @@ class Instruction{
         try{
             if(this.function.length === this.args.length){
                 this.function.apply(this, this.args);
+                loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
+                loadHtmlArray(data,DATA_CONTAINER_SELECTOR);
                 this.$node.addClass(SUCCESS_ROW_CLASS);
+
                 PC++;
             }
             else{
@@ -90,11 +112,24 @@ class Instruction{
         }
     }
 }
+class StackLine {
+    constructor(value){
+        this.value = value;
+        this.number = SP;
+    }
+}
+class DataLine{
+    constructor(address, value){
+        this.address = address;
+        this.value = value;
+    }
+}
 // Setup
 $(document).ready(function(){
     loadTemplates();
     readCode();
     toolbar = new Toolbar();
+    loadHtmlArray(data, DATA_CONTAINER_SELECTOR);
 });
 // Helper functions
 function loadTemplates(){
@@ -121,7 +156,7 @@ function readCode(){
 }
 function splitInstructions(data){
     let clean_data = cleanLine(data);
-    let instructions = clean_data.split(';');
+    let instructions = clean_data.split('\n');
     let instructions_not_empty = instructions.filter( x => x);
     return instructions_not_empty;
 }
@@ -136,9 +171,25 @@ function createOrUpdateDomNode(object, create=false){
         $(object.unique_selector).html(rendered_html);
     }
 }
+function loadHtmlArray(array, parent_selector){
+    let complete_html = "";
+    let i = 0;
+    array.forEach(item => {
+        item.number = i;
+        let template_html = $templates.find('.line')[0].outerHTML;
+        let rendered_html = Mustache.render(template_html, item);
+        complete_html+=rendered_html;
+        i++;
+    });
+    $(parent_selector).html(complete_html);
+}
 function haltProgram() {
-    PC = 0;
+    PC = SP = 0;
     $('.instruction').removeClass(SUCCESS_ROW_CLASS);
     $('#toolbar').remove();
     toolbar = new Toolbar();
+    stack = [];
+    data = Array(DATA_SIZE).fill({});
+    loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
+    loadHtmlArray(data, DATA_CONTAINER_SELECTOR);
 }
