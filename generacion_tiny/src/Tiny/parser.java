@@ -273,7 +273,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         System.out.println();
         System.out.println("IMPRESION DEL AST GENERADO");
         System.out.println();
-        ast.Util.imprimirAST(root);
+        //ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
         try{
           ts.cargarTabla(root, 0);
