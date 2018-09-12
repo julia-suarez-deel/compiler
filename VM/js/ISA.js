@@ -14,8 +14,9 @@ function STO(){
     SP-=2;
 }
 function STN(){
-    let address = stack.pop().value;
     let value = stack.pop().value;
+    let address = stack.pop().value;
+    console.log(address);
     data[address] = new DataLine(address,value);
     SP-=2;
     stack.push(new StackLine(value));
@@ -43,7 +44,7 @@ function GEQ(){
 
 }
 function STP(){
-
+    haltProgram();
 }
 function ADI(){
     let value1 = parseInt(stack.pop().value);

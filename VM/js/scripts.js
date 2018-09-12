@@ -97,12 +97,11 @@ class Instruction{
         $('.instruction').removeClass(SUCCESS_ROW_CLASS);
         try{
             if(this.function.length === this.args.length){
+                this.$node.addClass(SUCCESS_ROW_CLASS);
+                PC++;
                 this.function.apply(this, this.args);
                 loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
                 loadHtmlArray(data,DATA_CONTAINER_SELECTOR);
-                this.$node.addClass(SUCCESS_ROW_CLASS);
-
-                PC++;
             }
             else{
                 throw new Error("Number of arguments doesn't match.")
