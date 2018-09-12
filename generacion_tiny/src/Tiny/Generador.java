@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
 
 public class Generador {
@@ -15,10 +17,12 @@ public class Generador {
     private static Stack st_fjp = new Stack();
     private static Stack st_ujp = new Stack();
     private static int bloqueActual = 0;
-    
+    private static ArrayList<LabelCodigoP> etiquetas = new ArrayList<LabelCodigoP>();
+    //private static LabelCodigoP et = new LabelCodigoP();
     public static void setTablaSimbolos(TablaSimbolos tabla){
         tablaSimbolos = tabla;
     }
+   
     
     public static void generarCodigoObjeto(NodoBase raiz, String archivoEntrada, String archivoSalida){
         System.out.println();
@@ -47,11 +51,13 @@ public class Generador {
         }else{
             try {
                 bw.close();
+                poscompilacion(archivoSalida);
             } catch (IOException ex) {
                 System.out.println("---------");
             }
         }
-        
+        System.out.println("-------- Etiquetas ------------");
+        getEtiquetas();
         System.out.println("Compilación terminada.");
     }
     
@@ -114,10 +120,13 @@ public class Generador {
         /*Saco valor del ultimo label que salta hacia el else*/
         lbElse = (String)st_fjp.pop();
         UtGen.emitirInstruccion("LAB", lbElse, "definicio label jmp", bw);
+       
+        
         if(n.getParteElse()!=null){
             generar(n.getParteElse());
             lbIf = (String)st_ujp.pop();
             UtGen.emitirInstruccion("LAB", lbIf, "definicio label ujp", bw);
+           
         }
         if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
         
@@ -133,19 +142,26 @@ public class Generador {
         
         lbElse = generarLabel();
         UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
-        
         generar(n.getParteThen());
         
         if(n.getParteElse()!=null){
             lbFalse=generarLabel(); 
-            UtGen.emitirInstruccion("UJP", lbFalse, "definicion label ujp", bw);
+            UtGen.emitirInstruccion("UJP", lbFalse, "definicion label ujp", bw);    
         }
         
         UtGen.emitirInstruccion("LAB", lbElse, "definicion label jmp", bw);
+        LabelCodigoP et = new LabelCodigoP(UtGen.numeroLinea(),lbElse);
+        //et.setEtiqueta(lbElse);
+        //et.setNumeroLinea(UtGen.numeroLinea());
+        etiquetas.add(et);
         
         if(lbFalse!=null){
             generar(n.getParteElse());
             UtGen.emitirInstruccion("LAB", lbFalse, "definicio label ujp", bw);
+            LabelCodigoP et1 = new LabelCodigoP(UtGen.numeroLinea(),lbFalse);
+            //et.setEtiqueta(lbFalse);
+            //et.setNumeroLinea(UtGen.numeroLinea());
+            etiquetas.add(et1);
         }
         
         if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
@@ -159,6 +175,8 @@ public class Generador {
         localidadSaltoInicio = generarLabel();
         /* Genero el label */
         UtGen.emitirInstruccion("LAB", localidadSaltoInicio, "Definicion label para repeat", bw);
+        LabelCodigoP et1 = new LabelCodigoP(UtGen.numeroLinea(),localidadSaltoInicio);
+        etiquetas.add(et1);
         /* Genero el cuerpo del repeat */
         generar(n.getCuerpo());
         /* Genero el codigo de la prueba del repeat */
@@ -349,5 +367,29 @@ public class Generador {
     public static String generarLabel() {
         LB++;
         return "LB"+LB;
+    }
+    
+    private static void poscompilacion(String archivoSalida){
+        //nuevo archivo
+    }
+    
+    public static void getEtiquetas(){
+        Iterator<LabelCodigoP> itrEtiquetas = etiquetas.iterator();
+        while(itrEtiquetas.hasNext()){
+            LabelCodigoP et = itrEtiquetas.next();
+            System.out.println(et.getEtiqueta() + " "
+			+ et.getNumeroLinea());
+        }
+    }
+    
+    private static int direccionEtiqueta(String label){
+        Iterator<LabelCodigoP> itrEtiquetas = etiquetas.iterator();
+        while(itrEtiquetas.hasNext()){
+            LabelCodigoP et = itrEtiquetas.next();
+            if (et.getEtiqueta().equals(label)) {
+                return et.getNumeroLinea();
+            }
+        }
+        return -1;
     }
 }

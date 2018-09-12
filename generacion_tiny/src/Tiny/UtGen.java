@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class UtGen {
 	
 	public static boolean debug=true;
+        public static int numeroLinea=0;
 
 	
 	/* Emite comentario */
@@ -35,6 +36,7 @@ public class UtGen {
 	 */
 	
 	public static void emitirInstruccion(String op, int p, String c, BufferedWriter bw){
+                numeroLinea++;
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
                     UtGen.writeIns("        ;"+c, bw);
@@ -49,6 +51,7 @@ public class UtGen {
 	 */
         
         public static void emitirInstruccion(String op, String p, String c, BufferedWriter bw){
+                numeroLinea++;
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
                     UtGen.writeIns("        ;"+c, bw);
@@ -62,11 +65,16 @@ public class UtGen {
 	 */
         
          public static void emitirInstruccion(String op, String c, BufferedWriter bw){
+            numeroLinea++;
             UtGen.writeIns(op, bw);
             if(debug)
                 UtGen.writeIns("            ;"+c, bw);
             UtGen.writeIns("true", bw);	
 	}
+         
+        public static int numeroLinea() {
+            return numeroLinea;
+        }
         
         /* Escribir el archivo o mostrarlo por consola */
          

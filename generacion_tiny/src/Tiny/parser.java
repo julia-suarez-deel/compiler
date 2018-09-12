@@ -271,6 +271,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
         System.out.println();
         ast.Util.imprimirAST(root);
         TablaSimbolos ts = new TablaSimbolos();
+
         try{
           ts.cargarTabla(root, 0);
         }catch(IdNotFoundException e){
@@ -287,6 +288,7 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
           else
               Tiny.Generador.generarCodigoObjeto(root, args[0], args[1]);
         }
+
     }
 
 
