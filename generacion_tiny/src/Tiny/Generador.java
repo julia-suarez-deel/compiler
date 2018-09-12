@@ -26,42 +26,38 @@ public class Generador {
     }
    
     
-    public static void generarCodigoObjeto(NodoBase raiz, String archivoEntrada, String archivoSalida){
+    public static void generarCodigoObjeto(NodoBase raiz, String archivoEntrada, String archivoSalida) throws IOException{
         System.out.println();
         System.out.println();
         generarPreludioEstandar(archivoEntrada, archivoSalida);
         System.out.println();
         System.out.println();
-        if(archivoSalida != null){
-            File fileOut = new File(archivoSalida);
-            fileOut.getParentFile().mkdirs();
-            try {
-                bw = new BufferedWriter(new FileWriter(fileOut));
-            } catch (IOException ex) {
-                System.out.println("ADVERTENCIA!!: El archivo "+ archivoSalida + " no pudo ser creado. \n               El codigo se imprimirá por salida estandar.\n\n");
-            }
-        }else {
-            System.out.println("------     CODIGO INTERMEDIO P DEL LENGUAJE TINY     ------");
-            System.out.println();
-            System.out.println();
+
+        String archivoSalidaTemp = archivoSalida + ".tmp";
+
+        File fileOut = new File(archivoSalidaTemp);
+        fileOut.getParentFile().mkdirs();
+        try {
+            bw = new BufferedWriter(new FileWriter(fileOut));
+        } catch (IOException ex) {
+            System.out.println("ERROR!!: El archivo "+ archivoSalidaTemp + " no pudo ser creado.");
+            throw ex;
         }
+
         if(UtGen.debug)	UtGen.emitirComentario("-> Inicio de código", bw);
         generar(raiz);
         if(UtGen.debug)	UtGen.emitirInstruccion("STP", "finaliza el código", bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- Fin de código", bw);
         
-        if(archivoSalida == null){
-            System.out.println();
-            System.out.println();
-            System.out.println("------ FIN DEL CODIGO INTERMEDIO P DEL LENGUAJE TINY ------");
-        }else{
-            try {
-                bw.close();
-                poscompilacion(archivoSalida);
-            } catch (IOException ex) {
-                System.out.println("---------");
-            }
+        try {
+            bw.close();
+            poscompilacion(archivoSalida, archivoSalidaTemp);
+        } catch (IOException ex) {
+            System.out.println("---------");
+            fileOut.delete();
+            throw ex;
         }
+        fileOut.delete();
         System.out.println("-------- Etiquetas ------------");
         getEtiquetas();
         System.out.println("Compilación terminada.");
@@ -346,20 +342,21 @@ public class Generador {
         return "LB"+LB;
     }
     
-    private static void poscompilacion(String archivoSalida){
+    private static void poscompilacion(String archivoSalida, String archivoSalidaTemp) throws IOException{
         Matcher m;
         int instruccion;
         String patron = "LB[0-9]+";
         Pattern p = Pattern.compile(patron);
-        File fichero = new File(archivoSalida);
+        File fichero = new File(archivoSalidaTemp);
         Scanner s = null;
         BufferedWriter out = null;
-        File fileOut = new File("salida/poscompilacion.pcod");
+        File fileOut = new File(archivoSalida);
         fileOut.getParentFile().mkdirs();
         try {
             out = new BufferedWriter(new FileWriter(fileOut));
         } catch (IOException ex) {
-            System.out.println("ADVERTENCIA!!: El archivo poscompilacion no pudo ser creado.");
+            System.out.println("ERROR!!: El archivo " + archivoSalida + " no pudo ser creado.");
+            throw ex;
         }
         try {
             s = new Scanner(fichero);
@@ -375,16 +372,14 @@ public class Generador {
                 escribir("true", out);
             }
         } catch (Exception ex) {
-                System.out.println("El archivo " +archivoSalida+ "no pudo ser leído");
-        } finally {
-            try {
-                if (s != null)
-                    s.close();
-                out.close();
-            } catch (Exception ex2) {
-                    System.out.println("Mensaje 2: " + ex2.getMessage());
-            }
+            System.out.println("El archivo " + archivoSalidaTemp + "no pudo ser leído");
+            if (s != null)
+                s.close();
+            out.close();
+            throw ex;
         }
+        s.close();
+        out.close();
     }
     
      

@@ -1,16 +1,12 @@
-if z<x+3  then 
-  if z=0  then
-    z:=8;
-    if z=8 then
-      write x
-    else
-      repeat
+x := 1;
+if 0 < x then 
+  fact := 1;
+  repeat
+    fact := fact * x;
+    x := x - 1;
+    repeat
         fact := fact * x;
         x := x - 1
-      until x = 0
-    end
-  end
-else
-  z:=0
+    until x = 0
+  until x = 0
 end
-

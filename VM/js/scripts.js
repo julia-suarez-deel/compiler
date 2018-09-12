@@ -1,6 +1,4 @@
 // Variables
-const CODE_URL = 'http://localhost:80/compiler/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost:80/compiler/VM/templates.html';
 const ISA = {
     'LDA':LDA,
     'LOD':LOD,
@@ -9,9 +7,10 @@ const ISA = {
     'STN':STN,
     'IXA':IXA,
     'IND':IND,
-    'UCJ':UCJ,
+    'UJP':UJP,
+    'FJP':FJP,
     'EQU':EQU,
-    'GEQ':GEQ,
+    'GRT':GRT,
     'STP':STP,
     'ADI':ADI,
     'SBI':SBI,
@@ -189,6 +188,8 @@ function haltProgram() {
     PC = SP = 0;
     $('.instruction').removeClass(SUCCESS_ROW_CLASS);
     $('#toolbar').remove();
+    $('#console-body').empty();
+    $('#console-body').append('>&nbsp;');
     toolbar = new Toolbar();
     stack = [];
     data = Array(DATA_SIZE).fill({});
