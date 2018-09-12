@@ -72,3 +72,12 @@ function DVI(){
 function LAB(address){
 
 }
+function WRI(){
+    let value = parseInt(stack.pop().value);
+    SP--;
+//imprimir en consola 
+}
+function RDI(value){
+    let address = parseInt(stack.pop().value);
+    data[address] = new DataLine(address,value);
+}

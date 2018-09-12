@@ -9,3 +9,5 @@ LOD 0
 LOD 1
 SBI
 STO
+LOD 3
+WRI

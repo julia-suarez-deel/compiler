@@ -1,6 +1,6 @@
 // Variables
-const CODE_URL = 'http://localhost:63342/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost:63342/VM/templates.html';
+const CODE_URL = 'http://localhost:80/compiler/VM/code.txt';
+const TEMPLATES_URL = 'http://localhost:80/compiler/VM/templates.html';
 const ISA = {
     'LDA':LDA,
     'LOD':LOD,
@@ -18,6 +18,8 @@ const ISA = {
     'MPI':MPI,
     'DVI':DVI,
     'LAB':LAB,
+    'RDI':RDI,
+    'WRI':WRI,
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
