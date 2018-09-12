@@ -16,8 +16,8 @@ const ISA = {
     'SBI':SBI,
     'MPI':MPI,
     'DVI':DVI,
-    'LAB':LAB
-    /*'ENT':ENT,
+    'LAB':LAB,
+    /*'ENT':ENT
     'MST':MST*/
 };
 const DATA_SIZE = 10;
