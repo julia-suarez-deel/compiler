@@ -16,6 +16,8 @@ const ISA = {
     'SBI':SBI,
     'MPI':MPI,
     'DVI':DVI,
+    'RDI':RDI,
+    'WRI':WRI,
     'LAB':LAB
     /*'ENT':ENT,
     'MST':MST*/
@@ -192,6 +194,8 @@ function haltProgram() {
     PC = SP = 0;
     $('.instruction').removeClass(SUCCESS_ROW_CLASS);
     $('#toolbar').remove();
+    $('#console-body').empty();
+    $('#console-body').append('>&nbsp;');
     toolbar = new Toolbar();
     stack = [];
     data = Array(DATA_SIZE).fill({});

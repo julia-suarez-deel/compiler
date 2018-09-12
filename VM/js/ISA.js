@@ -112,3 +112,13 @@ function DVI(){
 function LAB(address){
     console.log("----Etiqueta-- "+address);
 }
+function WRI(){
+    let value = parseInt(stack.pop().value);
+    SP--;
+    $('#console-body').append('Valor en tope de la pila: '+value+'<br>>&nbsp;');
+}
+function RDI(){
+    let value = prompt('Indica el valor a leer: ');
+    let address = parseInt(stack.pop().value);
+    data[address] = new DataLine(address,value);
+}

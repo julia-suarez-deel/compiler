@@ -33,3 +33,26 @@
     width: 20%;
     float: left;
 }
+.console {
+    color: rgba(0, 0, 0, 0.837);
+    background: #ccc;
+    border: 1px solid #b7b7b7;
+    height: 150px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    padding: 10px;
+    padding-top: 0;
+}
+.console-head {
+    padding-top: 10px;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.685);
+    background: #ccc;
+    position: sticky;
+    top: 0px;
+    margin-bottom: 5px;
+}
+.console-body {
+    padding-left: 10px;
+}
