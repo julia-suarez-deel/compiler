@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e29355f7-ac11-4e24-b859-4ebed8ff3e8d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="e29355f7-ac11-4e24-b859-4ebed8ff3e8d" name="Default Changelist" comment=":snowman: Missing iml file">
+      <change afterPath="$PROJECT_DIR$/generacion_tiny/ejemplo_fuente/vectores.tny" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/Generador$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/Generador.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/RegistroSimbolo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/TablaSimbolos.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/UtGen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/parser.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/Tiny/sym.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoAsignacion.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoEscribir.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoIdentificador.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoIf.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoLeer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoOperacion.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoRepeat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/NodoValor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/Util.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/generacion_tiny/ast/tipoOp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/generacion_tiny.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/generacion_tiny.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/generacion_tiny.iml" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/generacion_tiny.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/lexico.flex" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/lexico.flex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generacion_tiny/sintactico.cup" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/sintactico.cup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/Scanner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/Tiny/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/src/Tiny/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/Tiny/parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/src/Tiny/parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/Tiny/sym.java" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/src/Tiny/sym.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/ast/NodoVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/generacion_tiny/src/ast/NodoVector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/parser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generacion_tiny/src/sym.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,24 +55,35 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="cup" value="2" />
-          <entry key="java" value="1" />
+          <entry key="cup" value="4" />
+          <entry key="flex" value="2" />
+          <entry key="iml" value="1" />
+          <entry key="java" value="13" />
+          <entry key="tny" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="1" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="IDEA_MODULE" value="1" />
+          <entry key="JAVA" value="13" />
+          <entry key="JFlex" value="2" />
+          <entry key="PLAIN_TEXT" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cup" value="2" />
+          <entry key="cup" value="135" />
+          <entry key="flex" value="6" />
+          <entry key="java" value="202" />
+          <entry key="tny" value="36" />
+          <entry key="txt" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="JAVA" value="202" />
+          <entry key="JFlex" value="6" />
+          <entry key="PLAIN_TEXT" value="206" />
         </counts>
       </usages-collector>
     </session>
@@ -50,24 +94,109 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/Generador.java">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/Scanner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="652">
-              <caret line="92" column="31" selection-start-line="92" selection-start-column="31" selection-end-line="92" selection-end-column="31" />
+            <state relative-caret-position="143">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
               <folding>
-                <element signature="e#603#617#0" expanded="true" />
-                <element signature="e#740#741#0" expanded="true" />
-                <element signature="e#777#778#0" expanded="true" />
+                <element signature="e#8975#8976#0" expanded="true" />
+                <element signature="e#9003#9004#0" expanded="true" />
+                <element signature="e#9210#9211#0" expanded="true" />
+                <element signature="e#9259#9260#0" expanded="true" />
+                <element signature="e#11434#11435#0" expanded="true" />
+                <element signature="e#11465#11466#0" expanded="true" />
+                <element signature="e#11603#11604#0" expanded="true" />
+                <element signature="e#11638#11639#0" expanded="true" />
+                <element signature="e#11750#11751#0" expanded="true" />
+                <element signature="e#11827#11828#0" expanded="true" />
+                <element signature="e#12185#12186#0" expanded="true" />
+                <element signature="e#12227#12228#0" expanded="true" />
+                <element signature="e#12325#12326#0" expanded="true" />
+                <element signature="e#12365#12366#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/ejemplo_fuente/vectores.tny">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/lexico.flex">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="74" column="18" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/NodoVector.java">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/TablaSimbolos.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-3975" />
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="132" selection-start-line="132" selection-end-line="132" />
+              <folding>
+                <element signature="e#6915#6916#0" expanded="true" />
+                <element signature="e#6953#6954#0" expanded="true" />
+                <element signature="e#7024#7025#0" expanded="true" />
+                <element signature="e#7069#7070#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/NodoIdentificador.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="127">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#263#264#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/NodoVector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="127">
+              <caret line="26" selection-start-line="26" selection-end-line="26" />
+              <folding>
+                <element signature="e#675#676#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/generacion_tiny/sintactico.cup">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6216">
-              <caret line="258" lean-forward="true" selection-start-line="258" selection-end-line="258" />
+            <state relative-caret-position="108">
+              <caret line="166" column="13" selection-start-line="166" selection-start-column="10" selection-end-line="166" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/Util.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-896">
+              <caret line="16" column="52" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -77,6 +206,12 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>main</find>
+      <find>try</find>
+      <find>vector</find>
+      <find>NUM</find>
+      <find>Tipo de nodo desconocido</find>
+      <find>Desco</find>
+      <find>dec</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -85,7 +220,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/generacion_tiny/TablaSimbolos.java" />
+        <option value="$PROJECT_DIR$/generacion_tiny/ejemplo_fuente/vectores.tny" />
+        <option value="$PROJECT_DIR$/generacion_tiny/lexico.flex" />
         <option value="$PROJECT_DIR$/generacion_tiny/sintactico.cup" />
+        <option value="$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java" />
       </list>
     </option>
   </component>
@@ -116,6 +255,22 @@
               <item name="compilerA" type="b2602c69:ProjectViewProjectNode" />
               <item name="generacion_tiny" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="compilerA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="generacion_tiny" type="462c0819:PsiDirectoryNode" />
+              <item name="ejemplo_fuente" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="compilerA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="generacion_tiny" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="compilerA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="generacion_tiny" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Tiny" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -126,10 +281,17 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536725170109" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/generacion_tiny/JFlex.jar" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536728665101" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/generacion_tiny/TablaSimbolos.java" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/generacion_tiny/TablaSimbolos.java" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\julia\Code\compilerA\generacion_tiny" />
+      <recent name="C:\Users\julia\Code\compilerA\generacion_tiny\ejemplo_fuente" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -143,10 +305,12 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JAR Application.COMPILE JFLEX">
+  <component name="RunManager" selected="Application.parser">
     <configuration name="parser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Tiny.parser" />
       <module name="generacion_tiny" />
+      <option name="PROGRAM_PARAMETERS" value="ejemplo_fuente/vectores.tny ejemplo_generado/vectores.p" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/generacion_tiny" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Tiny.*" />
@@ -159,7 +323,7 @@
     </configuration>
     <configuration name="COMPILE CUP" type="JarApplication" factoryName="JAR Application" temporary="true">
       <option name="JAR_PATH" value="$PROJECT_DIR$/generacion_tiny/java-cup-11a.jar" />
-      <option name="PROGRAM_PARAMETERS" value="-destdir src/ sintactico.cup" />
+      <option name="PROGRAM_PARAMETERS" value="-destdir src/Tiny/ sintactico.cup" />
       <option name="WORKING_DIRECTORY" value="C:\Users\julia\Code\compilerA\generacion_tiny" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
@@ -167,7 +331,7 @@
     </configuration>
     <configuration name="COMPILE JFLEX" type="JarApplication" factoryName="JAR Application">
       <option name="JAR_PATH" value="$PROJECT_DIR$/generacion_tiny/JFlex.jar" />
-      <option name="PROGRAM_PARAMETERS" value="-d src/ lexico.flex" />
+      <option name="PROGRAM_PARAMETERS" value="-d src/Tiny/ lexico.flex" />
       <option name="WORKING_DIRECTORY" value="C:\Users\julia\Code\compilerA\generacion_tiny" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2" />
@@ -179,8 +343,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JAR Application.COMPILE CUP" />
         <item itemvalue="Application.parser" />
+        <item itemvalue="JAR Application.COMPILE CUP" />
       </list>
     </recent_temporary>
   </component>
@@ -194,12 +358,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1536724048461</updated>
-      <workItem from="1536724054464" duration="1112000" />
+      <workItem from="1536724054464" duration="4499000" />
     </task>
+    <task id="LOCAL-00001" summary=":snowman: Missing iml file">
+      <created>1536725307818</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1536725307818</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1112000" />
+    <option name="totallyTimeSpent" value="4499000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -218,17 +390,17 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" sideWeight="0.5007236" side_tool="true" weight="0.24966443" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992764" visible="true" weight="0.24966443" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992764" visible="true" weight="0.15033557" />
       <window_info id="Structure" order="1" sideWeight="0.5007236" side_tool="true" weight="0.24966443" />
       <window_info anchor="bottom" id="Messages" weight="0.3299566" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.3299566" />
+      <window_info anchor="bottom" id="Terminal" weight="0.3299566" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3299566" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39942113" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3299566" />
@@ -249,6 +421,28 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=":snowman: Missing iml file" />
+    <option name="LAST_COMMIT_MESSAGE" value=":snowman: Missing iml file" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java</url>
+          <line>46</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java</url>
+          <line>127</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/Generador.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -262,10 +456,127 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/generacion_tiny.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="e#0#65973#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/IdNotFoundException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="2" selection-start-line="2" selection-end-line="11" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/sintactico_x.cup">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/lexico_x.flex">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="333" column="12" selection-start-line="333" selection-start-column="12" selection-end-line="333" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/ejemplo_fuente/factorial.tny">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/lexico.flex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="74" column="18" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/Scanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#8975#8976#0" expanded="true" />
+            <element signature="e#9003#9004#0" expanded="true" />
+            <element signature="e#9210#9211#0" expanded="true" />
+            <element signature="e#9259#9260#0" expanded="true" />
+            <element signature="e#11434#11435#0" expanded="true" />
+            <element signature="e#11465#11466#0" expanded="true" />
+            <element signature="e#11603#11604#0" expanded="true" />
+            <element signature="e#11638#11639#0" expanded="true" />
+            <element signature="e#11750#11751#0" expanded="true" />
+            <element signature="e#11827#11828#0" expanded="true" />
+            <element signature="e#12185#12186#0" expanded="true" />
+            <element signature="e#12227#12228#0" expanded="true" />
+            <element signature="e#12325#12326#0" expanded="true" />
+            <element signature="e#12365#12366#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/TablaSimbolos.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3975" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/NodoVector.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/ejemplo_fuente/vectores.tny">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/generacion_tiny/sintactico.cup">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6216">
-          <caret line="258" lean-forward="true" selection-start-line="258" selection-end-line="258" />
+        <state relative-caret-position="108">
+          <caret line="166" column="13" selection-start-line="166" selection-start-column="10" selection-end-line="166" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-896">
+          <caret line="16" column="52" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/NodoVector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+          <folding>
+            <element signature="e#675#676#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/ast/NodoIdentificador.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#263#264#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generacion_tiny/src/Tiny/TablaSimbolos.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="132" selection-start-line="132" selection-end-line="132" />
+          <folding>
+            <element signature="e#6915#6916#0" expanded="true" />
+            <element signature="e#6953#6954#0" expanded="true" />
+            <element signature="e#7024#7025#0" expanded="true" />
+            <element signature="e#7069#7070#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

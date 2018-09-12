@@ -4,6 +4,7 @@ import java.util.*;
 
 
 import ast.*;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
 public class TablaSimbolos {
 
@@ -17,7 +18,7 @@ public class TablaSimbolos {
         this.secciones = new ArrayList<HashMap<String, RegistroSimbolo>>();
     }
 
-    public void cargarTabla(NodoBase raiz, int bloque) throws IdNotFoundException{
+    public void cargarTabla(NodoBase raiz, int bloque) throws IdNotFoundException, VectorAlreadyDeclared{
             while (raiz != null) {
                 if (raiz instanceof NodoIdentificador){
                     //Si el identificador no ha sido declarado. Se lanza un error.
@@ -25,14 +26,30 @@ public class TablaSimbolos {
                         throw new IdNotFoundException("El identificador '"+((NodoIdentificador)raiz).getNombre()+"' no ha sido declarado.");
                     }
                 }
-
-                /* Hago el recorrido recursivo */
                 else if(raiz instanceof NodoVector){
-                    cargarTabla(((NodoVector)raiz).getIdentificador(), bloque);
-                    cargarTabla(((NodoVector)raiz).getExpresion(), bloque);
-                }
-                
-                else if (raiz instanceof  NodoIf){
+                    NodoVector vector = (NodoVector)raiz;
+                    boolean inserto = false;
+                    if(vector.isDeclaracion()){
+                        cargarTabla(vector.getExpresion(), bloque);
+                        int direccionesReservadas = ((NodoValor)vector.getExpresion()).getValor();
+                        try {
+                            cargarTabla(vector.getIdentificador(), bloque);
+                        }catch(IdNotFoundException e){
+                            this.direccion += direccionesReservadas;
+                            inserto = true;
+                        }
+                        if (!inserto) {
+                            throw new VectorAlreadyDeclared("El vector "+((NodoIdentificador)vector.getIdentificador()).getNombre()+" ya esta declarado");
+                        }
+                    }
+                    else{
+                        String identificador = ((NodoIdentificador)vector.getIdentificador()).getNombre();
+                        RegistroSimbolo simbolo = BuscarSimbolo(identificador,bloque);
+                        if (simbolo == null){ throw new IdNotFoundException("El vector "+((NodoIdentificador)vector.getIdentificador()).getNombre()+" no esta esta declarado");}
+                        cargarTabla(vector.getExpresion(), bloque);
+                    }
+                    //
+                }else if (raiz instanceof  NodoIf){
                     cargarTabla(((NodoIf)raiz).getPrueba(), bloque);
                     cargarTabla(((NodoIf)raiz).getParteThen(), bloque);
                     cargarTabla(((NodoIf)raiz).getParteElse(), bloque);
@@ -136,4 +153,14 @@ public class TablaSimbolos {
      * TODO:
      * 1. Crear lista con las lineas de codigo donde la variable es usada.
      * */
+    public class VectorAlreadyDeclared extends Exception {
+
+        public VectorAlreadyDeclared(String message) {
+            super(message);
+        }
+
+        public VectorAlreadyDeclared(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }

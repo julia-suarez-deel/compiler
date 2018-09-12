@@ -3,7 +3,8 @@ package ast;
 public class NodoVector extends NodoBase {
 	private NodoBase identificador;
 	private NodoBase expresion;
-	
+	private boolean declaracion;
+
 	public NodoVector(String identificador) {
 		super();
 		this.identificador = new NodoIdentificador(identificador);
@@ -37,7 +38,12 @@ public class NodoVector extends NodoBase {
 	public void setExpresion(NodoBase expresion) {
 		this.expresion = expresion;
 	}
-	
-	
-	
+
+	public boolean isDeclaracion() {
+		return declaracion;
+	}
+
+	public void setDeclaracion(boolean declaracion) {
+		this.declaracion = declaracion;
+	}
 }
