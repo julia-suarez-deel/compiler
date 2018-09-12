@@ -271,7 +271,7 @@ public class Generador {
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
             generar(n.getCuerpo());
-            UtGen.emitirComentario("RET", bw);
+            UtGen.emitirInstruccion("RET", "Retorno valor del tope de la pila",bw);
         }
         bloqueActual = bloqueAnterior;
     }
