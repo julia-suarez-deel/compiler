@@ -14,8 +14,9 @@ function STO(){
     SP-=2;
 }
 function STN(){
-    let address = stack.pop().value;
     let value = stack.pop().value;
+    let address = stack.pop().value;
+    console.log(address);
     data[address] = new DataLine(address,value);
     SP-=2;
     stack.push(new StackLine(value));
@@ -71,31 +72,42 @@ function GRT(){
 }
 
 function STP(){
-
+    haltProgram();
 }
 function ADI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    stack.push(new StackLine(value1+value2));
+    stack.push(new StackLine(value2+value1));
 }
 function SBI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
+    console.log(value2-value1);
     SP-=2;
-    stack.push(new StackLine(value1-value2));
+    stack.push(new StackLine(value2-value1));
 }
 function MPI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    stack.push(new StackLine(value1*value2));
+    stack.push(new StackLine(value2*value1));
 }
 function DVI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    stack.push(new StackLine(value1/value2));
+    if(value1 != 0)
+        stack.push(new StackLine(value2/value1));
+    else{
+        haltProgram();
+        $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+ 
+                                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                                    "<span aria-hidden='true'>&times;</span></button>"+
+                                    "<strong>Error de ejecución</strong>"+
+                                    "</div>");
+        
+    }
 }
 function LAB(address){
     console.log("----Etiqueta-- "+address);
