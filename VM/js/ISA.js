@@ -96,8 +96,10 @@ function DVI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    if(value1 != 0)
-        stack.push(new StackLine(value2/value1));
+    if(value1 != 0){
+        let result = parseInt(value2/value1);
+        stack.push(new StackLine(result));
+    }
     else{
         haltProgram();
         $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+ 
