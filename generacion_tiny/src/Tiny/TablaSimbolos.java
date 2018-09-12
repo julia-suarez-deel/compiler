@@ -32,13 +32,10 @@ public class TablaSimbolos {
                     if(vector.isDeclaracion()){
                         cargarTabla(vector.getExpresion(), bloque);
                         int direccionesReservadas = ((NodoValor)vector.getExpresion()).getValor();
-                        try {
-                            cargarTabla(vector.getIdentificador(), bloque);
-                        }catch(IdNotFoundException e){
-                            this.direccion += direccionesReservadas;
-                            inserto = true;
-                        }
-                        if (!inserto) {
+                        if(BuscarSimbolo(((NodoIdentificador)vector.getIdentificador()).getNombre(),bloque) == null){
+                            InsertarSimbolo(((NodoIdentificador)vector.getIdentificador()).getNombre(), bloque);
+                            this.direccion += direccionesReservadas-1;
+                        }else{
                             throw new VectorAlreadyDeclared("El vector "+((NodoIdentificador)vector.getIdentificador()).getNombre()+" ya esta declarado");
                         }
                     }
