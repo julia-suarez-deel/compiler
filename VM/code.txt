@@ -1,13 +1,9 @@
-LDA 3
-LDA 0
-LDC 5
-STO
-LDA 1
-LDC 10
-STO
-LOD 0
-LOD 1
-SBI
-STO
-LOD 3
-WRI
+LDA 0        ;cargar direccion de identificador: x
+LDC 10        ;cargar constante: 0
+STO            ;asignacion: almaceno el valor para el id x
+LDA 1        ;cargar direccion de identificador: z
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 1
+DVI            ;Operación suma: +
+STN            ;asignacion: almaceno el valor para el id z
+STP

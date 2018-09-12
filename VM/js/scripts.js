@@ -16,9 +16,11 @@ const ISA = {
     'SBI':SBI,
     'MPI':MPI,
     'DVI':DVI,
-    'LAB':LAB,
     'RDI':RDI,
     'WRI':WRI,
+    'LAB':LAB
+    /*'ENT':ENT,
+    'MST':MST*/
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
@@ -54,6 +56,10 @@ class Toolbar {
     }
     setupEvents(){
         $('#start_or_next.btn').on('click', function () {
+            let length = $( ".alert-danger" ).length;
+            if(length > 0)
+                $(".alert-danger").remove();
+            
             if(PC+1<=instructions.length){
                 is_executing = true;
                 toolbar.updateState();
@@ -98,12 +104,11 @@ class Instruction{
         $('.instruction').removeClass(SUCCESS_ROW_CLASS);
         try{
             if(this.function.length === this.args.length){
+                this.$node.addClass(SUCCESS_ROW_CLASS);
+                PC++;
                 this.function.apply(this, this.args);
                 loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
                 loadHtmlArray(data,DATA_CONTAINER_SELECTOR);
-                this.$node.addClass(SUCCESS_ROW_CLASS);
-
-                PC++;
             }
             else{
                 throw new Error("Number of arguments doesn't match.")

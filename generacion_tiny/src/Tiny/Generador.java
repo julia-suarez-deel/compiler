@@ -176,7 +176,7 @@ public class Generador {
                 generar(variable.getExpresion());
             }
             
-            UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")" , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
+            UtGen.emitirInstruccion("IXA", "1" , "cargar direccion de identificador: "+identificador_vector.getNombre(), bw);
             generar(n.getExpresion());
             UtGen.emitirInstruccion("STO", "asignacion: almaceno el valor para el id "+identificador_vector.getNombre(), bw);
         }
@@ -201,7 +201,7 @@ public class Generador {
             }else{
                 generar(vector.getExpresion());
             }
-            UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")" , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
+            UtGen.emitirInstruccion("IXA", "1" , "cargar la direccion de la posicion del vector: "+id.getNombre(), bw);
             UtGen.emitirInstruccion("RDI", "leer el valor para el identificador "+id.getNombre(), bw);
         }
         if(UtGen.debug)	UtGen.emitirComentario("<- leer", bw);
@@ -232,7 +232,7 @@ public class Generador {
             generar(n.getExpresion());
         }
         
-        UtGen.emitirInstruccion("IXA", "elem_size("+direccion+")", "cargar la direccion de la posicion del vector: "+ni.getNombre(), bw);
+        UtGen.emitirInstruccion("IXA", "1", "cargar la direccion de la posicion del vector: "+ni.getNombre(), bw);
         UtGen.emitirInstruccion("IND", 0,"cargar el valor de la direccion anterior", bw);
     }
 
