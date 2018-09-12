@@ -1,6 +1,6 @@
 // Variables
-const CODE_URL = 'http://localhost:63342/VM/code.txt';
-const TEMPLATES_URL = 'http://localhost:63342/VM/templates.html';
+const CODE_URL = 'http://localhost/VM/code.txt';
+const TEMPLATES_URL = 'http://localhost/VM/templates.html';
 const ISA = {
     'LDA':LDA,
     'LOD':LOD,
@@ -9,9 +9,10 @@ const ISA = {
     'STN':STN,
     'IXA':IXA,
     'IND':IND,
-    'UCJ':UCJ,
+    'UJP':UJP,
+    'FJP':FJP,
     'EQU':EQU,
-    'GEQ':GEQ,
+    'GRT':GRT,
     'STP':STP,
     'ADI':ADI,
     'SBI':SBI,

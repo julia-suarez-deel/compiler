@@ -27,21 +27,49 @@ function IXA(factor){
     let delta = stack.pop().value;
     stack.push(new StackLine(address+delta*factor));
 }
+
 function IND(delta){
     let address = stack.pop().value;
     SP--;
     let data_value = data[address + delta].value;
     stack.push(new StackLine(data_value));
 }
-function UCJ(address){
 
+function UJP(address){
+    console.log(address-2);
+    PC=address-2;
 }
+
+function FJP(address){
+    let value = parseInt(stack.pop().value);   
+    if (value==0) {
+        console.log(address-2);
+        PC=address-2;
+    }   
+}
+
 function EQU(){
-
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    if (value2==value1) {
+        stack.push(new StackLine(1));
+    }else{
+        stack.push(new StackLine(0));
+    }   
 }
-function GEQ(){
 
+function GRT(){
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    if (value2>value1) {
+        stack.push(new StackLine(1));
+    }else{
+        stack.push(new StackLine(0));
+    } 
 }
+
 function STP(){
 
 }
@@ -70,5 +98,5 @@ function DVI(){
     stack.push(new StackLine(value1/value2));
 }
 function LAB(address){
-
+    console.log("----Etiqueta-- "+address);
 }
