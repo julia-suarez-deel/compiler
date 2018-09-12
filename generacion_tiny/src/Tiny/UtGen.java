@@ -20,7 +20,7 @@ public class UtGen {
 	/* Emite comentario */
 	public static void emitirComentario(String c, BufferedWriter bw){
 		if(debug){
-                    UtGen.writeIns("*      "+c+"\n", bw);
+                    UtGen.writeIns(";      "+c+"\n", bw);
 		    UtGen.writeIns("true", bw);
                 }
 	}
@@ -37,7 +37,7 @@ public class UtGen {
 	public static void emitirInstruccion(String op, int p, String c, BufferedWriter bw){
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
-                    UtGen.writeIns("        "+c, bw);
+                    UtGen.writeIns("        ;"+c, bw);
 		UtGen.writeIns("true", bw);
 	}
         
@@ -51,7 +51,7 @@ public class UtGen {
         public static void emitirInstruccion(String op, String p, String c, BufferedWriter bw){
                 UtGen.writeIns(op+"    "+p, bw);
 		if(debug)
-                    UtGen.writeIns("        "+c, bw);
+                    UtGen.writeIns("        ;"+c, bw);
 		UtGen.writeIns("true", bw);
 	}
         
@@ -64,7 +64,7 @@ public class UtGen {
          public static void emitirInstruccion(String op, String c, BufferedWriter bw){
             UtGen.writeIns(op, bw);
             if(debug)
-                UtGen.writeIns("            "+c, bw);
+                UtGen.writeIns("            ;"+c, bw);
             UtGen.writeIns("true", bw);	
 	}
         
