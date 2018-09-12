@@ -7,15 +7,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
 
 public class Generador {
     private static TablaSimbolos tablaSimbolos = null;
     private static BufferedWriter bw = null;
     /*Contador de labels*/
-    private static int LB = 0; 
-    private static Stack st_fjp = new Stack();
-    private static Stack st_ujp = new Stack();
+    private static int LB = 0;
     private static int bloqueActual = 0;
     private static ArrayList<LabelCodigoP> etiquetas = new ArrayList<LabelCodigoP>();
     //private static LabelCodigoP et = new LabelCodigoP();
@@ -43,7 +45,11 @@ public class Generador {
             System.out.println();
             System.out.println();
         }
+        if(UtGen.debug)	UtGen.emitirComentario("-> Inicio de código", bw);
         generar(raiz);
+        if(UtGen.debug)	UtGen.emitirInstruccion("STP", "finaliza el código", bw);
+        if(UtGen.debug)	UtGen.emitirComentario("<- Fin de código", bw);
+        
         if(archivoSalida == null){
             System.out.println();
             System.out.println();
@@ -98,41 +104,7 @@ public class Generador {
         System.out.println("���ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
     
-    private static void generarIfConPila(NodoBase nodo){
-        NodoIf n = (NodoIf)nodo;
-        String lbElse, lbIf;
-        if(UtGen.debug)	UtGen.emitirComentario("-> if", bw);
-        generar(n.getPrueba());
-        
-        
-        /*Genero la parte THEN*/
-        lbElse=generarLabel();
-        UtGen.emitirInstruccion("FJP", lbElse, "if false: jmp hacia else", bw);
-        /*Inserto label en la pila fjp*/
-        st_fjp.push(lbElse);
-        generar(n.getParteThen());
-        /*Genero la parte ELSE*/
-        if(n.getParteElse()!=null){
-            lbIf=generarLabel(); 
-            UtGen.emitirInstruccion("UJP", lbIf, "definicio label ujp", bw);
-            /*Inserto label en la pila ujp*/
-            st_ujp.push(lbIf);
-        }
-        /*Saco valor del ultimo label que salta hacia el else*/
-        lbElse = (String)st_fjp.pop();
-        UtGen.emitirInstruccion("LAB", lbElse, "definicio label jmp", bw);
-       
-        
-        if(n.getParteElse()!=null){
-            generar(n.getParteElse());
-            lbIf = (String)st_ujp.pop();
-            UtGen.emitirInstruccion("LAB", lbIf, "definicio label ujp", bw);
-           
-        }
-        if(UtGen.debug)	UtGen.emitirComentario("<- if", bw);
-        
-        
-    }
+    
     
     private static void generarIf(NodoBase nodo){
         NodoIf n = (NodoIf)nodo;
@@ -288,6 +260,11 @@ public class Generador {
             nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
             UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
             generar(n.getCuerpo());
+            if(n.getRetorno() instanceof NodoIdentificador){
+                generarIdentificador(n.getRetorno());
+            }else if(n.getRetorno() instanceof NodoVector){
+                generarVector(n.getRetorno());
+            }
             UtGen.emitirInstruccion("RET", "Retorno valor del tope de la pila",bw);
         }
         bloqueActual = bloqueAnterior;
@@ -370,7 +347,60 @@ public class Generador {
     }
     
     private static void poscompilacion(String archivoSalida){
-        //nuevo archivo
+        Matcher m;
+        int instruccion;
+        String patron = "LB[0-9]+";
+        Pattern p = Pattern.compile(patron);
+        File fichero = new File(archivoSalida);
+        Scanner s = null;
+        BufferedWriter out = null;
+        File fileOut = new File("salida/poscompilacion.pcod");
+        fileOut.getParentFile().mkdirs();
+        try {
+            out = new BufferedWriter(new FileWriter(fileOut));
+        } catch (IOException ex) {
+            System.out.println("ADVERTENCIA!!: El archivo poscompilacion no pudo ser creado.");
+        }
+        try {
+            s = new Scanner(fichero);
+            while (s.hasNextLine()) {
+                String linea = s.nextLine();
+                m = p.matcher(linea);
+                String[] palabra = linea.split(" ");
+                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP")){
+                    instruccion = direccionEtiqueta(palabra[1]);
+                    linea = m.replaceAll(String.valueOf(instruccion));
+                }
+                escribir(linea, out);
+                escribir("true", out);
+            }
+        } catch (Exception ex) {
+                System.out.println("El archivo " +archivoSalida+ "no pudo ser leído");
+        } finally {
+            try {
+                if (s != null)
+                    s.close();
+                out.close();
+            } catch (Exception ex2) {
+                    System.out.println("Mensaje 2: " + ex2.getMessage());
+            }
+        }
+    }
+    
+     
+    
+    private static void escribir(String cadenaSalida, BufferedWriter out){
+         if(out != null) {                
+            try {
+                if(cadenaSalida.equals("true"))
+                    out.newLine();
+                else
+                    out.write(cadenaSalida);
+
+            } catch (IOException ex) {
+                Logger.getLogger(UtGen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
     }
     
     public static void getEtiquetas(){

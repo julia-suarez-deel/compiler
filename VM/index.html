@@ -12,10 +12,16 @@
 <body>
     <div id="main" class="container">
         <br>
-        <h3>Virtual machine</h3>
-        <br>
         <div class="row">
-            <div class="col-md-6">
+            <br>
+            <br>
+            <div class="col-md-6"><h3>Virtual machine</h3></div>
+            <div class="col-md-6"><div id="toolbar-container" class="float-right"></div>
+
+
+            </div>
+            <br>
+            <div class="col-md-4">
                 <table id="instructions-container" class="table">
                     <thead>
                         <tr class="bg-info text-light">
@@ -24,13 +30,34 @@
                         </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
             </div>
-            <div id="toolbar-container" class="col-md-6">
-
+            <div class="col-md-4">
+                <table id="data-container" class="table">
+                    <thead>
+                    <tr class="bg-info text-light">
+                        <th>#</th>
+                        <th>Datos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
+            <div class="col-md-4">
+                <table id="stack-container" class="table">
+                    <thead>
+                    <tr class="bg-info text-light">
+                        <th>#</th>
+                        <th>Pila</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
     <script src="js/jquery.min.js"></script>

@@ -1,3 +1,11 @@
-instruction1 a b c;
-instruction2 a b;
-instruction3 c d;
+LDA 3
+LDA 0
+LDC 5
+STO
+LDA 1
+LDC 10
+STO
+LOD 0
+LOD 1
+SBI
+STO

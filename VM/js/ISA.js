@@ -1,9 +1,74 @@
-function instruction1(a, b, c){
-    console.log('Llamada a: instruction1('+a+','+b+','+c+')');
+function LDA(address){
+    stack.push(new StackLine(address));
 }
-function instruction2(b, c){
-    console.log('Llamada a: instruction2('+b+','+c+')');
+function LOD(address){
+    stack.push(new StackLine(data[address].value));
 }
-function instruction3(b, c){
-    console.log('Llamada a: instruction3('+b+','+c+')');
+function LDC(constant){
+    stack.push(new StackLine(constant));
+}
+function STO(){
+    let value = stack.pop().value;
+    let address = stack.pop().value;
+    data[address] = new DataLine(address,value);
+    SP-=2;
+}
+function STN(){
+    let address = stack.pop().value;
+    let value = stack.pop().value;
+    data[address] = new DataLine(address,value);
+    SP-=2;
+    stack.push(new StackLine(value));
+}
+function IXA(factor){
+    // TODO: Change the compiler so the factor would be a number and not elem_size
+    factor = 1;
+    let address = stack.pop().value;
+    let delta = stack.pop().value;
+    stack.push(new StackLine(address+delta*factor));
+}
+function IND(delta){
+    let address = stack.pop().value;
+    SP--;
+    let data_value = data[address + delta].value;
+    stack.push(new StackLine(data_value));
+}
+function UCJ(address){
+
+}
+function EQU(){
+
+}
+function GEQ(){
+
+}
+function STP(){
+
+}
+function ADI(){
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    stack.push(new StackLine(value1+value2));
+}
+function SBI(){
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    stack.push(new StackLine(value1-value2));
+}
+function MPI(){
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    stack.push(new StackLine(value1*value2));
+}
+function DVI(){
+    let value1 = parseInt(stack.pop().value);
+    let value2 = parseInt(stack.pop().value);
+    SP-=2;
+    stack.push(new StackLine(value1/value2));
+}
+function LAB(address){
+
 }
