@@ -1,0 +1,51 @@
+;                          -> Inicio de código
+
+LDA 0        ;cargar direccion de identificador: x
+LDC 3        ;cargar constante: 3
+STO            ;asignacion: almaceno el valor para el id x
+;                          -> leer
+
+LDA 0        ;cargar direccion de identificador: x
+RDI            ;leer el valor para el identificador x
+;                          <- leer
+
+;                          -> if
+
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 0
+GRT            ;A mayor que B: B<A
+FJP 30        ;if false: jmp hacia else
+LDA 1        ;cargar direccion de identificador: fact
+LDC 1        ;cargar constante: 1
+STO            ;asignacion: almaceno el valor para el id fact
+;                          -> Repeat
+
+LAB 13        ;Definicion label para repeat
+LDA 1        ;cargar direccion de identificador: fact
+LOD 1        ;cargar valor de identificador: fact
+LOD 0        ;cargar valor de identificador: x
+MPI            ;Operación multiplicación: *
+STO            ;asignacion: almaceno el valor para el id fact
+LDA 0        ;cargar direccion de identificador: x
+LOD 0        ;cargar valor de identificador: x
+LDC 1        ;cargar constante: 1
+SBI            ;Operación resta: -
+STO            ;asignacion: almaceno el valor para el id x
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 0
+EQU            ;Igual a: ==
+FJP 13        ;repeat: Salto hacia el inicio del cuerpo
+;                          <- repeat
+
+;                          -> escribir
+
+LOD 1        ;cargar valor de identificador: fact
+WRI            ;escribir valor del tope
+;                          <- escribir
+
+LAB 30        ;definicion label jmp
+;                          <- if
+
+STP            ;finaliza el código
+;                          <- Fin de código
+

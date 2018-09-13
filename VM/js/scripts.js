@@ -25,6 +25,7 @@ const ISA = {
     'RET':RET
 };
 const DATA_SIZE = 10;
+const STACK_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
 const STACK_CONTAINER_SELECTOR = '#stack-container tbody';
 const DATA_CONTAINER_SELECTOR = '#data-container tbody';
@@ -66,7 +67,6 @@ class Toolbar {
             if(PC+1<=instructions.length){
                 is_executing = true;
                 toolbar.updateState();
-                console.log("---------- "+PC);
                 instructions[PC].execute();
             }
             else{
@@ -109,8 +109,9 @@ class Instruction{
     }
     execute(){
         $('.instruction').removeClass(SUCCESS_ROW_CLASS);
+        let total_function_args = this.function.length
         try{
-            if(this.function.length === this.args.length){
+            if(total_function_args === this.args.length){
                 this.$node.addClass(SUCCESS_ROW_CLASS);
                 autoScrolling();
                 PC++;
@@ -128,15 +129,19 @@ class Instruction{
 }
 class StackLine {
     constructor(value){
-        this.value = value;
-        this.number = SP;
-        SP++;
+        if(!validateArrayOverflow(stack,SP,STACK_SIZE)){
+            this.value = value;
+            this.number = SP;
+            SP++;
+        }
     }
 }
 class DataLine{
     constructor(address, value){
-        this.address = address;
-        this.value = value;
+        if(!validateArrayOverflow(data,address,DATA_SIZE)){
+            this.address = address;
+            this.value = value;
+        }
     }
 }
 // Setup
@@ -218,4 +223,20 @@ function autoScrolling(){
     instruction.scrollTop = (instruction.scrollHeight/instructions.length)*(PC);
     let stack_table = document.getElementById('body-stack');
     stack_table.scrollTop = stack_table.scrollHeight;
-} 
+}
+function validateArrayOverflow(array, index, max_size){
+    let overflow = false;
+    if(index > max_size-1){
+        overflow = true;
+        executionErrorMessage();
+        haltProgram();
+    }
+    return overflow;
+}
+function executionErrorMessage(){
+    $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+        "<span aria-hidden='true'>&times;</span></button>"+
+        "<strong>Error de ejecución</strong>"+
+        "</div>");
+}

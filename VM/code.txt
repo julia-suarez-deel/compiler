@@ -1,7 +1,8 @@
 ;                          -> Inicio de código
 
 LDA 0        ;cargar direccion de identificador: x
-LDC 1        ;cargar constante: 1
+LDC 9        ;cargar constante: 1
+LDC 0
 STO            ;asignacion: almaceno el valor para el id x
 LDA 6        ;cargar direccion de identificador: g
 ;                          -> llamada a funcion
