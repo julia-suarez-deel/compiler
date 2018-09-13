@@ -24,8 +24,8 @@ const ISA = {
     'WRI':WRI,
     'RET':RET
 };
-const DATA_SIZE = 10;
-const STACK_SIZE = 10;
+const DATA_SIZE = 1024;
+const STACK_SIZE = 1024;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
 const STACK_CONTAINER_SELECTOR = '#stack-container tbody';
 const DATA_CONTAINER_SELECTOR = '#data-container tbody';
