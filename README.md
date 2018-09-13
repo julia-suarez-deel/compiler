@@ -54,9 +54,9 @@ write A[2+x] { Bloque 1 }
 
 Cada regla gramatical tiene su respectiva clase definida para actuar como un nodo. Los objetos de dichas clases (nodos) almacenan y relacionan la información correspondiente desde el parser (analizador sintáctico). El parser aplica las reglas de manera ascendente (análisis LR) y arma el árbol sintáctico (usando los nodos declarados). Una vez acabado el análisis sintáctico, se realiza un recorrido preorden para insertar los identificadores de variables, funciones y vectores en la tabla de símbolos. Luego de realizar estas tareas, el compilador procede a generar el código P en un recorrido preorden, usando funciones para cada tipo de sentencia, las cuales a su vez usan recursivamente otras funciones generadoras de código que van completando las instrucciones correspondientes en código P. La generación de código para la declaración de funciones es realizada al final. Después de esto, el compilador realiza una última pasada para reemplazar las etiquetas (labels) con los respectivos números de instrucción a los cuales identifica.
 
-Las reglas semánticas implementadas son:
-* Declaración de identificadores, funciones y vectores antes de ser usados
-* Comparaciones incorrectas que se puedan dar en el índice de un vector. Ejemplo: ```A[(x<0)]``` ó ```A[(x=0)])```
+Las reglas semánticas implementadas son las siguientes:
+* Declaración de identificadores, funciones y vectores, antes de ser usados.
+* Comparaciones incorrectas que se puedan dar en el índice de un vector. Ejemplo: ```A[(x<0)]``` ó ```A[(x=0)]```
 
 El código P generado es escrito en un archivo con extensión **.pcod** que es indicado antes del inicio de la compilación. (si no se indica, el compilador generara el archivo en la misma ubcación que el archivo fuente, con extensión .pcod)
 
