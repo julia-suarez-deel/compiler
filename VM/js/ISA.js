@@ -26,6 +26,7 @@ function IXA(factor){
     factor = 1;
     let address = stack.pop().value;
     let delta = stack.pop().value;
+    SP-=2;
     stack.push(new StackLine(address+delta*factor));
 }
 
@@ -43,6 +44,7 @@ function UJP(address){
 
 function FJP(address){
     let value = parseInt(stack.pop().value);   
+    SP--;
     if (value==0) {
         console.log(address-2);
         PC=address-2;
@@ -108,6 +110,19 @@ function DVI(){
                                     "</div>");
         
     }
+}
+function ENT(address){
+    console.log(address);
+    while ((SP - MP) > 0) {
+        data[address.value + (SP - MP)] = stack.pop().value;
+        SP--;
+    }
+}
+function MST(){
+    MP = SP;
+}
+function CUP(line){
+    PC = line;
 }
 function LAB(address){
     console.log("----Etiqueta-- "+address);

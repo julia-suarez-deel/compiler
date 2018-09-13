@@ -336,9 +336,9 @@ public class Generador {
         int bloqueAnterior;
         for(NodoFuncion funcion: funciones){
             bloqueAnterior = bloqueActual;
+            UtGen.emitirInstruccion("ENT", tablaSimbolos.getDireccion(((NodoIdentificador) funcion.getIdentificador()).getNombre(),bloqueActual), "Punto de entrada a la función", bw);
             bloqueActual = funcion.getNroBloque();
             label = "LB" + ((NodoIdentificador) funcion.getIdentificador()).getNombre();
-            UtGen.emitirInstruccion("ENT", label, "Punto de entrada a la función", bw);
             etiquetas.add(new LabelCodigoP(UtGen.numeroLinea(),label));
             generar(funcion.getCuerpo());
             if (funcion.getRetorno() instanceof NodoIdentificador) {
@@ -378,7 +378,7 @@ public class Generador {
                 String linea = s.nextLine();
                 m = p.matcher(linea);
                 String[] palabra = linea.split(" ");
-                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP") || palabra[0].equals("CUP") || palabra[0].equals("ENT")){
+                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP") || palabra[0].equals("CUP")){
                     if(m.find()){
                         instruccion = direccionEtiqueta(m.group());
                         linea = m.replaceAll(String.valueOf(instruccion));

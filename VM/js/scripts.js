@@ -17,8 +17,9 @@ const ISA = {
     'MPI':MPI,
     'DVI':DVI,
     'LAB':LAB,
-    /*'ENT':ENT
-    'MST':MST*/
+    'ENT':ENT,
+    'MST':MST,
+    'CUP':CUP
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
@@ -27,6 +28,7 @@ const DATA_CONTAINER_SELECTOR = '#data-container tbody';
 let is_executing = false;
 let PC = 0;
 let SP = 0;
+let MP = 0;
 let $templates = null;
 let instructions = [];
 let stack = [];
@@ -120,6 +122,7 @@ class StackLine {
     constructor(value){
         this.value = value;
         this.number = SP;
+        SP++;
     }
 }
 class DataLine{
