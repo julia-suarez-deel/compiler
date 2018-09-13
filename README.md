@@ -62,4 +62,28 @@ El código P generado es escrito en un archivo con extensión **.pcod** que es i
 
 ## Máquina Virtual P-Code
 
+### Instrucciones
+
+**Instrucción**|**Descripción**|**Nota**
+|:-----:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+|LDA X  |Pone la dirección de X en el tope de la pila. X es la dirección de la variable.| 
+|LOD X  |Pone el valor de X en el tope de la pila. X es la dirección de la variable| 
+|LDC N  |Pone la constante N en el tope de la pila. | 
+|STO    |Guarda el valor del tope de la pila en la dirección de datos que se encuentra debajo del tope. Ambos valores son removidos.| 
+|STN    |Igual a STO, pero coloca el valor devuelta al tope de la pila. La dirección es removida.| 
+|STP    |Detiene la ejecución de la instrucción. Marca el fin del programa.| 
+|RDI    |Lee un valor de la entrada estándar. Pone el valor en la dirección de memoria que se encuentre en el tope de la pila. El tope de la pila es removido.| 
+|WRI    |Emite el valor que se encuentre en el tope de la pila a la salida estándar. El valor es removido de la pila.| 
+|ADI    |Extrae dos valores de la pila, los suma y pone el resultado en el tope de la pila. |A + B, donde B es el tope de la pila.|
+|SBI    |Extrae dos valores de la pila, los resta y pone el resultado en el tope de la pila.|A – B, donde B es el tope de la pila.|
+|MPI    |Extrae dos valores de la pila, los multiplica y pone el resultado en el tope de la pila.|A * B, donde B es el tope de la pila.|
+|DVI    |Extrae dos valores de la pila, los divide y pone el resultado  (parte entera sin el decimal) en el tope de la pila.|A / B, donde B es el tope de la pila.|
+|EQU    |Igual a. Extrae dos valores de la pila, y compara si son iguales. Coloca 0 (falso) o 1 (verdadero) en el tope de la pila.| 
+|GRT    |Mayor que. Extrae dos valores de la pila, y los compara. Coloca 0 (falso) o 1 (verdadero) en el tope de la pila.|A > B, donde B es el tope de la pila.|
+|LAB L  |Define una etiqueta L. Marca esta instrucción como punto objetivo para un salto.|L es el número o dirección de la instrucción en la memoria de instrucciones.|
+|UJP L  |Salto incondicional hacia la instrucción con etiqueta L. Coloca PC igual a L – 1.|L es el número o dirección de la instrucción en la memoria de instrucciones.|
+|FJP L  |Salto condicional. Extrae el valor del tope de la fila, si es 0 (falso) salta a la instrucción con etiqueta L. Coloca PC igual a L – 1.|L es el número o dirección de la instrucción en la memoria de instrucciones.|
+|IND i  |Extrae la dirección que se encuentra en el tope de la pila, y la desplaza i direcciones. Coloca el valor de la nueva dirección en el tope de la pila.| 
+|IXA d  |Desplaza una dirección de memoria usando un factor de escala. Toma como parámetro el factor de escala entero. Extrae del tope de la pila la cantidad a desplazar (i). La dirección se debe encontrar debajo del tope de la pila (a). Remueve de la pila tanto el desplazamiento como la dirección. Coloca en el tope de la pila la nueva dirección calculada.|D = a + (i * d). Donde D es la nueva dirección, a la dirección a desplazar, i la cantidad a desplazar, y del factor de escala.|
+
 ![VM](vm.gif)
