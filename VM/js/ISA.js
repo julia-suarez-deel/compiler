@@ -9,13 +9,13 @@ function LDC(constant){
 }
 function STO(){
     let value = stack.pop().value;
-    let address = stack.pop().value;
+    let address = parseInt(stack.pop().value);
     data[address] = new DataLine(address,value);
     SP-=2;
 }
 function STN(){
-    let value = stack.pop().value;
-    let address = stack.pop().value;
+    let value = parseInt(stack.pop().value);
+    let address = parseInt(stack.pop().value);
     console.log(address);
     data[address] = new DataLine(address,value);
     SP-=2;
@@ -36,17 +36,17 @@ function IND(delta){
     stack.push(new StackLine(data_value));
 }
 
-function UJP(address){
-    console.log(address-1);
-    PC=address-1;
+function UJP(line){
+    console.log(line-1);
+    PC=line-1;
 }
 
-function FJP(address){
+function FJP(line){
     let value = parseInt(stack.pop().value);   
     SP--;
     if (value==0) {
-        console.log(address-1);
-        PC=address-1;
+        console.log(line-1);
+        PC=line-1;
     }   
 }
 
@@ -113,24 +113,39 @@ function DVI(){
     }
 }
 function ENT(address){
-    console.log(address);
+    //Se guarda el tope (la instruccion a donde retornará)
     let value1;
+    let valueTemp = parseInt(stack.pop().value);
+    SP--;
+    //Se cargan los argumentos en orden hasta el marcador de pila (MP)
     while ((SP - MP) > 0) {
+        addr = parseInt(address) + (SP - MP);
         value1 = parseInt(stack.pop().value);
-        data[address.value + (SP - MP)] = value1;
         SP--;
+        data[addr] = new DataLine(addr, value1);
     }
+    //Se coloca la instrucción de retorno en el tope de la pila
+    stack.push(new StackLine(valueTemp));
 }
 function MST(){
+    //Se marca el comienzo de la pila para la funcion.
     MP = SP;
-    console.log(SP);
 }
 function CUP(line){
-    console.log(line);
-    console.log(PC);
-    PC = line;
-    console.log(line);
-    console.log(PC);
+    //Se introduce la instruccion actual como instrucción de retorno
+    stack.push(new StackLine(PC));
+    //Se hace el salto a la función.
+    PC = line-1;
+}
+function RET(){
+    //Se guarda el tope de la pila (valor de retorno)
+    let valueTemp = parseInt(stack.pop().value);
+    SP--;
+    //Se hace el salto a la instruccion de retorno.
+    PC = parseInt(stack.pop().value);
+    SP--;
+    //Se coloca el valor de retorno en el tope de la pila.
+    stack.push(new StackLine(valueTemp));
 }
 function LAB(address){
     console.log("----Etiqueta-- "+address);

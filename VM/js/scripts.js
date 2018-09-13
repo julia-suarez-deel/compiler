@@ -21,9 +21,8 @@ const ISA = {
     'MST':MST,
     'CUP':CUP,
     'RDI':RDI,
-    'WRI':WRI
-    /*'ENT':ENT,
-    'MST':MST*/
+    'WRI':WRI,
+    'RET':RET
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
@@ -104,6 +103,9 @@ class Instruction{
         this.number = i;
         this.function = ISA[instruction_name];
         this.$node = null;
+        for (let i = 0; i < this.args.length; i++) {
+            this.args[i] = parseInt(this.args[i]);
+        }
     }
     execute(){
         $('.instruction').removeClass(SUCCESS_ROW_CLASS);
