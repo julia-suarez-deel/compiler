@@ -76,6 +76,7 @@ class Toolbar {
                 PC = 0;
                 toolbar.updateState();
                 haltProgram();
+                autoScrolling();
             }
         });
         $('#redo.btn').on('click', function () {
@@ -117,6 +118,7 @@ class Instruction{
         }catch (e) {
             console.log(e.message);
         }
+        autoScrolling();
     }
 }
 class StackLine {
@@ -202,3 +204,11 @@ function haltProgram() {
     loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
     loadHtmlArray(data, DATA_CONTAINER_SELECTOR);
 }
+function autoScrolling(){
+    let consol = document.getElementById('console');
+    consol.scrollTop = consol.scrollHeight;
+    let instruction = document.getElementById('body-instructions');
+    instruction.scrollTop = (instruction.scrollHeight/instructions.length)*(PC-1);
+    let stack_table = document.getElementById('body-stack');
+    stack_table.scrollTop = stack_table.scrollHeight;
+} 

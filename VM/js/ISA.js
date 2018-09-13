@@ -121,5 +121,6 @@ function WRI(){
 function RDI(){
     let value = prompt('Indica el valor a leer: ');
     let address = parseInt(stack.pop().value);
+    SP--;
     data[address] = new DataLine(address,value);
 }
