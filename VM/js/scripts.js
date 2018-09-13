@@ -16,11 +16,13 @@ const ISA = {
     'SBI':SBI,
     'MPI':MPI,
     'DVI':DVI,
+    'LAB':LAB,
+    'ENT':ENT,
+    'MST':MST,
+    'CUP':CUP,
     'RDI':RDI,
     'WRI':WRI,
-    'LAB':LAB
-    /*'ENT':ENT,
-    'MST':MST*/
+    'RET':RET
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
@@ -29,6 +31,7 @@ const DATA_CONTAINER_SELECTOR = '#data-container tbody';
 let is_executing = false;
 let PC = 0;
 let SP = 0;
+let MP = 0;
 let $templates = null;
 let instructions = [];
 let stack = [];
@@ -101,6 +104,9 @@ class Instruction{
         this.number = i;
         this.function = ISA[instruction_name];
         this.$node = null;
+        for (let i = 0; i < this.args.length; i++) {
+            this.args[i] = parseInt(this.args[i]);
+        }
     }
     execute(){
         $('.instruction').removeClass(SUCCESS_ROW_CLASS);
@@ -125,6 +131,7 @@ class StackLine {
     constructor(value){
         this.value = value;
         this.number = SP;
+        SP++;
     }
 }
 class DataLine{

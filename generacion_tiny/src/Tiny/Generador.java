@@ -20,6 +20,7 @@ public class Generador {
     private static int LB = 0;
     private static int bloqueActual = 0;
     private static ArrayList<LabelCodigoP> etiquetas = new ArrayList<LabelCodigoP>();
+    private static ArrayList<NodoFuncion> funciones = new ArrayList<NodoFuncion>();
     //private static LabelCodigoP et = new LabelCodigoP();
     public static void setTablaSimbolos(TablaSimbolos tabla){
         tablaSimbolos = tabla;
@@ -47,6 +48,8 @@ public class Generador {
         if(UtGen.debug)	UtGen.emitirComentario("-> Inicio de código", bw);
         generar(raiz);
         if(UtGen.debug)	UtGen.emitirInstruccion("STP", "finaliza el código", bw);
+
+        generarDeclaracionFunciones();
         if(UtGen.debug)	UtGen.emitirComentario("<- Fin de código", bw);
         
         try {
@@ -247,23 +250,13 @@ public class Generador {
     private static void generarFuncion(NodoBase nodo){
         NodoFuncion n= (NodoFuncion)nodo;
         String nombre;
-        int bloqueAnterior = bloqueActual;
+
         if (n.getRetorno()==null){
             nombre = ((NodoIdentificador)n.getIdentificador()).getNombre();
             generarLamada(nombre,n.getArgumentos());
         }else if (n.getRetorno()!=null) {
-            bloqueActual = n.getNroBloque();
-            nombre= ((NodoIdentificador)n.getIdentificador()).getNombre();
-            UtGen.emitirInstruccion("ENT", nombre, "Punto de entrada a la función", bw);
-            generar(n.getCuerpo());
-            if(n.getRetorno() instanceof NodoIdentificador){
-                generarIdentificador(n.getRetorno());
-            }else if(n.getRetorno() instanceof NodoVector){
-                generarVector(n.getRetorno());
-            }
-            UtGen.emitirInstruccion("RET", "Retorno valor del tope de la pila",bw);
+            funciones.add(n);
         }
-        bloqueActual = bloqueAnterior;
     }
 
     private static void generarLamada(String nombre,NodoBase argumentos){
@@ -272,7 +265,7 @@ public class Generador {
             UtGen.emitirInstruccion("MST", " inicio de lista de argumentos", bw);
             generar(argumentos);
         }
-        UtGen.emitirInstruccion("CUP ", nombre, " llamada a funcion: "+nombre, bw);
+        UtGen.emitirInstruccion("CUP", "LB"+nombre, " llamada a funcion: "+ nombre, bw);
         if(UtGen.debug)	UtGen.emitirComentario("<- llamada a funcion", bw);
     }
 
@@ -337,6 +330,27 @@ public class Generador {
             System.out.println("Codigo P: "+ "Salida estandar");
     }
 
+    //Genera la declaracion de funciones
+    private static void generarDeclaracionFunciones(){
+        String label;
+        int bloqueAnterior;
+        for(NodoFuncion funcion: funciones){
+            bloqueAnterior = bloqueActual;
+            UtGen.emitirInstruccion("ENT", tablaSimbolos.getDireccion(((NodoIdentificador) funcion.getIdentificador()).getNombre(),bloqueActual), "Punto de entrada a la función", bw);
+            bloqueActual = funcion.getNroBloque();
+            label = "LB" + ((NodoIdentificador) funcion.getIdentificador()).getNombre();
+            etiquetas.add(new LabelCodigoP(UtGen.numeroLinea(),label));
+            generar(funcion.getCuerpo());
+            if (funcion.getRetorno() instanceof NodoIdentificador) {
+                generarIdentificador(funcion.getRetorno());
+            } else if (funcion.getRetorno() instanceof NodoVector) {
+                generarVector(funcion.getRetorno());
+            }
+            UtGen.emitirInstruccion("RET", "Retorno valor del tope de la pila", bw);
+            bloqueActual = bloqueAnterior;
+        }
+    }
+
     public static String generarLabel() {
         LB++;
         return "LB"+LB;
@@ -345,7 +359,7 @@ public class Generador {
     private static void poscompilacion(String archivoSalida, String archivoSalidaTemp) throws IOException{
         Matcher m;
         int instruccion;
-        String patron = "LB[0-9]+";
+        String patron = "LB[0-9a-zA-Z]+";
         Pattern p = Pattern.compile(patron);
         File fichero = new File(archivoSalidaTemp);
         Scanner s = null;
@@ -364,15 +378,17 @@ public class Generador {
                 String linea = s.nextLine();
                 m = p.matcher(linea);
                 String[] palabra = linea.split(" ");
-                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP")){
-                    instruccion = direccionEtiqueta(palabra[1]);
-                    linea = m.replaceAll(String.valueOf(instruccion));
+                if(palabra[0].equals("LAB") || palabra[0].equals("FJP") || palabra[0].equals("UJP") || palabra[0].equals("CUP")){
+                    if(m.find()){
+                        instruccion = direccionEtiqueta(m.group());
+                        linea = m.replaceAll(String.valueOf(instruccion));
+                    }
                 }
                 escribir(linea, out);
                 escribir("true", out);
             }
         } catch (Exception ex) {
-            System.out.println("El archivo " + archivoSalidaTemp + "no pudo ser leído");
+            System.out.println("El archivo " + archivoSalidaTemp + " no pudo ser leido");
             if (s != null)
                 s.close();
             out.close();
