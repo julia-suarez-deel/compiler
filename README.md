@@ -61,8 +61,26 @@ Las reglas semánticas implementadas son las siguientes:
 El código P generado es escrito en un archivo con extensión **.pcod** que es indicado antes del inicio de la compilación. (si no se indica, el compilador generara el archivo en la misma ubcación que el archivo fuente, con extensión .pcod)
 
 ## Máquina Virtual P-Code
+Es un programa desarrollado en HTML/CSS/JavaScript que permite simular la ejecución del Código P. 
+Cuenta con tres estructuras de almacenamiento: una memoria de datos, una memoria de instrucciones
+y una pila.
 
-### Instrucciones
+- Pila: La pila permite almacenar temporalmente datos para realizar operaciones.
+- Instrucciones: Arreglo de instrucciones en código P sacadas del programa fuente a ejecutar, con sus argumentos
+- Datos: Arreglo para almacenar datos.
+### Interfaz Grafica 
+Además de los arreglos mencionados previamente, la máquina virtual cuenta con un ``toolbar`` que permite ejecutar
+cada instrucción paso a paso, detener la ejecución o reiniciarla.
+Cuenta con un ``panel de salida`` por el cual se muestran los errores y valores de salida.
+
+### Variables de entorno
+Se encuentran en el archivo ``env.js``, allí se encuentran las variables globales como la ubicación de
+los templates o del código P a ejecutar. Un ejemplo se encuentra en el archivo ``env.example.js``
+
+La máquina virtual carga el archivo con el código fuente especificado por la variable ``CODE_URL`` en el archivo ``env.js``
+### Listado de instrucciones en código P
+
+Listado de instrucciones que soporta actualmente la máquina virtual.
 
 **Instrucción**|**Descripción**|**Nota**
 |:-----:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
@@ -85,5 +103,9 @@ El código P generado es escrito en un archivo con extensión **.pcod** que es i
 |FJP L  |Salto condicional. Extrae el valor del tope de la fila, si es 0 (falso) salta a la instrucción con etiqueta L. Coloca PC igual a L – 1.|L es el número o dirección de la instrucción en la memoria de instrucciones.|
 |IND i  |Extrae la dirección que se encuentra en el tope de la pila, y la desplaza i direcciones. Coloca el valor de la nueva dirección en el tope de la pila.| 
 |IXA d  |Desplaza una dirección de memoria usando un factor de escala. Toma como parámetro el factor de escala entero. Extrae del tope de la pila la cantidad a desplazar (i). La dirección se debe encontrar debajo del tope de la pila (a). Remueve de la pila tanto el desplazamiento como la dirección. Coloca en el tope de la pila la nueva dirección calculada.|D = a + (i * d). Donde D es la nueva dirección, a la dirección a desplazar, i la cantidad a desplazar, y del factor de escala.|
+
+### Demo
+
+Demostración de la simulación del programa ejemplo ubicado en el repositorio en ``demo/ejemplo.p``
 
 ![VM](vm.gif)
