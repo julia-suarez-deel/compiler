@@ -22,32 +22,31 @@ function STN(){
     stack.push(new StackLine(value));
 }
 function IXA(factor){
-    // TODO: Change the compiler so the factor would be a number and not elem_size
-    factor = 1;
-    let address = stack.pop().value;
-    let delta = stack.pop().value;
+    let delta = parseInt(stack.pop().value);
+    let address = parseInt(stack.pop().value);
     SP-=2;
-    stack.push(new StackLine(address+delta*factor));
+    stack.push(new StackLine(address + factor * delta));
 }
 
 function IND(delta){
-    let address = stack.pop().value;
+    let address = parseInt(stack.pop().value);
+    delta = parseInt(delta);
     SP--;
     let data_value = data[address + delta].value;
     stack.push(new StackLine(data_value));
 }
 
 function UJP(address){
-    console.log(address-2);
-    PC=address-2;
+    console.log(address-1);
+    PC=address-1;
 }
 
 function FJP(address){
     let value = parseInt(stack.pop().value);   
     SP--;
     if (value==0) {
-        console.log(address-2);
-        PC=address-2;
+        console.log(address-1);
+        PC=address-1;
     }   
 }
 
@@ -99,8 +98,10 @@ function DVI(){
     let value1 = parseInt(stack.pop().value);
     let value2 = parseInt(stack.pop().value);
     SP-=2;
-    if(value1 != 0)
-        stack.push(new StackLine(value2/value1));
+    if(value1 != 0){
+        let result = parseInt(value2/value1);
+        stack.push(new StackLine(result));
+    }
     else{
         haltProgram();
         $("#alert-container").append("<div class='alert alert-danger alert-dismissible' role='alert'>"+ 
@@ -113,17 +114,34 @@ function DVI(){
 }
 function ENT(address){
     console.log(address);
+    let value1;
     while ((SP - MP) > 0) {
-        data[address.value + (SP - MP)] = stack.pop().value;
+        value1 = parseInt(stack.pop().value);
+        data[address.value + (SP - MP)] = value1;
         SP--;
     }
 }
 function MST(){
     MP = SP;
+    console.log(SP);
 }
 function CUP(line){
+    console.log(line);
+    console.log(PC);
     PC = line;
+    console.log(line);
+    console.log(PC);
 }
 function LAB(address){
     console.log("----Etiqueta-- "+address);
+}
+function WRI(){
+    let value = parseInt(stack.pop().value);
+    SP--;
+    $('#console-body').append('Valor en tope de la pila: '+value+'<br>>&nbsp;');
+}
+function RDI(){
+    let value = prompt('Indica el valor a leer: ');
+    let address = parseInt(stack.pop().value);
+    data[address] = new DataLine(address,value);
 }

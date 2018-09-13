@@ -1,10 +1,12 @@
+z:=8;
+x:=8;
 if z<x+3  then 
-  if z=0  then
+  if z:=0  then
     z:=8;
-    if z=8 then
-      write x
+    if z:=8 then
+      z:=5*9
     else
-      read x
+      z:=2/2
     end
   end
 else

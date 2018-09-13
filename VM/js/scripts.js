@@ -19,7 +19,11 @@ const ISA = {
     'LAB':LAB,
     'ENT':ENT,
     'MST':MST,
-    'CUP':CUP
+    'CUP':CUP,
+    'RDI':RDI,
+    'WRI':WRI
+    /*'ENT':ENT,
+    'MST':MST*/
 };
 const DATA_SIZE = 10;
 const SUCCESS_ROW_CLASS = 'bg-success text-light';
@@ -63,6 +67,7 @@ class Toolbar {
             if(PC+1<=instructions.length){
                 is_executing = true;
                 toolbar.updateState();
+                console.log("---------- "+PC);
                 instructions[PC].execute();
             }
             else{
@@ -194,6 +199,8 @@ function haltProgram() {
     PC = SP = 0;
     $('.instruction').removeClass(SUCCESS_ROW_CLASS);
     $('#toolbar').remove();
+    $('#console-body').empty();
+    $('#console-body').append('>&nbsp;');
     toolbar = new Toolbar();
     stack = [];
     data = Array(DATA_SIZE).fill({});
