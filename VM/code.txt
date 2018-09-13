@@ -1,24 +1,90 @@
-LDA 0
-LDC 5
-STO
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-LOD 0
-STP
+;                          -> Inicio de código
+
+LDA 0        ;cargar direccion de identificador: x
+LDC 1        ;cargar constante: 1
+STO            ;asignacion: almaceno el valor para el id x
+LDA 6        ;cargar direccion de identificador: g
+;                          -> llamada a funcion
+
+MST            ; inicio de lista de argumentos
+LOD 0        ;cargar valor de identificador: x
+LDC 6        ;cargar constante: 6
+CUP 51        ; llamada a funcion: hola
+;                          <- llamada a funcion
+
+STO            ;asignacion: almaceno el valor para el id g
+;                          -> if
+
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 0
+GRT            ;A mayor que B: B<A
+FJP 49        ;if false: jmp hacia else
+LDA 7        ;cargar direccion de identificador: fact
+LDC 1        ;cargar constante: 1
+STO            ;asignacion: almaceno el valor para el id fact
+;                          -> Repeat
+
+LAB 17        ;Definicion label para repeat
+LDA 7        ;cargar direccion de identificador: fact
+LOD 7        ;cargar valor de identificador: fact
+LOD 0        ;cargar valor de identificador: x
+MPI            ;Operación multiplicación: *
+STO            ;asignacion: almaceno el valor para el id fact
+LDA 0        ;cargar direccion de identificador: x
+LOD 0        ;cargar valor de identificador: x
+LDC 1        ;cargar constante: 1
+SBI            ;Operación resta: -
+STO            ;asignacion: almaceno el valor para el id x
+;                          -> Repeat
+
+LAB 28        ;Definicion label para repeat
+LDA 7        ;cargar direccion de identificador: fact
+LOD 7        ;cargar valor de identificador: fact
+LOD 0        ;cargar valor de identificador: x
+MPI            ;Operación multiplicación: *
+STO            ;asignacion: almaceno el valor para el id fact
+LDA 0        ;cargar direccion de identificador: x
+LOD 0        ;cargar valor de identificador: x
+LDC 1        ;cargar constante: 1
+SBI            ;Operación resta: -
+STO            ;asignacion: almaceno el valor para el id x
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 0
+EQU            ;Igual a: ==
+FJP 28        ;repeat: Salto hacia el inicio del cuerpo
+;                          <- repeat
+
+LOD 0        ;cargar valor de identificador: x
+LDC 0        ;cargar constante: 0
+EQU            ;Igual a: ==
+FJP 17        ;repeat: Salto hacia el inicio del cuerpo
+;                          <- repeat
+
+;                          -> escribir
+
+LOD 7        ;cargar valor de identificador: fact
+WRI            ;escribir valor del tope
+;                          <- escribir
+
+LAB 49        ;definicion label jmp
+;                          <- if
+
+STP            ;finaliza el código
+ENT 1        ;Punto de entrada a la función
+LDA 3        ;cargar direccion de identificador: y
+LOD 2        ;cargar valor de identificador: x
+LOD 3        ;cargar valor de identificador: y
+ADI            ;Operación suma: +
+STO            ;asignacion: almaceno el valor para el id y
+LDA 4        ;cargar direccion de identificador: h
+LDC 2        ;cargar constante: 2
+IXA 1        ;cargar direccion de identificador: h
+LDC 1        ;cargar constante: 1
+STO            ;asignacion: almaceno el valor para el id h
+LDA 4        ;cargar direccion de la variable: h
+LDC 2        ;cargar constante: 2
+IXA 1        ;cargar la direccion de la posicion del vector: h
+IND 0        ;cargar el valor de la direccion anterior
+RET            ;Retorno valor del tope de la pila
+;                          <- Fin de código
+

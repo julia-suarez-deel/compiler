@@ -79,7 +79,6 @@ class Toolbar {
                 PC = 0;
                 toolbar.updateState();
                 haltProgram();
-                autoScrolling();
             }
         });
         $('#redo.btn').on('click', function () {
@@ -113,6 +112,7 @@ class Instruction{
         try{
             if(this.function.length === this.args.length){
                 this.$node.addClass(SUCCESS_ROW_CLASS);
+                autoScrolling();
                 PC++;
                 this.function.apply(this, this.args);
                 loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
@@ -124,7 +124,6 @@ class Instruction{
         }catch (e) {
             console.log(e.message);
         }
-        autoScrolling();
     }
 }
 class StackLine {
@@ -205,6 +204,7 @@ function haltProgram() {
     $('#toolbar').remove();
     $('#console-body').empty();
     $('#console-body').append('>&nbsp;');
+    autoScrolling();
     toolbar = new Toolbar();
     stack = [];
     data = Array(DATA_SIZE).fill({});
@@ -215,7 +215,7 @@ function autoScrolling(){
     let consol = document.getElementById('console');
     consol.scrollTop = consol.scrollHeight;
     let instruction = document.getElementById('body-instructions');
-    instruction.scrollTop = (instruction.scrollHeight/instructions.length)*(PC-1);
+    instruction.scrollTop = (instruction.scrollHeight/instructions.length)*(PC);
     let stack_table = document.getElementById('body-stack');
     stack_table.scrollTop = stack_table.scrollHeight;
 } 
