@@ -139,6 +139,7 @@ function RET(){
     //Se hace el salto a la instruccion de retorno.
     PC = parseInt(stack.pop().value);
     SP--;
+    MP=0;
     //Se coloca el valor de retorno en el tope de la pila.
     stack.push(new StackLine(valueTemp));
 }

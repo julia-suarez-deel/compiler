@@ -118,6 +118,7 @@ class Instruction{
                 this.function.apply(this, this.args);
                 loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
                 loadHtmlArray(data,DATA_CONTAINER_SELECTOR);
+                updatePointers();
             }
             else{
                 throw new Error("Number of arguments doesn't match.")
@@ -147,32 +148,25 @@ class DataLine{
 // Setup
 $(document).ready(function(){
     loadTemplates();
-    readCode();
     toolbar = new Toolbar();
     loadHtmlArray(data, DATA_CONTAINER_SELECTOR);
 });
 // Helper functions
 function loadTemplates(){
-    $.ajax({
-        url:TEMPLATES_URL,
-        async:false,
-        complete:function(response) {
-            let clean_template = cleanLine(response.responseText);
-            $templates = $(clean_template);
-        }
-    });
+    $template_from_html = $('#template').html();
+    clean_template = cleanLine($template_from_html);
+    $templates = $(clean_template);
 }
-function readCode(){
-    $.get(CODE_URL, function(program) {
-        let program_lines = splitInstructions(program);
-        let i=1;
-        program_lines.forEach(line => {
-            let instruction = new Instruction(line, i);
-            instructions.push(instruction);
-            createOrUpdateDomNode(instruction, true);
-            i++;
-        });
-     }, 'text');
+function readCode(program){
+    let program_lines = splitInstructions(program);
+    let i=1;
+    instructions = [];
+    program_lines.forEach(line => {
+        let instruction = new Instruction(line, i);
+        instructions.push(instruction);
+        createOrUpdateDomNode(instruction, true);
+        i++;
+    });
 }
 function splitInstructions(data){
     let clean_data = cleanLine(data);
@@ -204,7 +198,7 @@ function loadHtmlArray(array, parent_selector){
     $(parent_selector).html(complete_html);
 }
 function haltProgram() {
-    PC = SP = 0;
+    PC = SP = MP = 0;
     $('.instruction').removeClass(SUCCESS_ROW_CLASS);
     $('#toolbar').remove();
     $('#console-body').empty();
@@ -215,6 +209,7 @@ function haltProgram() {
     data = Array(DATA_SIZE).fill({});
     loadHtmlArray(stack,STACK_CONTAINER_SELECTOR);
     loadHtmlArray(data, DATA_CONTAINER_SELECTOR);
+    updatePointers();
 }
 function autoScrolling(){
     let consol = document.getElementById('console');
@@ -240,3 +235,29 @@ function executionErrorMessage(){
         "<strong>Error de ejecución</strong>"+
         "</div>");
 }
+function updatePointers(){
+    $("#programPointer").val(PC);
+    console.log(PC);
+    $("#stackPointer").val(SP);
+    $("#markPointer").val(MP);
+}
+//When file is selected
+$(document).on('change', ':file', function () {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [numFiles, label]);
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        haltProgram();
+        $('#body-instructions').html("");
+        readCode(reader.result);
+    };
+    reader.readAsText(input.get(0).files[0]);
+});
+//Shows file name when it is selected with the input
+$(':file').on('fileselect', function (event, numFiles, label) {
+    var input = $(this).parents('.input-group').find(':text');
+    input.val(label);
+});
