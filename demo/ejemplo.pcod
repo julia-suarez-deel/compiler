@@ -1,4 +1,4 @@
-;                          -> Inicio de c贸digo
+;                          -> Inicio de c骴igo
 
 LDA 0        ;cargar direccion de identificador: x
 LDC 3        ;cargar constante: 3
@@ -24,12 +24,12 @@ LAB 13        ;Definicion label para repeat
 LDA 1        ;cargar direccion de identificador: fact
 LOD 1        ;cargar valor de identificador: fact
 LOD 0        ;cargar valor de identificador: x
-MPI            ;Operaci贸n multiplicaci贸n: *
+MPI            ;Operaci髇 multiplicaci髇: *
 STO            ;asignacion: almaceno el valor para el id fact
 LDA 0        ;cargar direccion de identificador: x
 LOD 0        ;cargar valor de identificador: x
 LDC 1        ;cargar constante: 1
-SBI            ;Operaci贸n resta: -
+SBI            ;Operaci髇 resta: -
 STO            ;asignacion: almaceno el valor para el id x
 LOD 0        ;cargar valor de identificador: x
 LDC 0        ;cargar constante: 0
@@ -46,6 +46,6 @@ WRI            ;escribir valor del tope
 LAB 30        ;definicion label jmp
 ;                          <- if
 
-STP            ;finaliza el c贸digo
-;                          <- Fin de c贸digo
+STP            ;finaliza el c骴igo
+;                          <- Fin de c骴igo
 

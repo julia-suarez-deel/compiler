@@ -72,13 +72,10 @@ y una pila.
 Además de los arreglos mencionados previamente, la máquina virtual cuenta con un ``toolbar`` que permite ejecutar
 cada instrucción paso a paso, detener la ejecución o reiniciarla.
 Cuenta con un ``panel de salida`` por el cual se muestran valores con la instrucción WRI. Los errores aparecen en la
-parte superior con un alert rojo. 
+parte superior con un alert rojo.
 
-### Variables de entorno
-Se encuentran en el archivo ``env.js``, allí se encuentran las variables globales como la ubicación de
-los templates o del código P a ejecutar. Un ejemplo se encuentra en el archivo ``env.example.js``
+La VM acepta archivos de texto en formato .txt y .pcod.
 
-La máquina virtual carga el archivo con el código fuente especificado por la variable ``CODE_URL`` en el archivo ``env.js``
 ### Listado de instrucciones en código P
 
 Listado de instrucciones que soporta actualmente la máquina virtual.
